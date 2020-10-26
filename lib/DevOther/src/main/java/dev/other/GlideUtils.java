@@ -41,6 +41,8 @@ import dev.utils.LogPrintUtils;
  *     @see <a href="https://muyangmin.github.io/glide-docs-cn"/>
  *     解决 Glide 加载图片闪烁的问题 ( 圆角处理 ) - transform(new RoundedCorners(xx));
  *     @see <a href="https://blog.csdn.net/andcisco/article/details/96487800"/>
+ *     解决圆角 + centerCrop 效果叠加处理
+ *     transform(new MultiTransformation(new CenterCrop(), new RoundedCorners(xx)));
  * </pre>
  */
 public final class GlideUtils {
@@ -64,9 +66,9 @@ public final class GlideUtils {
     // 图片 ( 加载 / 解码 ) 失败
     private static int            sImageFailRes     = 0;
 
-    // ================================
-    // =  GlideLoader(RequestManager) =
-    // ================================
+    // ===============================
+    // = GlideLoader(RequestManager) =
+    // ===============================
 
     @NonNull
     public static GlideLoader with(@NonNull Context context) {
@@ -113,9 +115,9 @@ public final class GlideUtils {
         return sGlideLoader;
     }
 
-    // ==========
+    // =========
     // = 初始化 =
-    // ==========
+    // =========
 
     /**
      * 初始化方法 ( 必须调用 )
@@ -248,9 +250,9 @@ public final class GlideUtils {
         return options;
     }
 
-    // ==============
+    // =============
     // = 内部方法类 =
-    // ==============
+    // =============
 
     /**
      * detail: Glide Loader 封装内部类
@@ -271,9 +273,9 @@ public final class GlideUtils {
             if (requestManager != null) requestManager.setDefaultRequestOptions(DF_OPTIONS);
         }
 
-        // ==============
+        // =============
         // = 预加载处理 =
-        // ==============
+        // =============
 
         /**
          * 预加载图片
@@ -301,9 +303,9 @@ public final class GlideUtils {
             }
         }
 
-        // ============
+        // ===========
         // = 图片显示 =
-        // ============
+        // ===========
 
         /**
          * 图片显示
@@ -508,9 +510,9 @@ public final class GlideUtils {
             }
         }
 
-        // ============
+        // ===========
         // = 图片加载 =
-        // ============
+        // ===========
 
         /**
          * 图片加载
@@ -616,9 +618,9 @@ public final class GlideUtils {
             }
         }
 
-        // ============
+        // ===========
         // = 其他操作 =
-        // ============
+        // ===========
 
         /**
          * 取消图片显示任务
@@ -688,9 +690,9 @@ public final class GlideUtils {
         }
     }
 
-    // ============
+    // ===========
     // = 其他操作 =
-    // ============
+    // ===========
 
     /**
      * 清除磁盘缓存

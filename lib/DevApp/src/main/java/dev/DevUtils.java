@@ -29,8 +29,6 @@ import dev.utils.app.AppCommonUtils;
 import dev.utils.app.HandlerUtils;
 import dev.utils.app.KeyBoardUtils;
 import dev.utils.app.UriUtils;
-import dev.utils.app.cache.DevCache;
-import dev.utils.app.share.SharedUtils;
 import dev.utils.app.toast.toaster.DevToast;
 import dev.utils.common.FileUtils;
 
@@ -42,10 +40,16 @@ import dev.utils.common.FileUtils;
  *     @see <a href="https://github.com/afkT/DevUtils"/>
  *     DevApp Api
  *     @see <a href="https://github.com/afkT/DevUtils/blob/master/lib/DevApp/README.md"/>
- *     DevJava Api
- *     @see <a href="https://github.com/afkT/DevUtils/blob/master/lib/DevJava/README.md"/>
  *     DevAssist Api
  *     @see <a href="https://github.com/afkT/DevUtils/blob/master/lib/DevAssist/README.md"/>
+ *     DevBase README
+ *     @see <a href="https://github.com/afkT/DevUtils/blob/master/lib/DevBase/README.md"/>
+ *     DevJava Api
+ *     @see <a href="https://github.com/afkT/DevUtils/blob/master/lib/DevJava/README.md"/>
+ *     DevWidget Api
+ *     @see <a href="https://github.com/afkT/DevUtils/blob/master/lib/DevWidget/README_API.md"/>
+ *     DevEnvironment Api
+ *     @see <a href="https://github.com/afkT/DevUtils/blob/master/lib/Environment"/>
  *     DevOther Api
  *     @see <a href="https://github.com/afkT/DevUtils/blob/master/lib/DevOther/README.md"/>
  * </pre>
@@ -56,7 +60,7 @@ public final class DevUtils {
     }
 
     // 日志 TAG
-    private static final String TAG = DevUtils.class.getSimpleName();
+    public static final String TAG = DevUtils.class.getSimpleName();
 
     // 全局 Application 对象
     private static Application sApplication;
@@ -77,20 +81,16 @@ public final class DevUtils {
         // 注册 Activity 生命周期监听
         registerActivityLifecycleCallbacks(sApplication);
 
-        // ====================
+        // ===================
         // = 初始化工具类相关 =
-        // ====================
+        // ===================
 
-        // 初始化 Cache
-        DevCache.obtain();
-        // 初始化 SharedPreferences
-        SharedUtils.init(context);
         // 初始化 应用、设备信息
         AppCommonUtils.refreshAppDeviceInfo();
         // 初始化 Record
         AnalysisRecordUtils.init();
         // 初始化 Toast
-        DevToast.init(sApplication);
+        DevToast.init(context);
 
         // ============
         // = Java Log =
@@ -215,7 +215,7 @@ public final class DevUtils {
     }
 
     /**
-     * 执行 UI 线程任务 - 延时执行
+     * 执行 UI 线程任务 ( 延时执行 )
      * @param runnable    线程任务
      * @param delayMillis 延时执行时间 ( 毫秒 )
      */
@@ -248,40 +248,40 @@ public final class DevUtils {
         return sDebug;
     }
 
-    // ==============
+    // =============
     // = 工具类版本 =
-    // ==============
+    // =============
 
     /**
-     * 获取 DevApp 工具类版本
-     * @return DevApp versionName
-     */
-    public static String getDevAppUtilsVersion() {
-        return BuildConfig.VERSION_NAME;
-    }
-
-    /**
-     * 获取 DevApp 工具类版本号
+     * 获取 DevApp 版本号
      * @return DevApp versionCode
      */
-    public static int getDevAppUtilsVersionCode() {
-        return BuildConfig.VERSION_CODE;
+    public static int getDevAppVersionCode() {
+        return BuildConfig.DevApp_VersionCode;
     }
 
     /**
-     * 获取 DevJava 工具类版本
-     * @return DevJava version
+     * 获取 DevApp 版本
+     * @return DevApp versionName
      */
-    public static String getDevJavaUtilsVersion() {
-        return BuildConfig.DevJava_Version;
+    public static String getDevAppVersion() {
+        return BuildConfig.DevApp_Version;
     }
 
     /**
-     * 获取 DevJava 工具类版本号
+     * 获取 DevJava 版本号
      * @return DevJava version
      */
-    public static int getDevJavaUtilsVersionCode() {
+    public static int getDevJavaVersionCode() {
         return BuildConfig.DevJava_VersionCode;
+    }
+
+    /**
+     * 获取 DevJava 版本
+     * @return DevJava version
+     */
+    public static String getDevJavaVersion() {
+        return BuildConfig.DevJava_Version;
     }
 
     // =================
@@ -328,9 +328,9 @@ public final class DevUtils {
         }
     }
 
-    // ================
+    // ===============
     // = 对外公开方法 =
-    // ================
+    // ===============
 
     /**
      * 获取 Activity 生命周期 相关信息获取接口类
@@ -364,9 +364,9 @@ public final class DevUtils {
         DevUtils.sActivityLifecycleFilter = activityLifecycleFilter;
     }
 
-    // ============
+    // ===========
     // = 接口相关 =
-    // ============
+    // ===========
 
     /**
      * detail: 对 Activity 的生命周期事件进行集中处理, ActivityLifecycleCallbacks 实现方法
@@ -476,9 +476,9 @@ public final class DevUtils {
             }
         }
 
-        // ====================
+        // ===================
         // = 内部处理判断方法 =
-        // ====================
+        // ===================
 
         /**
          * 保存 Activity 栈顶
@@ -668,9 +668,9 @@ public final class DevUtils {
             mDestroyedListenerMaps.clear();
         }
 
-        // ================
+        // ===============
         // = 事件通知相关 =
-        // ================
+        // ===============
 
         /**
          * 发送状态改变通知
@@ -841,9 +841,9 @@ public final class DevUtils {
         void onActivityDestroyed(Activity activity);
     }
 
-    // ============
+    // ===========
     // = 接口实现 =
-    // ============
+    // ===========
 
     // 内部 Activity 生命周期过滤处理
     private static ActivityLifecycleFilter ACTIVITY_LIFECYCLE_FILTER = new ActivityLifecycleFilter() {

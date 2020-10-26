@@ -6,6 +6,7 @@ import android.view.View;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import dev.utils.LogPrintUtils;
 
@@ -21,6 +22,8 @@ public final class ClickUtils {
     // 日志 TAG
     private static final String TAG = ClickUtils.class.getSimpleName();
 
+    // 是否校验 viewId
+    private static       boolean                  sCheckViewId        = true;
     // 双击间隔时间
     private static       long                     sGlobalIntervalTime = 1000L;
     // 全局共用的点击辅助类
@@ -81,6 +84,14 @@ public final class ClickUtils {
     }
 
     /**
+     * 设置全局是否校验 viewId
+     * @param checkViewId 是否校验 viewId
+     */
+    public static void setCheckViewId(final boolean checkViewId) {
+        ClickUtils.sCheckViewId = checkViewId;
+    }
+
+    /**
      * 设置全局双击间隔时间
      * @param globalIntervalTime 全局双击间隔时间
      */
@@ -88,9 +99,9 @@ public final class ClickUtils {
         ClickUtils.sGlobalIntervalTime = globalIntervalTime;
     }
 
-    // ======================
+    // ====================
     // = 功能模块辅助类操作 =
-    // ======================
+    // ====================
 
     /**
      * 获取对应功能模块点击辅助类
@@ -116,12 +127,12 @@ public final class ClickUtils {
         sClickAssistMaps.remove(object);
     }
 
-    // ======================
+    // ====================
     // = 全局点击辅助类操作 =
-    // ======================
+    // ====================
 
     /**
-     * 判断是否双击 ( 无效点击 - 短时间内多次点击 )
+     * 判断是否双击 ( 无效点击, 短时间内多次点击 )
      * @return {@code true} yes, {@code false} no
      */
     public static boolean isFastDoubleClick() {
@@ -129,7 +140,7 @@ public final class ClickUtils {
     }
 
     /**
-     * 判断是否双击 ( 无效点击 - 短时间内多次点击 )
+     * 判断是否双击 ( 无效点击, 短时间内多次点击 )
      * @param tagId id
      * @return {@code true} yes, {@code false} no
      */
@@ -138,7 +149,7 @@ public final class ClickUtils {
     }
 
     /**
-     * 判断是否双击 ( 无效点击 - 短时间内多次点击 )
+     * 判断是否双击 ( 无效点击, 短时间内多次点击 )
      * @param tagId        id
      * @param intervalTime 双击时间间隔
      * @return {@code true} yes, {@code false} no
@@ -150,7 +161,7 @@ public final class ClickUtils {
     // =
 
     /**
-     * 判断是否双击 ( 无效点击 - 短时间内多次点击 )
+     * 判断是否双击 ( 无效点击, 短时间内多次点击 )
      * @param object    key by Object
      * @param configKey 时间间隔配置 Key
      * @return {@code true} yes, {@code false} no
@@ -160,7 +171,7 @@ public final class ClickUtils {
     }
 
     /**
-     * 判断是否双击 ( 无效点击 - 短时间内多次点击 )
+     * 判断是否双击 ( 无效点击, 短时间内多次点击 )
      * @param object       key by Object
      * @param intervalTime 双击时间间隔
      * @return {@code true} yes, {@code false} no
@@ -285,7 +296,7 @@ public final class ClickUtils {
         // =
 
         /**
-         * 判断是否双击 ( 无效点击 - 短时间内多次点击 )
+         * 判断是否双击 ( 无效点击, 短时间内多次点击 )
          * @return {@code true} yes, {@code false} no
          */
         public boolean isFastDoubleClick() {
@@ -293,7 +304,7 @@ public final class ClickUtils {
         }
 
         /**
-         * 判断是否双击 ( 无效点击 - 短时间内多次点击 )
+         * 判断是否双击 ( 无效点击, 短时间内多次点击 )
          * @param tagId id
          * @return {@code true} yes, {@code false} no
          */
@@ -302,7 +313,7 @@ public final class ClickUtils {
         }
 
         /**
-         * 判断是否双击 ( 无效点击 - 短时间内多次点击 )
+         * 判断是否双击 ( 无效点击, 短时间内多次点击 )
          * @param tagId        id
          * @param intervalTime 双击间隔时间
          * @return {@code true} yes, {@code false} no
@@ -324,7 +335,7 @@ public final class ClickUtils {
         // =
 
         /**
-         * 判断是否双击 ( 无效点击 - 短时间内多次点击 )
+         * 判断是否双击 ( 无效点击, 短时间内多次点击 )
          * @param object    key by Object
          * @param configKey 时间间隔配置 Key
          * @return {@code true} yes, {@code false} no
@@ -334,7 +345,7 @@ public final class ClickUtils {
         }
 
         /**
-         * 判断是否双击 ( 无效点击 - 短时间内多次点击 )
+         * 判断是否双击 ( 无效点击, 短时间内多次点击 )
          * @param object       key by Object
          * @param intervalTime 双击时间间隔
          * @return {@code true} yes, {@code false} no
@@ -456,6 +467,179 @@ public final class ClickUtils {
             // 清空点击记录
             mRecordMaps.clear();
             return this;
+        }
+    }
+
+    // =======
+    // = 快捷 =
+    // =======
+
+    // 空实现 View.OnClickListener
+    public static final View.OnClickListener EMPTY_CLICK = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            LogPrintUtils.dTag(TAG, "EMPTY_CLICK viewId: " + view.getId());
+        }
+    };
+
+    /**
+     * detail: 双击点击事件
+     * @author Ttt
+     */
+    public static abstract class OnDebouncingClickListener implements View.OnClickListener {
+
+        // 是否校验 viewId
+        private boolean     mCheckViewId;
+        // 点击辅助类
+        private ClickAssist mClickAssist;
+
+        // ===========
+        // = 构造函数 =
+        // ===========
+
+        public OnDebouncingClickListener() {
+            this(ClickUtils.sGlobalClickAssist, ClickUtils.sCheckViewId);
+        }
+
+        public OnDebouncingClickListener(boolean checkViewId) {
+            this(ClickUtils.sGlobalClickAssist, checkViewId);
+        }
+
+        public OnDebouncingClickListener(ClickAssist clickAssist) {
+            this(clickAssist, ClickUtils.sCheckViewId);
+        }
+
+        public OnDebouncingClickListener(ClickAssist clickAssist, boolean checkViewId) {
+            this.mClickAssist = clickAssist;
+            this.mCheckViewId = checkViewId;
+        }
+
+        // ===========
+        // = 内部方法 =
+        // ===========
+
+        @Override
+        public final void onClick(View view) {
+            if (mClickAssist.isFastDoubleClick(mCheckViewId ? view.getId() : -1)) {
+                doInvalidClick(view);
+            } else {
+                doClick(view);
+            }
+        }
+
+        // ===============
+        // = 对外公开方法 =
+        // ===============
+
+        /**
+         * 有效点击 ( 单击 )
+         * @param view {@link View}
+         */
+        public abstract void doClick(View view);
+
+        /**
+         * 无效点击 ( 双击 )
+         * @param view {@link View}
+         */
+        public void doInvalidClick(View view) {
+        }
+    }
+
+    /**
+     * detail: 计数点击事件
+     * @author Ttt
+     */
+    public static abstract class OnCountClickListener implements View.OnClickListener {
+
+        // 点击辅助类
+        private ClickAssist   mClickAssist;
+        // 总点击数
+        private AtomicInteger mCount              = new AtomicInteger();
+        // 无效点击总次数
+        private AtomicInteger mInvalidCount       = new AtomicInteger();
+        // 每个周期无效点击次数 ( 周期 ( 有效 - 无效 - 有效 ) )
+        private AtomicInteger mInvalidCycleNumber = new AtomicInteger();
+
+        // ===========
+        // = 构造函数 =
+        // ===========
+
+        public OnCountClickListener() {
+            this(ClickUtils.sGlobalClickAssist);
+        }
+
+        public OnCountClickListener(ClickAssist clickAssist) {
+            this.mClickAssist = clickAssist;
+        }
+
+        // ===========
+        // = 内部方法 =
+        // ===========
+
+        @Override
+        public final void onClick(View view) {
+            // 累加总点击数
+            mCount.incrementAndGet();
+
+            if (mClickAssist.isFastDoubleClick(view.getId())) {
+                // 累加无效点击总次数
+                mInvalidCount.incrementAndGet();
+                // 累加每个周期无效点击次数 ( 周期 ( 有效 - 无效 - 有效 ) )
+                int invalidCycleNumber = mInvalidCycleNumber.incrementAndGet();
+
+                doInvalidClick(view, this, invalidCycleNumber);
+            } else {
+                // 重置周期无效点击次数
+                mInvalidCycleNumber.set(0);
+
+                doClick(view, this);
+            }
+        }
+
+        // ===============
+        // = 对外公开方法 =
+        // ===============
+
+        /**
+         * 有效点击 ( 单击 )
+         * @param view     {@link View}
+         * @param listener {@link OnCountClickListener}
+         */
+        public abstract void doClick(View view, OnCountClickListener listener);
+
+        /**
+         * 无效点击 ( 双击 )
+         * @param view               {@link View}
+         * @param listener           {@link OnCountClickListener}
+         * @param invalidCycleNumber 每个周期无效点击次数 ( 周期 ( 有效 - 无效 - 有效 ) )
+         */
+        public void doInvalidClick(View view, OnCountClickListener listener, int invalidCycleNumber) {
+        }
+
+        // =
+
+        /**
+         * 获取总点击数
+         * @return 总点击数
+         */
+        public final int getCount() {
+            return mCount.get();
+        }
+
+        /**
+         * 获取无效点击总次数
+         * @return 无效点击总次数
+         */
+        public final int getInvalidCount() {
+            return mInvalidCount.get();
+        }
+
+        /**
+         * 获取每个周期无效点击次数
+         * @return 每个周期无效点击次数
+         */
+        public final int getInvalidCycleNumber() {
+            return mInvalidCycleNumber.get();
         }
     }
 }

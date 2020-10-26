@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
                 )
                 ActivityUtils.startHomeActivity()
             } else {
-                ToastUtils.showLong(R.string.str_open_accessibility_tips)
+                ToastUtils.showShort(R.string.str_open_accessibility_tips)
             }
         }
     }
@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
                     IntentUtils.getManageOverlayPermissionIntent(),
                     REQUEST_CODE
                 )
-                ToastUtils.showLong(R.string.str_open_floating_tips)
+                ToastUtils.showShort(R.string.str_open_floating_tips)
             }
         }
     }

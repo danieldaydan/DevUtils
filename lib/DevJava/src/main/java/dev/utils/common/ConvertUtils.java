@@ -11,7 +11,7 @@ import java.util.Arrays;
 import dev.utils.JCLogUtils;
 
 /**
- * detail: 转换工具类 (Byte、Hex 等 )
+ * detail: 转换工具类 ( Byte、Hex 等 )
  * @author Ttt
  * <pre>
  *     byte 是字节数据类型、有符号型的、占 1 个字节、大小范围为 [ -128 - 127]
@@ -763,12 +763,7 @@ public final class ConvertUtils {
         } catch (Exception e) {
             JCLogUtils.eTag(TAG, e, "bytesToObject");
         } finally {
-            if (ois != null) {
-                try {
-                    ois.close();
-                } catch (Exception e) {
-                }
-            }
+            CloseUtils.closeIOQuietly(ois);
         }
         return null;
     }
@@ -789,12 +784,7 @@ public final class ConvertUtils {
         } catch (Exception e) {
             JCLogUtils.eTag(TAG, e, "objectToBytes");
         } finally {
-            if (oos != null) {
-                try {
-                    oos.close();
-                } catch (Exception e) {
-                }
-            }
+            CloseUtils.closeIOQuietly(oos);
         }
         return null;
     }
@@ -843,9 +833,9 @@ public final class ConvertUtils {
         return null;
     }
 
-    // ==============================================
+    // =============================================
     // = (int、double、long、float)[] 转换 String[] =
-    // ==============================================
+    // =============================================
 
     /**
      * int[] 转换 string[]
@@ -997,9 +987,9 @@ public final class ConvertUtils {
         return strings;
     }
 
-    // ======================================
+    // =====================================
     // = int[] 转换 (double、long、float)[] =
-    // ======================================
+    // =====================================
 
     /**
      * int[] 转换 double[]
@@ -1113,9 +1103,9 @@ public final class ConvertUtils {
         return floats;
     }
 
-    // ==============================================
+    // =============================================
     // = String[] 转换 (int、double、long、float)[] =
-    // ==============================================
+    // =============================================
 
     /**
      * string[] 转换 int[]
@@ -1331,9 +1321,9 @@ public final class ConvertUtils {
         return floats;
     }
 
-    // ======================================
+    // =====================================
     // = (double、long、float)[] 转换 int[] =
-    // ======================================
+    // =====================================
 
     /**
      * double[] 转换 int[]
@@ -1456,9 +1446,9 @@ public final class ConvertUtils {
         return ints;
     }
 
-    // ===================
-    // = Binary - 二进制 =
-    // ===================
+    // ====================
+    // = Binary ( 二进制 ) =
+    // ====================
 
     /**
      * 将 字节转换 为 二进制字符串
@@ -1516,9 +1506,9 @@ public final class ConvertUtils {
         return null;
     }
 
-    // ======================
-    // = Hex - 十六进制处理 =
-    // ======================
+    // ===================
+    // = Hex ( 十六进制 ) =
+    // ===================
 
     /**
      * 判断是否十六进制数据

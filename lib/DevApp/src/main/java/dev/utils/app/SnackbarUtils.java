@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.ColorInt;
@@ -23,6 +22,7 @@ import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.snackbar.SnackbarContentLayout;
 
 import java.lang.ref.WeakReference;
 
@@ -53,13 +53,14 @@ public final class SnackbarUtils {
             try {
                 sSnackbarReference = new WeakReference<>(Snackbar.make(view, "", Snackbar.LENGTH_SHORT));
             } catch (Exception e) {
+                LogPrintUtils.eTag(TAG, e, "SnackbarUtils");
             }
         }
     }
 
-    // ============
+    // ===========
     // = 构建方法 =
-    // ============
+    // ===========
 
     /**
      * 获取 SnackbarUtils 对象
@@ -100,9 +101,9 @@ public final class SnackbarUtils {
         return new SnackbarUtils(view);
     }
 
-    // ============
+    // ===========
     // = 样式相关 =
-    // ============
+    // ===========
 
     /**
      * 获取样式
@@ -122,9 +123,9 @@ public final class SnackbarUtils {
         return this;
     }
 
-    // ============
+    // ===========
     // = 对外方法 =
-    // ============
+    // ===========
 
     /**
      * 获取 Snackbar
@@ -174,6 +175,32 @@ public final class SnackbarUtils {
     }
 
     /**
+     * 获取 Snackbar.SnackbarLayout ( FrameLayout )
+     * @return {@link Snackbar.SnackbarLayout}
+     */
+    public Snackbar.SnackbarLayout getSnackbarLayout() {
+        try {
+            return (Snackbar.SnackbarLayout) getSnackbarView();
+        } catch (Exception e) {
+            LogPrintUtils.eTag(TAG, e, "getSnackbarLayout");
+        }
+        return null;
+    }
+
+    /**
+     * 获取 SnackbarContentLayout ( LinearLayout ( messageView、actionView ) )
+     * @return {@link SnackbarContentLayout}
+     */
+    public SnackbarContentLayout getSnackbarContentLayout() {
+        try {
+            return (SnackbarContentLayout) getSnackbarLayout().getChildAt(0);
+        } catch (Exception e) {
+            LogPrintUtils.eTag(TAG, e, "getSnackbarContentLayout");
+        }
+        return null;
+    }
+
+    /**
      * 向 Snackbar 布局中添加 View ( Google 不建议, 复杂的布局应该使用 DialogFragment 进行展示 )
      * @param layoutId R.layout.id
      * @param index    添加索引
@@ -203,11 +230,6 @@ public final class SnackbarUtils {
         Snackbar snackbar = getSnackbar();
         if (snackbar != null && view != null) {
             try {
-                // 设置新建布局参数
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                // 设置新建 View 在 Snackbar 内垂直居中显示
-                params.gravity = Gravity.CENTER_VERTICAL;
-                view.setLayoutParams(params);
                 ((Snackbar.SnackbarLayout) snackbar.getView()).addView(view, index);
             } catch (Exception e) {
                 LogPrintUtils.eTag(TAG, e, "addView");
@@ -238,7 +260,7 @@ public final class SnackbarUtils {
      * @return {@link SnackbarUtils}
      */
     public SnackbarUtils setAction(@StringRes final int resId, final Object... formatArgs) {
-        return setAction(null, resId, formatArgs);
+        return setAction(ClickUtils.EMPTY_CLICK, resId, formatArgs);
     }
 
     /**
@@ -266,7 +288,7 @@ public final class SnackbarUtils {
      * @return {@link SnackbarUtils}
      */
     public SnackbarUtils setAction(final String text, final Object... formatArgs) {
-        return setAction(null, text, formatArgs);
+        return setAction(ClickUtils.EMPTY_CLICK, text, formatArgs);
     }
 
     /**
@@ -309,9 +331,9 @@ public final class SnackbarUtils {
         }
     }
 
-    // ============
+    // ===========
     // = 显示方法 =
-    // ============
+    // ===========
 
     /**
      * 显示 Short Snackbar
@@ -369,9 +391,9 @@ public final class SnackbarUtils {
         priShow(StringUtils.getFormatString(text, formatArgs), Snackbar.LENGTH_INDEFINITE);
     }
 
-    // ============
+    // ===========
     // = 内部方法 =
-    // ============
+    // ===========
 
     /**
      * 内部显示方法
@@ -417,7 +439,7 @@ public final class SnackbarUtils {
         private int      rootBackgroundTintColor;
         // RootView 背景图片
         private Drawable rootBackground;
-        // RootView margin 边距 - new int[] { left, top, right, bottom }
+        // RootView margin 边距 new int[] { left, top, right, bottom }
         private int[]    rootMargin;
         // RootView 透明度
         private float    rootAlpha = 1.0f;
@@ -438,7 +460,7 @@ public final class SnackbarUtils {
         private TextUtils.TruncateAt textEllipsize;
         // TextView 字体样式
         private Typeface             textTypeface;
-        // TextView padding 边距 - new int[] { left, top, right, bottom }
+        // TextView padding 边距 new int[] { left, top, right, bottom }
         private int[]                textPadding;
 
         // ===============================
@@ -451,7 +473,7 @@ public final class SnackbarUtils {
         private int      actionColor;
         // Action Button 字体大小
         private float    actionSize;
-        // Action Button padding 边距 - new int[] { left, top, right, bottom }
+        // Action Button padding 边距 new int[] { left, top, right, bottom }
         private int[]    actionPadding;
         // RootView 背景圆角大小
         private float    actionCornerRadius;
@@ -487,7 +509,7 @@ public final class SnackbarUtils {
                 this.rootBackgroundTintColor = style.getRootBackgroundTintColor();
                 // RootView 背景图片
                 this.rootBackground = style.getRootBackground();
-                // RootView margin 边距 - new int[] { left, top, right, bottom }
+                // RootView margin 边距 new int[] { left, top, right, bottom }
                 this.rootMargin = style.getRootMargin();
                 // RootView 透明度
                 this.rootAlpha = style.getRootAlpha();
@@ -508,7 +530,7 @@ public final class SnackbarUtils {
                 this.textEllipsize = style.getTextEllipsize();
                 // TextView 字体样式
                 this.textTypeface = style.getTextTypeface();
-                // TextView padding 边距 - new int[] { left, top, right, bottom }
+                // TextView padding 边距 new int[] { left, top, right, bottom }
                 this.textPadding = style.getTextPadding();
 
                 // ===============================
@@ -521,7 +543,7 @@ public final class SnackbarUtils {
                 this.actionColor = style.getActionColor();
                 // Action Button 字体大小
                 this.actionSize = style.getActionSize();
-                // Action Button padding 边距 - new int[] { left, top, right, bottom }
+                // Action Button padding 边距 new int[] { left, top, right, bottom }
                 this.actionPadding = style.getActionPadding();
                 // RootView 背景圆角大小
                 this.actionCornerRadius = style.getActionCornerRadius();
@@ -618,7 +640,7 @@ public final class SnackbarUtils {
         }
 
         /**
-         * 获取 RootView margin 边距 - new int[] { left, top, right, bottom }
+         * 获取 RootView margin 边距
          * @return RootView margin[]
          */
         @Override
@@ -775,7 +797,7 @@ public final class SnackbarUtils {
         }
 
         /**
-         * 获取 TextView padding 边距 - new int[] { left, top, right, bottom }
+         * 获取 TextView padding 边距 ( new int[] { left, top, right, bottom } )
          * @return TextView padding[]
          */
         @Override
@@ -856,7 +878,7 @@ public final class SnackbarUtils {
         }
 
         /**
-         * 获取 Action Button padding 边距 - new int[] { left, top, right, bottom }
+         * 获取 Action Button padding 边距
          * @return Action Button padding[]
          */
         @Override
@@ -933,9 +955,9 @@ public final class SnackbarUtils {
         }
     }
 
-    // ============
+    // ===========
     // = 其他接口 =
-    // ============
+    // ===========
 
     /**
      * detail: Snackbar 样式配置
@@ -981,7 +1003,7 @@ public final class SnackbarUtils {
         }
 
         /**
-         * 获取 RootView margin 边距 - new int[] { left, top, right, bottom }
+         * 获取 RootView margin 边距
          * @return RootView margin[]
          */
         public int[] getRootMargin() {
@@ -1050,7 +1072,7 @@ public final class SnackbarUtils {
         }
 
         /**
-         * 获取 TextView padding 边距 - new int[] { left, top, right, bottom }
+         * 获取 TextView padding 边距 ( new int[] { left, top, right, bottom } )
          * @return TextView padding[]
          */
         public int[] getTextPadding() {
@@ -1087,7 +1109,7 @@ public final class SnackbarUtils {
         }
 
         /**
-         * 获取 Action Button padding 边距 - new int[] { left, top, right, bottom }
+         * 获取 Action Button padding 边距
          * @return Action Button padding[]
          */
         public int[] getActionPadding() {
@@ -1153,23 +1175,13 @@ public final class SnackbarUtils {
 
             // 设置 RootView Gravity 处理
             if (style.getRootGravity() != 0) {
-                try {
-                    FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(rootView.getLayoutParams().width, rootView.getLayoutParams().height);
-                    params.gravity = style.getRootGravity();
-                    rootView.setLayoutParams(params);
-                } catch (Exception e) {
-                }
+                setLayoutGravity(rootView, style.getRootGravity());
             }
 
             // 设置 RootView margin 边距
             int[] rootMargin = style.getRootMargin();
             if (rootMargin != null && rootMargin.length == 4) {
-                try {
-                    ViewGroup.LayoutParams params = rootView.getLayoutParams();
-                    ((ViewGroup.MarginLayoutParams) params).setMargins(rootMargin[0], rootMargin[1], rootMargin[2], rootMargin[3]);
-                    rootView.setLayoutParams(params);
-                } catch (Exception e) {
-                }
+                setMargin(rootView, rootMargin, rootMargin[1], rootMargin[3]);
             }
 
             // 设置 RootView 透明度
@@ -1442,36 +1454,18 @@ public final class SnackbarUtils {
                             // 思路: 没有超出高度, 则正常显示在指定 View 上方
                             // 改为布局居下 ( 相反方向 ), 然后设置 bottomMargin 为 屏幕高度 - view mWindowTop + 阴影大小
                             // 这样的思路, 主要是只用知道 view 的 Y 轴位置, 然后用屏幕高度减去 Y 得到的就是需要向下的边距, 不需要计算 Snackbar View 高度
-                            try {
-                                FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(rootView.getLayoutParams().width, rootView.getLayoutParams().height);
-                                params.gravity = Gravity.BOTTOM;
-                                rootView.setLayoutParams(params);
-                            } catch (Exception e) {
-                            }
-                            try {
-                                ViewGroup.LayoutParams params = rootView.getLayoutParams();
-                                ((ViewGroup.MarginLayoutParams) params).setMargins(margin[0], 0, margin[2], screenHeight - mViewTop + mShadowMargin);
-                                rootView.setLayoutParams(params);
-                            } catch (Exception e) {
-                            }
+
+                            setLayoutGravity(rootView, Gravity.BOTTOM)
+                                    .setMargin(rootView, margin, 0, screenHeight - mViewTop + mShadowMargin);
                         } else { // 超出可视范围
                             // 判断是否自动计算处理
                             if (mAutoCalc) {
                                 // 思路如上: 超出高度后, 则直接设置居上, 计算边距则 view mWindowTop - 追加边距 ( 状态栏高度 ) + view height, 设置到 View 的下方
                                 // 计算处理主要是, 只需要知道 view Y 轴位置 + view height - 追加边距 ( 状态栏高度 ) = 需要的边距
                                 // 为什么需要减 状态栏高度, 是因为 view Y (view mWindowTop) 就包含状态栏高度信息
-                                try {
-                                    FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(rootView.getLayoutParams().width, rootView.getLayoutParams().height);
-                                    params.gravity = Gravity.TOP;
-                                    rootView.setLayoutParams(params);
-                                } catch (Exception e) {
-                                }
-                                try {
-                                    ViewGroup.LayoutParams params = rootView.getLayoutParams();
-                                    ((ViewGroup.MarginLayoutParams) params).setMargins(margin[0], mViewTop - mAppendTopMargin + mViewHeight, margin[2], 0);
-                                    rootView.setLayoutParams(params);
-                                } catch (Exception e) {
-                                }
+
+                                setLayoutGravity(rootView, Gravity.TOP)
+                                        .setMargin(rootView, margin, mViewTop - mAppendTopMargin + mViewHeight, 0);
                             }
                         }
                     } else { // 在指定坐标下方
@@ -1480,35 +1474,17 @@ public final class SnackbarUtils {
                             // 思路: 没有超出高度, 则正常显示在指定 View 下方
                             // 并且改为布局居上, 然后设置 topMargin 为 view mWindowTop - ( 阴影大小 + 追加边距 ( 状态栏高度 ))
                             // 这样的思路, 主要是不居下, 不用知道 Snackbar view 高度, 导致向下边距计算错误, 转换思路从上处理
-                            try {
-                                FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(rootView.getLayoutParams().width, rootView.getLayoutParams().height);
-                                params.gravity = Gravity.TOP;
-                                rootView.setLayoutParams(params);
-                            } catch (Exception e) {
-                            }
-                            try {
-                                ViewGroup.LayoutParams params = rootView.getLayoutParams();
-                                ((ViewGroup.MarginLayoutParams) params).setMargins(margin[0], mViewTop - (mShadowMargin + mAppendTopMargin), margin[2], 0);
-                                rootView.setLayoutParams(params);
-                            } catch (Exception e) {
-                            }
+
+                            setLayoutGravity(rootView, Gravity.TOP)
+                                    .setMargin(rootView, margin, mViewTop - (mShadowMargin + mAppendTopMargin), 0);
                         } else { // 超出可视范围
                             // 判断是否自动计算处理
                             if (mAutoCalc) {
                                 // 思路如上: 超出高度后, 则直接设置居下, 计算边距则 用屏幕高度 - view mWindowTop + 阴影边距
                                 // 计算处理的值则是 view mWindowTop 距离底部的边距, 刚好设置 bottomMargin, 实现思路转换处理
-                                try {
-                                    FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(rootView.getLayoutParams().width, rootView.getLayoutParams().height);
-                                    params.gravity = Gravity.BOTTOM;
-                                    rootView.setLayoutParams(params);
-                                } catch (Exception e) {
-                                }
-                                try {
-                                    ViewGroup.LayoutParams params = rootView.getLayoutParams();
-                                    ((ViewGroup.MarginLayoutParams) params).setMargins(margin[0], 0, margin[2], screenHeight - mViewTop + mShadowMargin);
-                                    rootView.setLayoutParams(params);
-                                } catch (Exception e) {
-                                }
+
+                                setLayoutGravity(rootView, Gravity.BOTTOM)
+                                        .setMargin(rootView, margin, 0, screenHeight - mViewTop + mShadowMargin);
                             }
                         }
                     }
@@ -1517,5 +1493,46 @@ public final class SnackbarUtils {
         }
         // 清空重置处理
         clearLocations();
+    }
+
+    /**
+     * 设置 View Layout Gravity
+     * @param view    {@link View}
+     * @param gravity Gravity
+     * @return {@link SnackbarUtils}
+     */
+    private SnackbarUtils setLayoutGravity(final View view, final int gravity) {
+        try {
+            FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
+                    view.getLayoutParams().width, view.getLayoutParams().height
+            );
+            layoutParams.gravity = gravity;
+            view.setLayoutParams(layoutParams);
+        } catch (Exception e) {
+            LogPrintUtils.eTag(TAG, e, "setLayoutGravity");
+        }
+        return this;
+    }
+
+    /**
+     * 设置 Margin 边距
+     * @param view         {@link View}
+     * @param margin       left、right margin
+     * @param topMargin    top margin
+     * @param bottomMargin bottom margin
+     * @return {@link SnackbarUtils}
+     */
+    private SnackbarUtils setMargin(final View view, final int[] margin,
+                                    final int topMargin, final int bottomMargin) {
+        try {
+            ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+            ((ViewGroup.MarginLayoutParams) layoutParams).setMargins(
+                    margin[0], topMargin, margin[2], bottomMargin
+            );
+            view.setLayoutParams(layoutParams);
+        } catch (Exception e) {
+            LogPrintUtils.eTag(TAG, e, "setMargin");
+        }
+        return this;
     }
 }

@@ -48,7 +48,7 @@ import dev.utils.common.CollectionUtils;
  *     使用方法:
  *     第一种请求方式
  *     PermissionUtils.permission("").callBack(null).request(Activity);
- *     第二种请求方式 - 需要在 onRequestPermissionsResult 中通知调用
+ *     第二种请求方式 ( 需要在 onRequestPermissionsResult 中通知调用 )
  *     PermissionUtils.permission("").callBack(null).setRequestPermissionsResult(true).request(Activity);
  *     <p></p>
  *     刷新权限改变处理 ( 清空已拒绝的权限记录 )
@@ -62,9 +62,9 @@ public final class PermissionUtils {
 
     // APP 注册的权限
     private static final Set<String>        sAppPermissionSets             = getAppPermissionToSet();
-    // 申请未通过的权限 - 永久拒绝
+    // 申请未通过的权限 ( 永久拒绝 )
     private static final List<String>       sPermissionsDeniedForeverLists = new ArrayList<>();
-    // 申请的权限 - 传入的权限参数
+    // 申请的权限 ( 传入的权限参数 )
     private              Set<String>        mPermissionSets                = new HashSet<>();
     // 准备请求的权限
     private              List<String>       mPermissionsRequestLists       = new ArrayList<>();
@@ -102,9 +102,9 @@ public final class PermissionUtils {
         }
     }
 
-    // ============
+    // ===========
     // = 使用方法 =
-    // ============
+    // ===========
 
     /**
      * 申请权限初始化
@@ -163,15 +163,15 @@ public final class PermissionUtils {
                     ActivityCompat.requestPermissions(activity, permissions, requestCode);
                 } else {
                     // 自定义权限 Activity
-                    PermissionUtils.PermissionActivity.start(activity);
+                    PermissionActivity.start(activity);
                 }
             }
         }
     }
 
-    // ================
+    // ===============
     // = 请求权限回调 =
-    // ================
+    // ===============
 
     /**
      * detail: 权限请求回调
@@ -193,9 +193,9 @@ public final class PermissionUtils {
         void onDenied(List<String> grantedList, List<String> deniedList, List<String> notFoundList);
     }
 
-    // =================
+    // ================
     // = 内部 Activity =
-    // =================
+    // ================
 
     // 内部持有对象
     private static PermissionUtils sInstance;
@@ -218,7 +218,7 @@ public final class PermissionUtils {
         }
 
         /**
-         * PermissionActivity - onCreate 内部方法
+         * PermissionActivity ( onCreate 内部方法 )
          * @param savedInstanceState 关闭时存储数据
          */
         @Override
@@ -243,7 +243,7 @@ public final class PermissionUtils {
     }
 
     /**
-     * 请求回调权限回调处理 - 通用
+     * 请求回调权限回调处理
      * @param activity {@link Activity}
      */
     private void onRequestPermissionsResultCommon(final Activity activity) {
@@ -256,12 +256,11 @@ public final class PermissionUtils {
     // =
 
     /**
-     * 请求权限回调 - 需要在 Activity 的 onRequestPermissionsResult 回调中, 调用 PermissionUtils.onRequestPermissionsResult(this);
+     * 请求权限回调 ( 需要在 Activity 的 onRequestPermissionsResult 回调中, 调用 PermissionUtils.onRequestPermissionsResult(this); )
      * @param activity {@link Activity}
      */
     public static void onRequestPermissionsResult(final Activity activity) {
-        if (activity != null && sInstance != null) {
-            // 触发回调
+        if (activity != null && sInstance != null) { // 触发回调
             sInstance.onRequestPermissionsResultCommon(activity);
         }
     }
@@ -273,9 +272,9 @@ public final class PermissionUtils {
         sPermissionsDeniedForeverLists.clear();
     }
 
-    // ============
+    // ===========
     // = 判断方法 =
-    // ============
+    // ===========
 
     /**
      * 判断是否授予了权限
@@ -363,7 +362,7 @@ public final class PermissionUtils {
      * @param deniedList 申请未通过的权限集合
      * @return 0 不符合要求无任何操作、1 再次请求操作、2  跳转到应用设置页面
      */
-    public static int againRequest(final Activity activity, final PermissionUtils.PermissionCallBack callBack,
+    public static int againRequest(final Activity activity, final PermissionCallBack callBack,
                                    final List<String> deniedList) {
         if (activity == null || CollectionUtils.isEmpty(deniedList)) return 0;
         // 获取拒绝的权限记录
@@ -378,9 +377,9 @@ public final class PermissionUtils {
         }
     }
 
-    // ================
+    // ===============
     // = 内部处理方法 =
-    // ================
+    // ===============
 
     /**
      * 权限判断处理
@@ -482,9 +481,9 @@ public final class PermissionUtils {
         }
     }
 
-    // ============
+    // ===========
     // = 静态方法 =
-    // ============
+    // ===========
 
     /**
      * 是否存在 APK 安装权限

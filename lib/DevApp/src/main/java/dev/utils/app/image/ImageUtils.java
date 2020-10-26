@@ -89,9 +89,9 @@ public final class ImageUtils {
         return drawable != null;
     }
 
-    // ================
+    // ===============
     // = 图片类型判断 =
-    // ================
+    // ===============
 
     /**
      * 根据文件名判断文件是否为图片
@@ -302,9 +302,9 @@ public final class ImageUtils {
         return false;
     }
 
-    // ============
+    // ===========
     // = 本地获取 =
-    // ============
+    // ===========
 
     /**
      * 获取 Bitmap
@@ -481,12 +481,12 @@ public final class ImageUtils {
         }
     }
 
-    // ============
+    // ===========
     // = 本地保存 =
-    // ============
+    // ===========
 
     /**
-     * 保存图片到 SDCard - JPEG
+     * 保存图片到 SDCard ( JPEG )
      * @param bitmap   待保存图片
      * @param filePath 保存路径
      * @return {@code true} success, {@code false} fail
@@ -496,7 +496,7 @@ public final class ImageUtils {
     }
 
     /**
-     * 保存图片到 SDCard - JPEG
+     * 保存图片到 SDCard ( JPEG )
      * @param bitmap 待保存图片
      * @param file   保存路径
      * @return {@code true} success, {@code false} fail
@@ -508,7 +508,7 @@ public final class ImageUtils {
     // =
 
     /**
-     * 保存图片到 SDCard - JPEG
+     * 保存图片到 SDCard ( JPEG )
      * @param bitmap   待保存图片
      * @param filePath 保存路径
      * @param quality  质量
@@ -520,7 +520,7 @@ public final class ImageUtils {
     }
 
     /**
-     * 保存图片到 SDCard - JPEG
+     * 保存图片到 SDCard ( JPEG )
      * @param bitmap  待保存图片
      * @param file    保存路径
      * @param quality 质量
@@ -534,7 +534,7 @@ public final class ImageUtils {
     // =
 
     /**
-     * 保存图片到 SDCard - PNG
+     * 保存图片到 SDCard ( PNG )
      * @param bitmap   待保存图片
      * @param filePath 保存路径
      * @return {@code true} success, {@code false} fail
@@ -544,7 +544,7 @@ public final class ImageUtils {
     }
 
     /**
-     * 保存图片到 SDCard - PNG
+     * 保存图片到 SDCard ( PNG )
      * @param bitmap 待保存图片
      * @param file   保存路径
      * @return {@code true} success, {@code false} fail
@@ -556,7 +556,7 @@ public final class ImageUtils {
     // =
 
     /**
-     * 保存图片到 SDCard - PNG
+     * 保存图片到 SDCard ( PNG )
      * @param bitmap   待保存图片
      * @param filePath 保存路径
      * @param quality  质量
@@ -568,7 +568,7 @@ public final class ImageUtils {
     }
 
     /**
-     * 保存图片到 SDCard - PNG
+     * 保存图片到 SDCard ( PNG )
      * @param bitmap  待保存图片
      * @param file    保存路径
      * @param quality 质量
@@ -582,7 +582,7 @@ public final class ImageUtils {
     // =
 
     /**
-     * 保存图片到 SDCard - WEBP
+     * 保存图片到 SDCard ( WEBP )
      * @param bitmap   待保存图片
      * @param filePath 保存路径
      * @return {@code true} success, {@code false} fail
@@ -592,7 +592,7 @@ public final class ImageUtils {
     }
 
     /**
-     * 保存图片到 SDCard - WEBP
+     * 保存图片到 SDCard ( WEBP )
      * @param bitmap 待保存图片
      * @param file   保存路径
      * @return {@code true} success, {@code false} fail
@@ -604,7 +604,7 @@ public final class ImageUtils {
     // =
 
     /**
-     * 保存图片到 SDCard - WEBP
+     * 保存图片到 SDCard ( WEBP )
      * @param bitmap   待保存图片
      * @param filePath 保存路径
      * @param quality  质量
@@ -616,7 +616,7 @@ public final class ImageUtils {
     }
 
     /**
-     * 保存图片到 SDCard - WEBP
+     * 保存图片到 SDCard ( WEBP )
      * @param bitmap  待保存图片
      * @param file    保存路径
      * @param quality 质量
@@ -785,7 +785,7 @@ public final class ImageUtils {
     }
 
     /**
-     * 图片着色 - tint
+     * 图片着色 ( tint )
      * @param drawable {@link Drawable}
      * @param color    颜色值
      * @return 着色后的 {@link Drawable}
@@ -795,7 +795,7 @@ public final class ImageUtils {
     }
 
     /**
-     * 图片着色 - tint
+     * 图片着色 ( tint )
      * @param drawable {@link Drawable}
      * @param color    颜色值
      * @param mode     着色模式 {@link PorterDuff.Mode}
@@ -815,7 +815,7 @@ public final class ImageUtils {
     // =
 
     /**
-     * 图片着色 - tint
+     * 图片着色 ( tint )
      * @param drawable    {@link Drawable}
      * @param colorFilter 颜色过滤 ( 效果 )
      * @return 着色后的 {@link Drawable}

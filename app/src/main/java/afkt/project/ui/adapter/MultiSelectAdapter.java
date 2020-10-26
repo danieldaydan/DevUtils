@@ -12,15 +12,15 @@ import java.util.List;
 
 import afkt.project.R;
 import afkt.project.model.bean.CommodityEvaluateBean;
-import afkt.project.ui.widget.BaseImageView;
 import afkt.project.util.ProjectUtils;
 import dev.assist.multiselect.MultiSelectMapAssist;
 import dev.assist.multiselect.edit.IMultiSelectEdit;
+import dev.base.widget.BaseImageView;
 import dev.other.GlideUtils;
 import dev.utils.app.ViewUtils;
 import dev.utils.app.helper.ViewHelper;
 import dev.utils.common.BigDecimalUtils;
-import dev.utils.common.DevCommonUtils;
+import dev.utils.common.CollectionUtils;
 
 /**
  * detail: 多选 Adapter
@@ -42,9 +42,9 @@ public class MultiSelectAdapter extends BaseQuickAdapter<CommodityEvaluateBean, 
         // 判断是否显示边距
         ViewUtils.setVisibility(position == 0, helper.getView(R.id.vid_ams_line));
 
-        // ============
+        // ===========
         // = 商品信息 =
-        // ============
+        // ===========
 
         // 商品名
         helper.setText(R.id.vid_ams_name_tv, item.commodityName);
@@ -54,9 +54,9 @@ public class MultiSelectAdapter extends BaseQuickAdapter<CommodityEvaluateBean, 
         // 商品图片
         GlideUtils.with().displayImage(item.commodityPicture, helper.getView(R.id.vid_ams_pic_igview), ProjectUtils.getRoundOptions());
 
-        // ============
+        // ===========
         // = 多选处理 =
-        // ============
+        // ===========
 
         BaseImageView vid_ams_igview = helper.getView(R.id.vid_ams_igview);
         // 是否显示编辑按钮、以及是否选中
@@ -161,7 +161,7 @@ public class MultiSelectAdapter extends BaseQuickAdapter<CommodityEvaluateBean, 
         int size = multiSelectMapAssist.getSelectSize();
         if (size == 0) return false;
         // 判断数量是否一致
-        return (DevCommonUtils.length(getData()) == multiSelectMapAssist.getSelectSize());
+        return (CollectionUtils.length(getData()) == multiSelectMapAssist.getSelectSize());
     }
 
     @Override
@@ -184,9 +184,9 @@ public class MultiSelectAdapter extends BaseQuickAdapter<CommodityEvaluateBean, 
         return getItemCount();
     }
 
-    // ================
+    // ===============
     // = 操作监听事件 =
-    // ================
+    // ===============
 
     // 选择事件通知事件
     private OnSelectListener selectListener;

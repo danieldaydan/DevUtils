@@ -22,6 +22,9 @@ import androidx.fragment.app.DialogFragment;
 
 import java.io.Closeable;
 import java.io.File;
+import java.io.Flushable;
+import java.io.OutputStream;
+import java.io.Writer;
 import java.util.Locale;
 
 import dev.utils.app.AnalysisRecordUtils;
@@ -207,7 +210,7 @@ public final class DevHelper {
     // ==============
 
     /**
-     * 保存图片到 SDCard - JPEG
+     * 保存图片到 SDCard ( JPEG )
      * @param bitmap   待保存图片
      * @param filePath 保存路径
      * @return {@link DevHelper}
@@ -217,7 +220,7 @@ public final class DevHelper {
     }
 
     /**
-     * 保存图片到 SDCard - JPEG
+     * 保存图片到 SDCard ( JPEG )
      * @param bitmap 待保存图片
      * @param file   保存路径
      * @return {@link DevHelper}
@@ -229,7 +232,7 @@ public final class DevHelper {
     // =
 
     /**
-     * 保存图片到 SDCard - JPEG
+     * 保存图片到 SDCard ( JPEG )
      * @param bitmap   待保存图片
      * @param filePath 保存路径
      * @param quality  质量
@@ -241,7 +244,7 @@ public final class DevHelper {
     }
 
     /**
-     * 保存图片到 SDCard - JPEG
+     * 保存图片到 SDCard ( JPEG )
      * @param bitmap  待保存图片
      * @param file    保存路径
      * @param quality 质量
@@ -255,7 +258,7 @@ public final class DevHelper {
     // =
 
     /**
-     * 保存图片到 SDCard - PNG
+     * 保存图片到 SDCard ( PNG )
      * @param bitmap   待保存图片
      * @param filePath 保存路径
      * @return {@link DevHelper}
@@ -265,7 +268,7 @@ public final class DevHelper {
     }
 
     /**
-     * 保存图片到 SDCard - PNG
+     * 保存图片到 SDCard ( PNG )
      * @param bitmap 待保存图片
      * @param file   保存路径
      * @return {@link DevHelper}
@@ -277,7 +280,7 @@ public final class DevHelper {
     // =
 
     /**
-     * 保存图片到 SDCard - PNG
+     * 保存图片到 SDCard ( PNG )
      * @param bitmap   待保存图片
      * @param filePath 保存路径
      * @param quality  质量
@@ -289,7 +292,7 @@ public final class DevHelper {
     }
 
     /**
-     * 保存图片到 SDCard - PNG
+     * 保存图片到 SDCard ( PNG )
      * @param bitmap  待保存图片
      * @param file    保存路径
      * @param quality 质量
@@ -303,7 +306,7 @@ public final class DevHelper {
     // =
 
     /**
-     * 保存图片到 SDCard - WEBP
+     * 保存图片到 SDCard ( WEBP )
      * @param bitmap   待保存图片
      * @param filePath 保存路径
      * @return {@link DevHelper}
@@ -313,7 +316,7 @@ public final class DevHelper {
     }
 
     /**
-     * 保存图片到 SDCard - WEBP
+     * 保存图片到 SDCard ( WEBP )
      * @param bitmap 待保存图片
      * @param file   保存路径
      * @return {@link DevHelper}
@@ -325,7 +328,7 @@ public final class DevHelper {
     // =
 
     /**
-     * 保存图片到 SDCard - WEBP
+     * 保存图片到 SDCard ( WEBP )
      * @param bitmap   待保存图片
      * @param filePath 保存路径
      * @param quality  质量
@@ -337,7 +340,7 @@ public final class DevHelper {
     }
 
     /**
-     * 保存图片到 SDCard - WEBP
+     * 保存图片到 SDCard ( WEBP )
      * @param bitmap  待保存图片
      * @param file    保存路径
      * @param quality 质量
@@ -457,7 +460,7 @@ public final class DevHelper {
     // ==============
 
     /**
-     * 清除内部缓存 - path /data/data/package/cache
+     * 清除内部缓存 ( path /data/data/package/cache )
      * @return {@link DevHelper}
      */
     public DevHelper cleanAppCache() {
@@ -466,7 +469,7 @@ public final class DevHelper {
     }
 
     /**
-     * 清除内部文件 - path /data/data/package/files
+     * 清除内部文件 ( path /data/data/package/files )
      * @return {@link DevHelper}
      */
     public DevHelper cleanAppFiles() {
@@ -475,7 +478,7 @@ public final class DevHelper {
     }
 
     /**
-     * 清除内部数据库 - path /data/data/package/databases
+     * 清除内部数据库 ( path /data/data/package/databases )
      * @return {@link DevHelper}
      */
     public DevHelper cleanAppDbs() {
@@ -484,7 +487,7 @@ public final class DevHelper {
     }
 
     /**
-     * 根据名称清除数据库 - path /data/data/package/databases/dbName
+     * 根据名称清除数据库 ( path /data/data/package/databases/dbName )
      * @param dbName 数据库名
      * @return {@link DevHelper}
      */
@@ -494,7 +497,7 @@ public final class DevHelper {
     }
 
     /**
-     * 清除内部 SP - path /data/data/package/shared_prefs
+     * 清除内部 SP ( path /data/data/package/shared_prefs )
      * @return {@link DevHelper}
      */
     public DevHelper cleanAppSp() {
@@ -503,7 +506,7 @@ public final class DevHelper {
     }
 
     /**
-     * 清除内部 SP - path /data/data/package/shared_prefs
+     * 清除内部 SP ( path /data/data/package/shared_prefs )
      * @param spName SP 文件名
      * @return {@link DevHelper}
      */
@@ -513,7 +516,7 @@ public final class DevHelper {
     }
 
     /**
-     * 清除外部缓存 - path /storage/emulated/0/android/data/package/cache
+     * 清除外部缓存 ( path /storage/emulated/0/android/data/package/cache )
      * @return {@link DevHelper}
      */
     public DevHelper cleanCache() {
@@ -524,7 +527,10 @@ public final class DevHelper {
     // =
 
     /**
-     * 清除自定义路径下的文件, 使用需小心请不要误删, 而且只支持目录下的文件删除
+     * 清除自定义路径下的文件
+     * <pre>
+     *     使用需小心请不要误删, 而且只支持目录下的文件删除
+     * </pre>
      * @param filePath 文件路径
      * @return {@link DevHelper}
      */
@@ -534,7 +540,10 @@ public final class DevHelper {
     }
 
     /**
-     * 清除自定义路径下的文件, 使用需小心请不要误删, 而且只支持目录下的文件删除
+     * 清除自定义路径下的文件
+     * <pre>
+     *     使用需小心请不要误删, 而且只支持目录下的文件删除
+     * </pre>
      * @param file 文件路径
      * @return {@link DevHelper}
      */
@@ -735,9 +744,9 @@ public final class DevHelper {
     // = KeyBoardUtils =
     // =================
 
-    // ==============
+    // =============
     // = 打开软键盘 =
-    // ==============
+    // =============
 
     /**
      * 打开软键盘
@@ -804,9 +813,9 @@ public final class DevHelper {
         return this;
     }
 
-    // ==============
+    // =============
     // = 关闭软键盘 =
-    // ==============
+    // =============
 
     /**
      * 关闭软键盘
@@ -850,7 +859,7 @@ public final class DevHelper {
     // =
 
     /**
-     * 关闭软键盘 - 特殊处理
+     * 关闭软键盘
      * @param editText {@link EditText}
      * @param dialog   {@link Dialog}
      * @return {@link DevHelper}
@@ -861,7 +870,7 @@ public final class DevHelper {
     }
 
     /**
-     * 关闭软键盘 - 特殊处理
+     * 关闭软键盘
      * @param editText {@link EditText}
      * @param dialog   {@link Dialog}
      * @param handler  {@link Handler}
@@ -873,7 +882,7 @@ public final class DevHelper {
     }
 
     /**
-     * 关闭软键盘 - 特殊处理 ( 两个都关闭 )
+     * 关闭软键盘
      * @param editText    {@link EditText}
      * @param dialog      {@link Dialog}
      * @param handler     {@link Handler}
@@ -977,9 +986,9 @@ public final class DevHelper {
         return this;
     }
 
-    // ================================
-    // = 点击非 EditText 则隐藏输入法 =
-    // ================================
+    // ==============================
+    // = 点击非 EditText 则隐藏软键盘 =
+    // ==============================
 
     /**
      * 设置某个 View 内所有非 EditText 的子 View OnTouchListener 事件
@@ -1107,7 +1116,7 @@ public final class DevHelper {
     // =====================
 
     /**
-     * 移除通知 - 移除所有通知 ( 只是针对当前 Context 下的 Notification)
+     * 移除通知 ( 移除所有通知 )
      * @return {@link DevHelper}
      */
     public DevHelper cancelAllNotification() {
@@ -1116,7 +1125,7 @@ public final class DevHelper {
     }
 
     /**
-     * 移除通知 - 移除标记为 id 的通知 ( 只是针对当前 Context 下的所有 Notification)
+     * 移除通知 ( 移除标记为 id 的通知 )
      * @param args 消息 id 集合
      * @return {@link DevHelper}
      */
@@ -1126,7 +1135,7 @@ public final class DevHelper {
     }
 
     /**
-     * 移除通知 - 移除标记为 id 的通知 ( 只是针对当前 Context 下的所有 Notification)
+     * 移除通知 ( 移除标记为 id 的通知 )
      * @param tag 标记 TAG
      * @param id  消息 id
      * @return {@link DevHelper}
@@ -1254,7 +1263,7 @@ public final class DevHelper {
     // =============
 
     /**
-     * 在 onCreate 中获取视图的尺寸 - 需回调 onGetSizeListener 接口, 在 onGetSize 中获取 View 宽高
+     * 在 onCreate 中获取视图的尺寸 ( 需回调 onGetSizeListener 接口, 在 onGetSize 中获取 View 宽高 )
      * @param view     {@link View}
      * @param listener {@link SizeUtils.onGetSizeListener}
      * @return {@link DevHelper}
@@ -1326,12 +1335,72 @@ public final class DevHelper {
         return this;
     }
 
+    /**
+     * 将缓冲区数据输出
+     * @param flushables Flushable[]
+     * @return {@link DevHelper}
+     */
+    public DevHelper flush(final Flushable... flushables) {
+        CloseUtils.flush(flushables);
+        return this;
+    }
+
+    /**
+     * 安静将缓冲区数据输出
+     * @param flushables Flushable[]
+     * @return {@link DevHelper}
+     */
+    public DevHelper flushQuietly(final Flushable... flushables) {
+        CloseUtils.flushQuietly(flushables);
+        return this;
+    }
+
+    /**
+     * 将缓冲区数据输出并关闭流
+     * @param outputStream {@link OutputStream}
+     * @return {@link DevHelper}
+     */
+    public DevHelper flushCloseIO(final OutputStream outputStream) {
+        CloseUtils.flushCloseIO(outputStream);
+        return this;
+    }
+
+    /**
+     * 安静将缓冲区数据输出并关闭流
+     * @param outputStream {@link OutputStream}
+     * @return {@link DevHelper}
+     */
+    public DevHelper flushCloseIOQuietly(final OutputStream outputStream) {
+        CloseUtils.flushCloseIOQuietly(outputStream);
+        return this;
+    }
+
+    /**
+     * 将缓冲区数据输出并关闭流
+     * @param writer {@link Writer}
+     * @return {@link DevHelper}
+     */
+    public DevHelper flushCloseIO(final Writer writer) {
+        CloseUtils.flushCloseIO(writer);
+        return this;
+    }
+
+    /**
+     * 安静将缓冲区数据输出并关闭流
+     * @param writer {@link Writer}
+     * @return {@link DevHelper}
+     */
+    public DevHelper flushCloseIOQuietly(final Writer writer) {
+        CloseUtils.flushCloseIOQuietly(writer);
+        return this;
+    }
+
     // ==========================
     // = HttpURLConnectionUtils =
     // ==========================
 
     /**
-     * 获取网络时间 - 默认使用百度链接
+     * 获取网络时间 ( 默认使用百度链接 )
      * @param timeCallBack 请求时间回调接口
      * @return {@link DevHelper}
      */

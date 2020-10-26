@@ -32,7 +32,7 @@ class BaseApplication : MultiDexApplication() {
                     .sortLog(true)
                     .methodCount(0)
             )
-            // 打开 lib 内部日志 - 线上环境, 不调用方法就行
+            // 打开 lib 内部日志 - 线上环境, 不调用方法
             DevUtils.openLog()
             DevUtils.openDebug()
         }
@@ -46,7 +46,7 @@ class BaseApplication : MultiDexApplication() {
     private fun initService() {
         AccessibilityListenerService.setAccessibilityListener(object : AccessibilityListener() {
             override fun onAccessibilityEvent(
-                event: AccessibilityEvent,
+                event: AccessibilityEvent?,
                 service: AccessibilityListenerService
             ) {
                 // 打印 Event 信息
@@ -68,9 +68,9 @@ class BaseApplication : MultiDexApplication() {
                     }
                 }
 
-                // ================
+                // ===============
                 // = 打印事件信息 =
-                // ================
+                // ===============
 
                 val print = false
                 if (print) { // 开发时打印, 用于获取事件节点信息
@@ -81,7 +81,7 @@ class BaseApplication : MultiDexApplication() {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             val lists = service.windows
                             for (info in lists) {
-                                info.let { track(it.root, builder, 0) }
+                                info?.let { track(it.root, builder, 0) }
                             }
                         }
                     }

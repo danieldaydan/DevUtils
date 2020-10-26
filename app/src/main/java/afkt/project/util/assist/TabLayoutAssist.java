@@ -11,7 +11,7 @@ import java.util.List;
 
 import afkt.project.R;
 import afkt.project.model.item.TabItem;
-import afkt.project.ui.widget.BaseTextView;
+import dev.base.widget.BaseTextView;
 import dev.utils.app.HandlerUtils;
 import dev.utils.app.helper.ViewHelper;
 
@@ -119,16 +119,16 @@ public final class TabLayoutAssist {
         }, 100);
     }
 
-    // ================
+    // ===============
     // = 对外公开方法 =
-    // ================
+    // ===============
 
     /**
      * 获取 TabLayout 辅助类
      * @param tabLayout {@link TabLayout}
      * @return {@link TabLayoutAssist}
      */
-    public static TabLayoutAssist obtain(TabLayout tabLayout) {
+    public static TabLayoutAssist get(TabLayout tabLayout) {
         if (tabLayout == null) return null;
         TabLayoutAssist tabLayoutAssist = new TabLayoutAssist();
         tabLayoutAssist.mContext = tabLayout.getContext();
@@ -196,9 +196,9 @@ public final class TabLayoutAssist {
         return tabLayout.getTabCount();
     }
 
-    // ================
+    // ===============
     // = Tab 切换事件 =
-    // ================
+    // ===============
 
     /**
      * detail: Tab 切换事件

@@ -104,7 +104,7 @@ object AppListUtils {
      * 列表排序
      * @param lists 应用列表
      */
-    private fun sortAppLists(lists: ArrayList<AppInfoBean>) {
+    private fun sortAppLists(lists: List<AppInfoBean>) {
         Collections.sort(lists, AppListsComparator(ProjectUtils.getAppSortType()))
     }
 

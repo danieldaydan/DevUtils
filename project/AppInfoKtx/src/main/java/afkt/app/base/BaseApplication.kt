@@ -36,7 +36,7 @@ class BaseApplication : MultiDexApplication() {
                     .sortLog(true)
                     .methodCount(0)
             )
-            // 打开 lib 内部日志 - 线上环境, 不调用方法就行
+            // 打开 lib 内部日志 - 线上环境, 不调用方法
             DevUtils.openLog()
             DevUtils.openDebug()
         }

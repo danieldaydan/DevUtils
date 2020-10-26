@@ -5,7 +5,7 @@
     <item
         android:id="@+id/bmd_export_item"
         android:icon="@drawable/icon_action_export"
-        android:title="导出"
+        android:title="@string/str_export"
         app:showAsAction="always" />
 
 </menu>

@@ -16,8 +16,11 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 /**
- * detail: Android 日志打印工具类 ( 简化版 ) - 项目内部使用 ( 主要打印 Android 日志 )
+ * detail: Android 日志打印工具类 ( 简化版 )
  * @author Ttt
+ * <pre>
+ *     项目内部使用 ( 主要打印 Android 日志 )
+ * </pre>
  */
 public final class LogPrintUtils {
 
@@ -100,7 +103,7 @@ public final class LogPrintUtils {
 
     /**
      * 拼接错误信息
-     * @param throwable 错误异常
+     * @param throwable 异常
      * @param message   需要打印的消息
      * @param args      动态参数
      * @return 处理 ( 格式化 ) 后准备打印的日志信息
@@ -124,7 +127,7 @@ public final class LogPrintUtils {
     }
 
     // ===============================
-    // = 对外公开方法 - 使用默认 TAG =
+    // = 对外公开方法 ( 使用默认 TAG ) =
     // ===============================
 
     public static void d(final String message, final Object... args) {
@@ -168,7 +171,7 @@ public final class LogPrintUtils {
     }
 
     // ===============================
-    // = 对外公开方法 - 日志打印方法 =
+    // = 对外公开方法 ( 日志打印方法 ) =
     // ===============================
 
     public static void dTag(final String tag, final String message, final Object... args) {
@@ -301,9 +304,9 @@ public final class LogPrintUtils {
         }
     }
 
-    // ============
+    // ===========
     // = 通知输出 =
-    // ============
+    // ===========
 
     // 默认日志输出接口
     private static Print sPrint = new Print() {

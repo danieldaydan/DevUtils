@@ -1,6 +1,6 @@
 package dev.utils.app.toast.toaster;
 
-import android.app.Application;
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
@@ -31,8 +31,8 @@ final class IToastImpl implements IToast.Operate, IToast.Filter {
     // 日志 TAG
     private final String TAG = IToastImpl.class.getSimpleName();
 
-    // Application
-    private       Application               mApplication;
+    // Context
+    private       Context                   mContext;
     // 内部保存配置 Toast
     private       ToastFactory.BaseToast    mConfigToast               = null;
     // 当前显示的 Toast
@@ -49,7 +49,7 @@ final class IToastImpl implements IToast.Operate, IToast.Filter {
     private       boolean                   mIsHandler                 = true;
     // 内部 Handler
     private final Handler                   mHandler                   = new Handler(Looper.getMainLooper());
-    // Null 值 - null 提示值
+    // Null 值 ( null 提示值 )
     private       String                    mNullText                  = null;
     // Toast 文案长度转换 显示时间
     private       int                       mTextLengthConvertDuration = 15;
@@ -60,7 +60,7 @@ final class IToastImpl implements IToast.Operate, IToast.Filter {
     @Override
     public void reset() {
         // 重新初始化
-        init(mApplication);
+        init(mContext);
     }
 
     /**
@@ -90,32 +90,32 @@ final class IToastImpl implements IToast.Operate, IToast.Filter {
         this.mTextLengthConvertDuration = textLengthConvertDuration;
     }
 
-    // ========================
-    // = Application 中初始化 =
-    // ========================
+    // =========
+    // = 初始化 =
+    // =========
 
     /**
-     * Application 初始化调用
-     * @param application {@link Application}
+     * 初始化调用
+     * @param context {@link Context}
      */
     @Override
-    public void init(final Application application) {
-        if (application != null) {
-            this.mApplication = application;
+    public void init(final Context context) {
+        if (context != null) {
+            this.mContext = context.getApplicationContext();
             // 初始化默认参数
             mIsHandler = true;
             mNullText = null;
             // 初始化 Toast
-            mConfigToast = new ToastFactory.BaseToast(mApplication);
+            mConfigToast = new ToastFactory.BaseToast(mContext);
             mConfigToast.setView(createView());
             // 初始化默认样式
             getToastStyle();
         }
     }
 
-    // ==================================
+    // ================================
     // = 实现 IToast 接口, 对外公开方法 =
-    // ==================================
+    // ================================
 
     /**
      * 使用单次 Toast 样式配置
@@ -206,9 +206,9 @@ final class IToastImpl implements IToast.Operate, IToast.Filter {
         }
     }
 
-    // ============
+    // ===========
     // = 操作方法 =
-    // ============
+    // ===========
 
     /**
      * 显示 Toast
@@ -275,9 +275,9 @@ final class IToastImpl implements IToast.Operate, IToast.Filter {
         }
     }
 
-    // ==========================
+    // =========================
     // = IToast.Filter 实现方法 =
-    // ==========================
+    // =========================
 
     /**
      * 判断是否显示
@@ -318,9 +318,9 @@ final class IToastImpl implements IToast.Operate, IToast.Filter {
         return content;
     }
 
-    // ============
+    // ===========
     // = 内部处理 =
-    // ============
+    // ===========
 
     /**
      * 返回对应线程的 Toast 样式信息
@@ -344,7 +344,7 @@ final class IToastImpl implements IToast.Operate, IToast.Filter {
      * @return {@link TextView}
      */
     private TextView createView() {
-        TextView textView = new TextView(mApplication);
+        TextView textView = new TextView(mContext);
         textView.setId(android.R.id.message);
         textView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         return textView;

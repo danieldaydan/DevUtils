@@ -38,9 +38,9 @@ import dev.utils.common.FileUtils;
  *     存储后缀根据 MIME_TYPE 决定, 值类型 {@link libcore.net.MimeUtils}
  *     @see <a href="https://www.androidos.net.cn/android/9.0.0_r8/xref/libcore/luni/src/main/java/libcore/net/MimeUtils.java"/>
  *     <p></p>
- *     访问下载内容 ( 文档和电子书籍 ) - 加载系统的文件选择器
+ *     访问下载内容 ( 文档和电子书籍 ) 加载系统的文件选择器
  *     {@link IntentUtils#getOpenDocumentIntent()}
- *     使用存储访问框架打开文件 - {@link ResourceUtils#openInputStream(Uri)}
+ *     使用存储访问框架打开文件 {@link ResourceUtils#openInputStream(Uri)}
  *     @see <a href="https://developer.android.google.cn/guide/topics/providers/document-provider#java"/>
  * </pre>
  */
@@ -52,9 +52,9 @@ public final class MediaStoreUtils {
     // 日志 TAG
     private static final String TAG = MediaStoreUtils.class.getSimpleName();
 
-    // ============
+    // ===========
     // = 通知相册 =
-    // ============
+    // ===========
 
     /**
      * 通知刷新本地资源
@@ -98,21 +98,21 @@ public final class MediaStoreUtils {
     // ============
 
     // PNG
-    public final static String MIME_TYPE_IMAGE_PNG = "image/png";
+    public static final String MIME_TYPE_IMAGE_PNG = "image/png";
     // JPEG
-    public final static String MIME_TYPE_IMAGE_JPG = "image/jpeg";
+    public static final String MIME_TYPE_IMAGE_JPG = "image/jpeg";
     // 图片类型
-    public final static String MIME_TYPE_IMAGE     = MIME_TYPE_IMAGE_PNG;
+    public static final String MIME_TYPE_IMAGE     = MIME_TYPE_IMAGE_PNG;
     // 视频类型
-    public final static String MIME_TYPE_VIDEO     = "video/mp4";
+    public static final String MIME_TYPE_VIDEO     = "video/mp4";
     // 音频类型
-    public final static String MIME_TYPE_AUDIO     = "audio/mpeg";
+    public static final String MIME_TYPE_AUDIO     = "audio/mpeg";
     // 图片文件夹
-    public final static String RELATIVE_IMAGE_PATH = Environment.DIRECTORY_PICTURES;
+    public static final String RELATIVE_IMAGE_PATH = Environment.DIRECTORY_PICTURES;
     // 视频文件夹
-    public final static String RELATIVE_VIDEO_PATH = Environment.DIRECTORY_DCIM + "/Video";
+    public static final String RELATIVE_VIDEO_PATH = Environment.DIRECTORY_DCIM + "/Video";
     // 音频文件夹
-    public final static String RELATIVE_AUDIO_PATH = Environment.DIRECTORY_MUSIC;
+    public static final String RELATIVE_AUDIO_PATH = Environment.DIRECTORY_MUSIC;
 
     /**
      * 获取待显示名
@@ -276,9 +276,9 @@ public final class MediaStoreUtils {
         return createMediaUri(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, displayName, createTime, mimeType, relativePath);
     }
 
-    // ============
+    // ===========
     // = 通用创建 =
-    // ============
+    // ===========
 
     /**
      * 创建预存储 Media Uri
@@ -321,9 +321,9 @@ public final class MediaStoreUtils {
         return null;
     }
 
-    // ============
+    // ===========
     // = 插入数据 =
-    // ============
+    // ===========
 
     /**
      * 插入一张图片
@@ -361,17 +361,17 @@ public final class MediaStoreUtils {
     public static boolean insertImage(final Uri uri, final Uri inputUri, final Bitmap.CompressFormat format,
                                       @IntRange(from = 0, to = 100) final int quality) {
         if (uri == null || inputUri == null || format == null) return false;
-        OutputStream outputStream = null;
-        ParcelFileDescriptor inputDescriptor = null;
+        OutputStream os = null;
+        ParcelFileDescriptor fileDescriptor = null;
         try {
-            outputStream = ResourceUtils.openOutputStream(uri);
-            inputDescriptor = ResourceUtils.openFileDescriptor(inputUri, "r");
-            Bitmap bitmap = ImageUtils.decodeFileDescriptor(inputDescriptor.getFileDescriptor());
-            return ImageUtils.saveBitmapToStream(bitmap, outputStream, format, quality);
+            os = ResourceUtils.openOutputStream(uri);
+            fileDescriptor = ResourceUtils.openFileDescriptor(inputUri, "r");
+            Bitmap bitmap = ImageUtils.decodeFileDescriptor(fileDescriptor.getFileDescriptor());
+            return ImageUtils.saveBitmapToStream(bitmap, os, format, quality);
         } catch (Exception e) {
             LogPrintUtils.eTag(TAG, e, "insertImage");
         } finally {
-            CloseUtils.closeIOQuietly(outputStream, inputDescriptor);
+            CloseUtils.closeIOQuietly(os, fileDescriptor);
         }
         return false;
     }
@@ -416,23 +416,23 @@ public final class MediaStoreUtils {
      */
     public static boolean insertMedia(final Uri uri, final Uri inputUri) {
         if (uri == null || inputUri == null) return false;
-        OutputStream outputStream = null;
-        InputStream inputStream = null;
+        OutputStream os = null;
+        InputStream is = null;
         try {
-            outputStream = ResourceUtils.openOutputStream(uri);
-            inputStream = ResourceUtils.openInputStream(inputUri);
-            return FileIOUtils.copyLarge(inputStream, outputStream) != -1;
+            os = ResourceUtils.openOutputStream(uri);
+            is = ResourceUtils.openInputStream(inputUri);
+            return FileIOUtils.copyLarge(is, os) != -1;
         } catch (Exception e) {
             LogPrintUtils.eTag(TAG, e, "insertMedia");
         } finally {
-            CloseUtils.closeIOQuietly(inputStream, outputStream);
+            CloseUtils.closeIOQuietly(is, os);
         }
         return false;
     }
 
-    // ============
+    // ===========
     // = 资源信息 =
-    // ============
+    // ===========
 
     /**
      * 获取本地视频时长
@@ -574,8 +574,8 @@ public final class MediaStoreUtils {
      */
     public static int[] getImageWidthHeight(final Uri uri) {
         try {
-            InputStream inputStream = ResourceUtils.openInputStream(uri);
-            return BitmapUtils.getBitmapWidthHeight(inputStream);
+            InputStream is = ResourceUtils.openInputStream(uri);
+            return BitmapUtils.getBitmapWidthHeight(is);
         } catch (Exception e) {
             LogPrintUtils.eTag(TAG, e, "getImageWidthHeight");
         }

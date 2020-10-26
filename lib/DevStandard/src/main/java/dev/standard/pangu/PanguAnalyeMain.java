@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import dev.utils.common.FileIOUtils;
 import dev.utils.common.FileUtils;
@@ -20,13 +21,13 @@ import dev.utils.common.StringUtils;
 final class PanguAnalyeMain {
 
     // 代码间距等规范处理
-    private static final Pangu                              sPangu                   = new Pangu();
+    private static final Pangu                     sPangu                   = new Pangu();
     // 判断是否覆盖文件内容
-    private static       boolean                            sCoverText               = true;
+    private static       boolean                   sCoverText               = true;
     // 代码注释空格间距异常记录
-    private static       HashMap<String, String>            sAnnotationSpaceMap      = new HashMap<>();
+    private static       Map<String, String>       sAnnotationSpaceMap      = new HashMap<>();
     // 代码注释重复换行记录
-    private static       HashMap<String, ArrayList<String>> sAnnotationRepeatLineMap = new HashMap<>();
+    private static       Map<String, List<String>> sAnnotationRepeatLineMap = new HashMap<>();
 
     public static void main(String[] args) {
         String path = "";
@@ -64,7 +65,7 @@ final class PanguAnalyeMain {
         System.out.println("处理结束");
 
         // 统一拼接打印数据
-        LinkedHashMap<String, HashMap<String, ArrayList<String>>> printMap = new LinkedHashMap<>();
+        Map<String, Map<String, List<String>>> printMap = new LinkedHashMap<>();
         printMap.put("1.代码注释重复换行记录", sAnnotationRepeatLineMap);
         // 转换 JSON 数据
         String mapJSON = toJsonFormat(printMap, true);
@@ -85,9 +86,9 @@ final class PanguAnalyeMain {
         boolean filter(File file);
     }
 
-    // ================
+    // ===============
     // = 内部处理方法 =
-    // ================
+    // ===============
 
     /**
      * 获取文件目录列表
@@ -181,7 +182,7 @@ final class PanguAnalyeMain {
 
     /**
      * 创建 GsonBuilder
-     * @param serializeNulls 是否序列化null值
+     * @param serializeNulls 是否序列化 null 值
      * @return {@link GsonBuilder}
      */
     private static GsonBuilder createGson(final boolean serializeNulls) {
@@ -193,13 +194,13 @@ final class PanguAnalyeMain {
     /**
      * 转换 JSON 格式数据, 并且格式化
      * @param data         待转换对象
-     * @param includeNulls 是否序列化null值
+     * @param includeNulls 是否序列化 null 值
      * @return 格式化 JSON 数据
      */
     private static String toJsonFormat(final Object data, final boolean includeNulls) {
         if (data != null) {
             try {
-                // 返回 JSON格式数据 - 格式化
+                // 返回 JSON 格式数据 ( 格式化 )
                 return createGson(includeNulls).setPrettyPrinting().create().toJson(data);
             } catch (Exception e) {
                 e.printStackTrace();

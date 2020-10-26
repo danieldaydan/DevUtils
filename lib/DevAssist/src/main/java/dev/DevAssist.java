@@ -5,58 +5,45 @@ import dev.assist.BuildConfig;
 /**
  * detail: 开发辅助类
  * @author Ttt
- * <pre>
- *     GitHub
- *     @see <a href="https://github.com/afkT/DevUtils"/>
- *     DevApp Api
- *     @see <a href="https://github.com/afkT/DevUtils/blob/master/lib/DevApp/README.md"/>
- *     DevJava Api
- *     @see <a href="https://github.com/afkT/DevUtils/blob/master/lib/DevJava/README.md"/>
- *     DevAssist Api
- *     @see <a href="https://github.com/afkT/DevUtils/blob/master/lib/DevAssist/README.md"/>
- * </pre>
  */
 public final class DevAssist {
 
     private DevAssist() {
     }
 
-    // 日志 TAG
-    private static final String TAG = DevAssist.class.getSimpleName();
-
-    // ==============
+    // =============
     // = 工具类版本 =
-    // ==============
+    // =============
 
     /**
-     * 获取 DevAssist 工具类版本
-     * @return DevAssist versionName
-     */
-    public static String getDevAssistUtilsVersion() {
-        return BuildConfig.VERSION_NAME;
-    }
-
-    /**
-     * 获取 DevAssist 工具类版本号
+     * 获取 DevAssist 版本号
      * @return DevAssist versionCode
      */
-    public static int getDevAssistUtilsVersionCode() {
-        return BuildConfig.VERSION_CODE;
+    public static int getDevAssistVersionCode() {
+        return BuildConfig.DevAssist_VersionCode;
     }
 
     /**
-     * 获取 DevJava 工具类版本
-     * @return DevJava version
+     * 获取 DevAssist 版本
+     * @return DevAssist versionName
      */
-    public static String getDevJavaUtilsVersion() {
-        return BuildConfig.DevJava_Version;
+    public static String getDevAssistVersion() {
+        return BuildConfig.DevAssist_Version;
     }
 
     /**
-     * 获取 DevJava 工具类版本号
+     * 获取 DevJava 版本号
      * @return DevJava version
      */
-    public static int getDevJavaUtilsVersionCode() {
+    public static int getDevJavaVersionCode() {
         return BuildConfig.DevJava_VersionCode;
+    }
+
+    /**
+     * 获取 DevJava 版本
+     * @return DevJava version
+     */
+    public static String getDevJavaVersion() {
+        return BuildConfig.DevJava_Version;
     }
 }

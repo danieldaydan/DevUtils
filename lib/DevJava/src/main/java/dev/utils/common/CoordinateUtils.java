@@ -168,9 +168,9 @@ public final class CoordinateUtils {
         return lng < 72.004 || lng > 137.8347 || lat < 0.8293 || lat > 55.8271;
     }
 
-    // ============
+    // ===========
     // = 计算坐标 =
-    // ============
+    // ===========
 
     // 赤道半径
     private static double EARTH_RADIUS = 6378.137;
@@ -298,14 +298,14 @@ public final class CoordinateUtils {
     public enum Direction {
 
         SAME("相同"), // 坐标相同
-        TOP("北"), // 上 - 北
-        BOTTOM("南"), // 下 - 南
-        LEFT("西"), // 左 - 西
-        RIGHT("东"), // 右 - 东
-        LEFT_TOP("西北"), // 左上 - 西北
-        LEFT_BOTTOM("西南"), // 左下 - 西南
-        RIGHT_TOP("东北"), // 右上 - 东北
-        RIGHT_BOTTOM("东南"); // 右下 - 东南
+        TOP("北"), // 上 ( 北 )
+        BOTTOM("南"), // 下 ( 南 )
+        LEFT("西"), // 左 ( 西 )
+        RIGHT("东"), // 右 ( 东 )
+        LEFT_TOP("西北"), // 左上 ( 西北 )
+        LEFT_BOTTOM("西南"), // 左下 ( 西南 )
+        RIGHT_TOP("东北"), // 右上 ( 东北 )
+        RIGHT_BOTTOM("东南"); // 右下 ( 东南 )
 
         private String value;
 

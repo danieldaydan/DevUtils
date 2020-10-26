@@ -29,18 +29,6 @@
     <dimen name="un_sp_18">18.0sp</dimen>
     <dimen name="un_sp_20">20.0sp</dimen>
 
-    <!-- 线条 -->
-    <dimen name="un_line_0_5">0.5dp</dimen>
-    <dimen name="un_line_1">1.0dp</dimen>
-
-    <!-- 边框 ( 描边 ) 宽度 -->
-    <dimen name="un_border_width_1">1.0dp</dimen>
-
-    <!-- 圆角角度 -->
-    <dimen name="un_radius_3">3.0dp</dimen>
-    <dimen name="un_radius_10">10.0dp</dimen>
-    <dimen name="un_radius_20">20.0dp</dimen>
-
     <!-- NavigationView 顶部背景高度 -->
     <dimen name="un_nav_header_height">176.0dp</dimen>
 

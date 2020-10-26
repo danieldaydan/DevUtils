@@ -44,9 +44,9 @@ public final class ThrowableUtils {
         return errorInfo;
     }
 
-    // ==============
+    // =============
     // = 异常栈信息 =
-    // ==============
+    // =============
 
     /**
      * 获取异常栈信息
@@ -86,12 +86,7 @@ public final class ThrowableUtils {
                 JCLogUtils.eTag(TAG, e, "getThrowableStackTrace");
                 return e.toString();
             } finally {
-                if (printWriter != null) {
-                    try {
-                        printWriter.close();
-                    } catch (Exception e) {
-                    }
-                }
+                CloseUtils.closeIOQuietly(printWriter);
             }
         }
         return errorInfo;

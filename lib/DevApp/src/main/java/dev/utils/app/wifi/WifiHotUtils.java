@@ -50,9 +50,9 @@ public final class WifiHotUtils {
         mWifiManager = AppUtils.getWifiManager();
     }
 
-    // =============
+    // ============
     // = Wifi 操作 =
-    // =============
+    // ============
 
     /**
      * 创建 Wifi 热点配置 ( 支持 无密码 /WPA2 PSK)
@@ -113,6 +113,7 @@ public final class WifiHotUtils {
      * @param wifiConfig Wifi 配置
      * @return {@code true} success, {@code false} fail
      */
+    @SuppressLint("MissingPermission")
     public boolean stratWifiAp(final WifiConfiguration wifiConfig) {
         this.mAPWifiConfig = wifiConfig;
         // 大于 8.0
@@ -248,28 +249,28 @@ public final class WifiHotUtils {
         return false;
     }
 
-    // ================
+    // ===============
     // = 手机热点功能 =
-    // ================
+    // ===============
 
     /**
-     * Wifi 热点正在关闭 - WifiManager.WIFI_AP_STATE_DISABLING
+     * Wifi 热点正在关闭 ( WifiManager.WIFI_AP_STATE_DISABLING )
      */
     public static final int WIFI_AP_STATE_DISABLING = 10;
     /**
-     * Wifi 热点已关闭 - WifiManager.WIFI_AP_STATE_DISABLED
+     * Wifi 热点已关闭 ( WifiManager.WIFI_AP_STATE_DISABLED )
      */
     public static final int WIFI_AP_STATE_DISABLED  = 11;
     /**
-     * Wifi 热点正在打开 - WifiManager.WIFI_AP_STATE_ENABLING
+     * Wifi 热点正在打开 ( WifiManager.WIFI_AP_STATE_ENABLING )
      */
     public static final int WIFI_AP_STATE_ENABLING  = 12;
     /**
-     * Wifi 热点已打开 - WifiManager.WIFI_AP_STATE_ENABLED
+     * Wifi 热点已打开 ( WifiManager.WIFI_AP_STATE_ENABLED )
      */
     public static final int WIFI_AP_STATE_ENABLED   = 13;
     /**
-     * Wifi 热点状态未知 - WifiManager.WIFI_AP_STATE_FAILED
+     * Wifi 热点状态未知 ( WifiManager.WIFI_AP_STATE_FAILED )
      */
     public static final int WIFI_AP_STATE_FAILED    = 14;
 
@@ -535,9 +536,9 @@ public final class WifiHotUtils {
         return builder.toString();
     }
 
-    // ====================
+    // ===================
     // = Android 8.0 相关 =
-    // ====================
+    // ===================
 
     // Wifi ssid
     private String                                  mAPWifiSSID;

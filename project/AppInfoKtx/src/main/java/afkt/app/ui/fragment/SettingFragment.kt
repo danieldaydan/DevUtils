@@ -18,21 +18,18 @@ import dev.utils.app.toast.ToastTintUtils
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-class SettingFragment : BaseFragment() {
-
-    private lateinit var binding: FragmentSettingBinding
+class SettingFragment : BaseFragment<FragmentSettingBinding>() {
 
     // = Object =
 
     private var appSortArys: Array<String>? = null // 排序数据
 
-    override fun layoutId(): Int {
+    override fun baseContentId(): Int {
         return R.layout.fragment_setting
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentSettingBinding.bind(view)
         binding.vidFsAppsortLinear.setOnClickListener { AppSortDialog(context).show() }
         binding.vidFsScanapkLinear.setOnClickListener { QuerySuffixDialog(context).show() }
         binding.vidFsResetLinear.setOnClickListener {
@@ -53,9 +50,9 @@ class SettingFragment : BaseFragment() {
         binding.vidFsAppsortTv.setText(appSortArys!![ProjectUtils.getAppSortType()])
     }
 
-    // ============
+    // ===========
     // = 事件相关 =
-    // ============
+    // ===========
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: SortEvent) {

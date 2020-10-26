@@ -14,6 +14,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.media.ExifInterface;
+import android.media.MediaMetadataRetriever;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
@@ -24,6 +25,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.InputStream;
+import java.util.HashMap;
 
 import dev.utils.LogPrintUtils;
 import dev.utils.app.ResourceUtils;
@@ -72,9 +74,9 @@ public final class BitmapUtils {
         return ImageUtils.isNotEmpty(bitmap);
     }
 
-    // ============
+    // ===========
     // = 图片判断 =
-    // ============
+    // ===========
 
     /**
      * 根据文件判断是否为图片
@@ -104,9 +106,9 @@ public final class BitmapUtils {
         return false;
     }
 
-    // ========
+    // =======
     // = 宽高 =
-    // ========
+    // =======
 
     /**
      * 获取 Bitmap 宽度
@@ -343,13 +345,13 @@ public final class BitmapUtils {
         return false;
     }
 
-    // ===============
+    // ==============
     // = Bitmap 操作 =
-    // ===============
+    // ==============
 
-    // ========
+    // =======
     // = 旋转 =
-    // ========
+    // =======
 
     /**
      * 旋转图片
@@ -404,9 +406,9 @@ public final class BitmapUtils {
         }
     }
 
-    // ========
+    // =======
     // = 翻转 =
-    // ========
+    // =======
 
     /**
      * 水平翻转图片 ( 左右颠倒 )
@@ -443,9 +445,9 @@ public final class BitmapUtils {
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, false);
     }
 
-    // ========
+    // =======
     // = 缩放 =
-    // ========
+    // =======
 
     /**
      * 缩放图片 ( 指定所需宽高 )
@@ -495,9 +497,9 @@ public final class BitmapUtils {
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
     }
 
-    // ========
+    // =======
     // = 倾斜 =
-    // ========
+    // =======
 
     /**
      * 倾斜图片
@@ -529,9 +531,9 @@ public final class BitmapUtils {
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
     }
 
-    // ========
+    // =======
     // = 裁剪 =
-    // ========
+    // =======
 
     /**
      * 裁剪图片
@@ -604,9 +606,9 @@ public final class BitmapUtils {
         return null;
     }
 
-    // ===============
+    // ==============
     // = 合并 / 叠加 =
-    // ===============
+    // ==============
 
     /**
      * 合并图片
@@ -749,9 +751,9 @@ public final class BitmapUtils {
         return newBitmap;
     }
 
-    // ========
+    // =======
     // = 倒影 =
-    // ========
+    // =======
 
     /**
      * 图片倒影处理
@@ -811,9 +813,9 @@ public final class BitmapUtils {
         return bitmapWithReflection;
     }
 
-    // ========
+    // =======
     // = 圆角 =
-    // ========
+    // =======
 
     /**
      * 图片圆角处理 ( 非圆形 )
@@ -857,7 +859,7 @@ public final class BitmapUtils {
     // =
 
     /**
-     * 图片圆角处理 ( 非圆形 ) - 只有 leftTop、rightTop
+     * 图片圆角处理 ( 非圆形, 只有 leftTop、rightTop )
      * @param bitmap 待操作源图片
      * @param pixels 圆角大小
      * @return 圆角处理后的图片
@@ -867,7 +869,7 @@ public final class BitmapUtils {
     }
 
     /**
-     * 图片圆角处理 ( 非圆形 ) - 只有 leftBottom、rightBottom
+     * 图片圆角处理 ( 非圆形, 只有 leftBottom、rightBottom )
      * @param bitmap 待操作源图片
      * @param pixels 圆角大小
      * @return 圆角处理后的图片
@@ -899,9 +901,9 @@ public final class BitmapUtils {
         Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
         RectF rectF = new RectF(rect); // 创建一个精度更高的矩形, 用于画出圆角效果
 
-        // ================
+        // ===============
         // = 圆角方向控制 =
-        // ================
+        // ===============
 
         if (!directions[0])
             rectF.left -= pixels;
@@ -929,9 +931,9 @@ public final class BitmapUtils {
         return newBitmap;
     }
 
-    // ========
+    // =======
     // = 圆形 =
-    // ========
+    // =======
 
     /**
      * 图片圆形处理
@@ -985,9 +987,9 @@ public final class BitmapUtils {
         return newBitmap;
     }
 
-    // ==================
+    // =================
     // = 圆角、圆形边框 =
-    // ==================
+    // =================
 
     /**
      * 添加圆角边框
@@ -1046,9 +1048,9 @@ public final class BitmapUtils {
         return newBitmap;
     }
 
-    // ========
+    // =======
     // = 水印 =
-    // ========
+    // =======
 
     /**
      * 添加文字水印
@@ -1098,9 +1100,9 @@ public final class BitmapUtils {
         return newBitmap;
     }
 
-    // ========
+    // =======
     // = 压缩 =
-    // ========
+    // =======
 
     /**
      * 按缩放宽高压缩
@@ -1403,5 +1405,53 @@ public final class BitmapUtils {
             LogPrintUtils.eTag(TAG, e, "calculateQuality");
         }
         return -1;
+    }
+
+    // =============
+    // = 视频缩略图 =
+    // =============
+
+    /**
+     * 获取视频缩略图
+     * @param path 视频路径
+     * @return {@link Bitmap}
+     */
+    public static Bitmap getVideoThumbnail(final String path) {
+        return getVideoThumbnail(path, -1);
+    }
+
+    /**
+     * 获取视频缩略图
+     * <pre>
+     *     // 获取视频的长度 ( 单位为毫秒 )
+     *     String duration = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+     *     // 缩放缩略图
+     *     ThumbnailUtils.extractThumbnail(bitmap,  width, height, ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
+     *     // 获取视频缩略图
+     *     ThumbnailUtils.createVideoThumbnail(path, MediaStore.Video.Thumbnails.MICRO_KIND);
+     * </pre>
+     * @param path   视频路径
+     * @param timeUs 对应毫秒视频帧
+     * @return {@link Bitmap}
+     */
+    public static Bitmap getVideoThumbnail(final String path, final long timeUs) {
+        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+        try {
+            // 设置视频路径
+            if (FileUtils.isFileExists(path)) {
+                retriever.setDataSource(path);
+            } else {
+                retriever.setDataSource(path, new HashMap<>());
+            }
+            return retriever.getFrameAtTime(timeUs);
+        } catch (Exception e) {
+            LogPrintUtils.eTag(TAG, e, "getVideoThumbnail");
+        } finally {
+            try {
+                retriever.release();
+            } catch (Exception e) {
+            }
+        }
+        return null;
     }
 }

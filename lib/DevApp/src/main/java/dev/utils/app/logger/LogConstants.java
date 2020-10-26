@@ -6,9 +6,9 @@ package dev.utils.app.logger;
  */
 final class LogConstants {
 
-    // ================
+    // ===============
     // = 日志配置常量 =
-    // ================
+    // ===============
 
     /**
      * 判断是否排序日志
@@ -16,7 +16,7 @@ final class LogConstants {
     public static final boolean JUDGE_SORT_LOG = false;
 
     /**
-     * 判断是否输出全部方法 - 异常的全部方法
+     * 判断是否输出全部方法 ( 异常的全部方法 )
      */
     public static final boolean JUDGE_OUTPUT_METHOD_ALL = false;
 
@@ -41,13 +41,13 @@ final class LogConstants {
     public static final int DEFAULT_LOG_METHOD_OFFSET = 0;
 
     /**
-     * 默认日志级别 - 异常级别 ( 只有 e, wtf 才进行显示 )
+     * 默认日志级别 ( 只有 e, wtf 才进行显示 )
      */
     public static final LogLevel DEFAULT_LOG_LEVEL = LogLevel.ERROR;
 
-    // ================
+    // ===============
     // = 日志配置信息 =
-    // ================
+    // ===============
 
     /**
      * Android 一个日志条目最大限制为 4076 字节, 设置 4000 字节作为块的大小从默认字符集是 UTF-8
@@ -69,7 +69,7 @@ final class LogConstants {
     public static final int MIN_STACK_OFFSET = 3;
 
     // =======================
-    // = 绘制日志格式 - 字符 =
+    // = 绘制日志格式 ( 字符 ) =
     // =======================
 
     public static final char   TOP_LEFT_CORNER        = '╔';

@@ -2,8 +2,6 @@ package afkt.project.ui.activity;
 
 import android.view.View;
 
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 
@@ -12,12 +10,12 @@ import java.io.FileOutputStream;
 import java.util.HashMap;
 
 import afkt.project.R;
-import afkt.project.base.app.BaseToolbarActivity;
+import afkt.project.base.app.BaseActivity;
 import afkt.project.base.config.PathConfig;
+import afkt.project.databinding.BaseViewRecyclerviewBinding;
 import afkt.project.model.item.ButtonList;
 import afkt.project.model.item.ButtonValue;
 import afkt.project.ui.adapter.ButtonAdapter;
-import butterknife.BindView;
 import dev.callback.result.DevExResultCallback;
 import dev.callback.result.DevResultCallback;
 import dev.other.GsonUtils;
@@ -30,16 +28,13 @@ import dev.utils.common.ThrowableUtils;
  * detail: 通用结果回调类 ( 针对 DevResultCallback 进行扩展 )
  * @author Ttt
  */
-public class DevExtendActivity extends BaseToolbarActivity {
+public class DevExtendActivity extends BaseActivity<BaseViewRecyclerviewBinding> {
 
-    // = View =
-    @BindView(R.id.vid_bvr_recy)
-    RecyclerView vid_bvr_recy;
     // 拓展回调
     DevExResultCallback<String> dealResultCallback;
 
     @Override
-    public int getLayoutId() {
+    public int baseLayoutId() {
         return R.layout.base_view_recyclerview;
     }
 
@@ -49,7 +44,7 @@ public class DevExtendActivity extends BaseToolbarActivity {
 
         // 初始化布局管理器、适配器
         final ButtonAdapter buttonAdapter = new ButtonAdapter(ButtonList.getExtendButtonValues());
-        vid_bvr_recy.setAdapter(buttonAdapter);
+        binding.vidBvrRecy.setAdapter(buttonAdapter);
         buttonAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
@@ -62,7 +57,7 @@ public class DevExtendActivity extends BaseToolbarActivity {
                             @Override
                             public <E extends Throwable> void onError(E e) {
                                 super.onError(e);
-                                DevLogger.eTag(mTag, e);
+                                DevLogger.eTag(TAG, e);
                                 ToastTintUtils.error("保存报错: " + ThrowableUtils.getThrowable(e));
                             }
 
@@ -109,7 +104,7 @@ public class DevExtendActivity extends BaseToolbarActivity {
                 builder.append("\ntype: " + callParams.type);
                 builder.append("\nuserInfo: " + GsonUtils.toJson(callParams.userInfo));
                 builder.append("\nhashMap: " + callParams.hashMap.toString());
-                DevLogger.dTag(mTag, "value: " + value + builder.toString());
+                DevLogger.dTag(TAG, "value: " + value + builder.toString());
             }
 
             @Override
@@ -122,14 +117,14 @@ public class DevExtendActivity extends BaseToolbarActivity {
                 builder.append("\ntype: " + callParams.type);
                 builder.append("\nuserInfo: " + GsonUtils.toJson(callParams.userInfo));
                 builder.append("\nhashMap: " + callParams.hashMap.toString());
-                DevLogger.dTag(mTag, "value: " + value + ", type: " + type + builder.toString());
+                DevLogger.dTag(TAG, "value: " + value + ", type: " + type + builder.toString());
             }
         };
     }
 
-    // ==========
+    // =========
     // = 内部类 =
-    // ==========
+    // =========
 
     /**
      * detail: 用户信息
@@ -157,9 +152,9 @@ public class DevExtendActivity extends BaseToolbarActivity {
         public String                   type;
     }
 
-    // ============
+    // ===========
     // = 内部方法 =
-    // ============
+    // ===========
 
     /**
      * 保存文件

@@ -5,39 +5,25 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import dev.utils.LogPrintUtils
+import androidx.viewbinding.ViewBinding
+import dev.base.expand.viewbinding.DevBaseViewBindingFragment
 
-abstract class BaseFragment : Fragment() {
-
-    protected var mRootView: View? = null
-
-    override fun onDestroy() {
-        super.onDestroy()
-        EventBusUtils.unregister(this)
-    }
+abstract class BaseFragment<VB : ViewBinding> : DevBaseViewBindingFragment<VB>() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        if (mRootView != null) {
-            val parent = mRootView?.parent as ViewGroup
-            parent?.removeView(mRootView)
-        }
-        try {
-            mRootView = inflater.inflate(layoutId(), container, false)
-        } catch (e: Exception) {
-            LogPrintUtils.e(e)
-        }
         readArguments()
         if (isRegister()) EventBusUtils.register(this)
-        return mRootView
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
-    // 获取 Layout
-    abstract fun layoutId(): Int
+    override fun onDestroy() {
+        super.onDestroy()
+        if (isRegister()) EventBusUtils.unregister(this)
+    }
 
     // 是否注册 EventBus
     open fun isRegister(): Boolean {
@@ -46,5 +32,21 @@ abstract class BaseFragment : Fragment() {
 
     // 读取传参数据
     open fun readArguments() {
+    }
+
+    // ===================
+    // = IDevBaseContent =
+    // ===================
+
+    override fun baseContentView(): View? {
+        return null
+    }
+
+    // =======================
+    // = IDevBaseViewBinding =
+    // =======================
+
+    override fun getBindingView(): View? {
+        return mContentView
     }
 }

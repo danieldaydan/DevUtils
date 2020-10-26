@@ -29,9 +29,9 @@ public final class JSONObjectUtils {
     // 日志 TAG
     private static final String TAG = JSONObjectUtils.class.getSimpleName();
 
-    // ====================
+    // ===================
     // = 转换 JSON 字符串 =
-    // ====================
+    // ===================
 
     /**
      * 转换为 JSON 格式字符串
@@ -113,9 +113,9 @@ public final class JSONObjectUtils {
         return null;
     }
 
-    // ==================
+    // =================
     // = 转换 JSON 对象 =
-    // ==================
+    // =================
 
     /**
      * Object 转换 JSON 对象
@@ -177,12 +177,15 @@ public final class JSONObjectUtils {
         return null;
     }
 
-    // ============
+    // ===========
     // = 其他处理 =
-    // ============
+    // ===========
 
     /**
-     * 包装转换 Object - {@link JSONObject#wrap(Object)}
+     * 包装转换 Object
+     * <pre>
+     *     {@link JSONObject#wrap(Object)}
+     * </pre>
      * @param object Object
      * @return 转换后的 Object
      */

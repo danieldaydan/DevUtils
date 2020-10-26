@@ -49,7 +49,7 @@ import dev.utils.common.StringUtils;
 import dev.utils.common.encrypt.EncryptUtils;
 
 /**
- * detail: APP (Android) 工具类
+ * detail: APP ( Android ) 工具类
  * @author Ttt
  * <pre>
  *     MimeType
@@ -325,9 +325,9 @@ public final class AppUtils {
         return null;
     }
 
-    // ============
+    // ===========
     // = APP 相关 =
-    // ============
+    // ===========
 
     /**
      * 根据名称清除数据库
@@ -733,9 +733,9 @@ public final class AppUtils {
         return !StringUtils.isSpace(packageName) && IntentUtils.getLaunchAppIntent(packageName) != null;
     }
 
-    // =================
+    // ================
     // = Activity 跳转 =
-    // =================
+    // ================
 
     /**
      * Activity 跳转
@@ -780,9 +780,9 @@ public final class AppUtils {
         return ActivityUtils.startActivityForResult(resultCallback);
     }
 
-    // ========
+    // =======
     // = 广播 =
-    // ========
+    // =======
 
     /**
      * 注册广播监听
@@ -817,9 +817,9 @@ public final class AppUtils {
         return false;
     }
 
-    // ============
+    // ===========
     // = 发送广播 =
-    // ============
+    // ===========
 
     /**
      * 发送广播
@@ -854,9 +854,9 @@ public final class AppUtils {
         return false;
     }
 
-    // ========
+    // =======
     // = 服务 =
-    // ========
+    // =======
 
     /**
      * 启动服务
@@ -890,9 +890,9 @@ public final class AppUtils {
         return false;
     }
 
-    // ==============
+    // =============
     // = 安装、卸载 =
-    // ==============
+    // =============
 
     /**
      * 安装 APP( 支持 8.0) 的意图
@@ -1070,9 +1070,9 @@ public final class AppUtils {
         return result.isSuccess4("success");
     }
 
-    // ============
+    // ===========
     // = 操作相关 =
-    // ============
+    // ===========
 
     /**
      * 打开 APP
@@ -1157,9 +1157,9 @@ public final class AppUtils {
         return false;
     }
 
-    // ============
+    // ===========
     // = 其他功能 =
-    // ============
+    // ===========
 
     /**
      * 打开文件
@@ -1194,7 +1194,7 @@ public final class AppUtils {
     // =
 
     /**
-     * 打开文件 - 指定应用
+     * 打开文件 ( 指定应用 )
      * @param filePath    文件路径
      * @param packageName 应用包名
      * @param className   Activity.class.getCanonicalName()
@@ -1205,7 +1205,7 @@ public final class AppUtils {
     }
 
     /**
-     * 打开文件 - 指定应用
+     * 打开文件 ( 指定应用 )
      * @param file        文件
      * @param packageName 应用包名
      * @param className   Activity.class.getCanonicalName()
@@ -1289,9 +1289,9 @@ public final class AppUtils {
         return openFileByApp(file, wpsPackage, wpsActivity2);
     }
 
-    // ============
+    // ===========
     // = 系统页面 =
-    // ============
+    // ===========
 
     /**
      * 跳转到系统设置页面

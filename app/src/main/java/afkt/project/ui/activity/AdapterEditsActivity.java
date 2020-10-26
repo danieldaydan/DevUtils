@@ -4,17 +4,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import afkt.project.R;
-import afkt.project.base.app.BaseToolbarActivity;
+import afkt.project.base.app.BaseActivity;
+import afkt.project.databinding.BaseViewRecyclerviewBinding;
 import afkt.project.model.item.EvaluateItem;
 import afkt.project.ui.adapter.EditsAdapter;
-import afkt.project.ui.widget.BaseTextView;
-import butterknife.BindView;
+import dev.base.widget.BaseTextView;
 import dev.utils.app.ResourceUtils;
 import dev.utils.app.helper.QuickHelper;
 import dev.utils.app.helper.ViewHelper;
@@ -25,16 +23,13 @@ import dev.utils.app.toast.ToastTintUtils;
  * detail: Adapter Item EditText 输入监听
  * @author Ttt
  */
-public class AdapterEditsActivity extends BaseToolbarActivity {
+public class AdapterEditsActivity extends BaseActivity<BaseViewRecyclerviewBinding> {
 
-    // = View =
-    @BindView(R.id.vid_bvr_recy)
-    RecyclerView vid_bvr_recy;
     // 适配器
     EditsAdapter editsAdapter;
 
     @Override
-    public int getLayoutId() {
+    public int baseLayoutId() {
         return R.layout.base_view_recyclerview;
     }
 
@@ -58,13 +53,13 @@ public class AdapterEditsActivity extends BaseToolbarActivity {
                             builder.append("\nevaluateLevel: " + item.evaluateLevel);
                             builder.append("\n");
                         }
-                        DevLogger.dTag(mTag, builder.toString());
+                        DevLogger.dTag(TAG, builder.toString());
                         ToastTintUtils.success("数据已打印, 请查看 Logcat");
                     }
                 }).getView();
-        vid_bt_toolbar.addView(view);
+        getToolbar().addView(view);
 
-        ViewGroup parent = (ViewGroup) vid_bvr_recy.getParent();
+        ViewGroup parent = (ViewGroup) binding.vidBvrRecy.getParent();
         // 根布局处理
         ViewHelper.get().setPadding(parent, 0)
                 .setBackgroundColor(parent, ResourceUtils.getColor(R.color.color_33));
@@ -83,6 +78,6 @@ public class AdapterEditsActivity extends BaseToolbarActivity {
 
         // 初始化布局管理器、适配器
         editsAdapter = new EditsAdapter(lists);
-        vid_bvr_recy.setAdapter(editsAdapter);
+        binding.vidBvrRecy.setAdapter(editsAdapter);
     }
 }

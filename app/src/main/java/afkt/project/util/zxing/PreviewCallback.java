@@ -4,7 +4,7 @@ import android.hardware.Camera;
 import android.os.Handler;
 import android.os.Message;
 
-import dev.utils.LogPrintUtils;
+import dev.utils.app.logger.DevLogger;
 
 /**
  * detail: 预览回调
@@ -12,7 +12,7 @@ import dev.utils.LogPrintUtils;
  */
 public class PreviewCallback implements Camera.PreviewCallback {
 
-    // 日志 Tag
+    // 日志 TAG
     private final String      TAG = PreviewCallback.class.getSimpleName();
     // 显示的大小
     private       Camera.Size mSize;
@@ -49,7 +49,7 @@ public class PreviewCallback implements Camera.PreviewCallback {
             message.sendToTarget();
             mPreviewHandler = null;
         } else {
-            LogPrintUtils.dTag(TAG, "Got preview callback, but no handler or resolution available");
+            DevLogger.dTag(TAG, "Got preview callback, but no handler or resolution available");
         }
     }
 }

@@ -8,15 +8,14 @@ android {
 
 dependencies {
     implementation project(path: ':DevApp')
+    implementation project(path: ':DevAssist')
+    implementation project(path: ':DevBase')
+    implementation project(path: ':DevBase2')
     implementation project(path: ':DevWidget')
 
-    // ============
-    // = 第三方库 =
-    // ============
-
-    // ==============
+    // =============
     // = 快捷开发库 =
-    // ==============
+    // =============
 
     // Gson https://github.com/google/gson
     implementation deps.lib.gson
@@ -28,15 +27,16 @@ dependencies {
     // 今日头条屏幕适配方案终极版 https://github.com/JessYanCoding/AndroidAutoSize/blob/master/README-zh.md
     implementation deps.lib.autosize
 
-    // ===============================
+    // =============================
     // = 其他第三方库 - 小功能、简约 =
-    // ===============================
+    // =============================
 
-    // 加载动画效果 https://github.com/Kyson/WhorlView
-    implementation deps.lib.whorlviewlibrary
-    // RecyclerView Adapter https://github.com/CymChad/BaseRecyclerViewAdapterHelper
-    implementation deps.lib.baserecyclerviewadapterhelper
     // 下拉刷新框架 https://github.com/scwang90/SmartRefreshLayout
     implementation deps.lib.smartrefreshlayout
     implementation deps.lib.smartrefresh_header_classics
+    implementation deps.lib.smartrefresh_footer_classics
+    // RecyclerView Adapter https://github.com/CymChad/BaseRecyclerViewAdapterHelper
+    implementation deps.lib.baserecyclerviewadapterhelper
+    // 加载动画效果 https://github.com/Kyson/WhorlView
+    implementation deps.lib.whorlviewlibrary
 }

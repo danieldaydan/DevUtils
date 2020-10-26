@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import dev.utils.common.FileUtils;
 
@@ -53,13 +54,13 @@ final class Config {
     // =======
 
     // Android 文件目录注释
-    public static final HashMap<String, String> sAndroidCatelogMap      = new HashMap<>();
+    public static final Map<String, String> sAndroidCatelogMap      = new HashMap<>();
     // Java 文件目录注释
-    public static final HashMap<String, String> sJavaCatelogMap         = new HashMap<>();
+    public static final Map<String, String> sJavaCatelogMap         = new HashMap<>();
     // DevUtils Lib 文件目录注释
-    public static final HashMap<String, String> sDevUtilsCatelogMap     = new HashMap<>();
+    public static final Map<String, String> sDevUtilsCatelogMap     = new HashMap<>();
     // DevUtils Lib 忽略目录
-    public static final List<String>            sDevUtilsIgnoreCatelogs = new ArrayList<>();
+    public static final List<String>        sDevUtilsIgnoreCatelogs = new ArrayList<>();
 
     static {
 
@@ -94,7 +95,9 @@ final class Config {
         sDevUtilsCatelogMap.put("lib", "根目录");
         sDevUtilsCatelogMap.put(".DevApp", "Android 工具类库");
         sDevUtilsCatelogMap.put(".DevAssist", "封装逻辑代码, 实现多个快捷功能辅助类、以及 Engine 兼容框架等");
-        sDevUtilsCatelogMap.put(".DevBase", "Base ( Activity、Fragment )、MVP 基类等");
+        sDevUtilsCatelogMap.put(".DevBase", "Base ( Activity、Fragment )、MVP、ViewBinding、ContentLayout 基类库");
+        sDevUtilsCatelogMap.put(".DevBase2", "Base 基础代码 ( 非基类库 )");
+        sDevUtilsCatelogMap.put(".DevBaseMVVM", "Base MVVM 基类库");
         sDevUtilsCatelogMap.put(".DevJava", "Java 工具类库 ( 不依赖 android api )");
         sDevUtilsCatelogMap.put(".DevOther", "第三方库封装、以及部分特殊工具类等, 方便 copy 封装类使用");
         sDevUtilsCatelogMap.put(".DevStandard", "项目规范统一检测、生成替换等");
@@ -105,13 +108,15 @@ final class Config {
         sDevUtilsCatelogMap.put(".Environment.DevEnvironmentCompiler", "Debug ( 打包 / 编译 ) 生成实现代码");
         sDevUtilsCatelogMap.put(".Environment.DevEnvironmentCompilerRelease", "Release ( 打包 / 编译 ) 生成实现代码");
 
-        // =========================
+        // ========================
         // = DevUtils Lib 忽略目录 =
-        // =========================
+        // ========================
 
         sDevUtilsIgnoreCatelogs.add("DevApp");
         sDevUtilsIgnoreCatelogs.add("DevAssist");
         sDevUtilsIgnoreCatelogs.add("DevBase");
+        sDevUtilsIgnoreCatelogs.add("DevBase2");
+        sDevUtilsIgnoreCatelogs.add("DevBaseMVVM");
         sDevUtilsIgnoreCatelogs.add("DevJava");
         sDevUtilsIgnoreCatelogs.add("DevOther");
         sDevUtilsIgnoreCatelogs.add("DevStandard");

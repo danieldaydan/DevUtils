@@ -1,6 +1,63 @@
 Change Log
 ==========
 
+Version 1.2.0 *(2020-10-20)*
+----------------------------
+
+* `[Update]` StringUtils#convertHideMobile、convertSymbolHide Method Name
+
+* `[Fix]` StringUtils#replaceSEWith、clearSEWiths、clearEndsWith 索引判断问题
+
+Version 1.1.9 *(2020-10-12)*
+----------------------------
+
+* `[Add]` FilePartUtils 文件分片工具类
+
+* `[Add]` CloseUtils#flush、flushQuietly、flushCloseIO、flushCloseIOQuietly
+
+* `[Add]` FileUtils#convertFiles、convertPaths、flushCloseIO、flushCloseIOQuietly
+
+* `[Refactor]` 修改整个库 Closeable Close 代码内部调用 CloseUtils
+
+Version 1.1.8 *(2020-09-27)*
+----------------------------
+
+* `[Add]` DateUtils#getZodiac、getConstellation、getConstellationDate 获取生肖、星座方法
+
+* `[Add]` CalendarUtils 日历 ( 公历、农历 ) 工具类
+
+Version 1.1.7 *(2020-09-20)*
+----------------------------
+
+* `[Delete]` 删除 DevCommonUtils 中其他工具类快捷方法
+
+* `[Update]` 更新部分代码注释
+
+Version 1.1.6 *(2020-09-15)*
+----------------------------
+
+* `[Add]` StringUtils#clearTab、clearTabTrim、clearLine、clearLineTrim、clearSpaceTabLine、clearSpaceTabLineTrim
+
+* `[Add]` ScaleUtils#XY type 拓展字段
+
+* `[Add]` NumberUtils#addZero
+
+* `[Update]` DateUtils#convertTime 为 timeAddZero
+
+* `[Update]` 去除部分方法名 to 前缀
+
+Version 1.1.5 *(2020-09-07)*
+----------------------------
+
+* `[Add]` ScaleUtils#calcScale、calcScaleToMath、calcXY
+
+* `[Add]` StringUtils#forJoint
+
+Version 1.1.4 *(2020-08-29)*
+----------------------------
+
+* `[Add]` FileUtils#canRead、canWrite、canReadWrite
+
 Version 1.1.3 *(2020-08-04)*
 ----------------------------
 
@@ -63,7 +120,7 @@ Version 1.0.7 *(2019-12-25)*
 Version 1.0.6 *(2019-11-25)*
 ----------------------------
 
-* `[refactor]` 重构整个项目, 优化代码逻辑判断、代码风格、合并工具类减少包大小等, 并修改 95% 返回值 void 的方法为 boolean 明确获取调用结果
+* `[Refactor]` 重构整个项目, 优化代码逻辑判断、代码风格、合并工具类减少包大小等, 并修改 95% 返回值 void 的方法为 boolean 明确获取调用结果
  
 * `[Add]` FileRecordUtils 文件记录结果回调
 

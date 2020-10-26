@@ -13,7 +13,7 @@ import dev.utils.JCLogUtils;
  * <pre>
  *     // 升序
  *     Arrays.sort(arrays);
- *     // 降序 - 只能对对象数组降序
+ *     // 降序 ( 只能对对象数组降序 )
  *     Arrays.sort(arrays, Collections.reverseOrder());
  * </pre>
  */
@@ -211,9 +211,9 @@ public final class ArrayUtils {
         return object != null && length(object) != 0;
     }
 
-    // ============
+    // ===========
     // = 判断长度 =
-    // ============
+    // ===========
 
     /**
      * 获取数组长度
@@ -538,9 +538,9 @@ public final class ArrayUtils {
         return object != null && length(object) == length;
     }
 
-    // ================
+    // ===============
     // = 获取长度总和 =
-    // ================
+    // ===============
 
     /**
      * 获取数组长度总和
@@ -556,9 +556,9 @@ public final class ArrayUtils {
         return count;
     }
 
-    // ============
+    // ===========
     // = 数据获取 =
-    // ============
+    // ===========
 
     /**
      * 获取数组对应索引数据
@@ -1019,9 +1019,9 @@ public final class ArrayUtils {
         return get(booleans, length(booleans) - 1);
     }
 
-    // ===================
-    // = 数据获取 - 特殊 =
-    // ===================
+    // ===========
+    // = 数据获取 =
+    // ===========
 
     /**
      * 根据指定值获取 value 所在位置 + 偏移量的值
@@ -1757,9 +1757,9 @@ public final class ArrayUtils {
         return -1;
     }
 
-    // ============
+    // ===========
     // = 转换处理 =
-    // ============
+    // ===========
 
     /**
      * int[] 转换 Integer[]
@@ -2091,9 +2091,9 @@ public final class ArrayUtils {
         return null;
     }
 
-    // =============
+    // ============
     // = 转换 List =
-    // =============
+    // ============
 
     /**
      * 转换数组为集合
@@ -2107,6 +2107,23 @@ public final class ArrayUtils {
                 return new ArrayList<>(Arrays.asList(array));
             } catch (Exception e) {
                 JCLogUtils.eTag(TAG, e, "asList");
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 转换数组为集合
+     * @param array 数组
+     * @param <T>   泛型
+     * @return {@link List<T>}
+     */
+    public static <T> List<T> asListArgs(final T... array) {
+        if (array != null) {
+            try {
+                return new ArrayList<>(Arrays.asList(array));
+            } catch (Exception e) {
+                JCLogUtils.eTag(TAG, e, "asListArgs");
             }
         }
         return null;
@@ -2242,9 +2259,139 @@ public final class ArrayUtils {
         return null;
     }
 
-    // ============
+    // =
+
+    /**
+     * 转换数组为集合
+     * @param ints int[]
+     * @return {@link List<Integer>}
+     */
+    public static List<Integer> asListArgs(final int... ints) {
+        if (ints != null) {
+            List<Integer> lists = new ArrayList<>();
+            for (int i = 0, len = ints.length; i < len; i++) {
+                lists.add(ints[i]);
+            }
+            return lists;
+        }
+        return null;
+    }
+
+    /**
+     * 转换数组为集合
+     * @param bytes byte[]
+     * @return {@link List<Byte>}
+     */
+    public static List<Byte> asListArgs(final byte... bytes) {
+        if (bytes != null) {
+            List<Byte> lists = new ArrayList<>();
+            for (int i = 0, len = bytes.length; i < len; i++) {
+                lists.add(bytes[i]);
+            }
+            return lists;
+        }
+        return null;
+    }
+
+    /**
+     * 转换数组为集合
+     * @param chars char[]
+     * @return {@link List<Character>}
+     */
+    public static List<Character> asListArgs(final char... chars) {
+        if (chars != null) {
+            List<Character> lists = new ArrayList<>();
+            for (int i = 0, len = chars.length; i < len; i++) {
+                lists.add(chars[i]);
+            }
+            return lists;
+        }
+        return null;
+    }
+
+    /**
+     * 转换数组为集合
+     * @param shorts short[]
+     * @return {@link List<Short>}
+     */
+    public static List<Short> asListArgs(final short... shorts) {
+        if (shorts != null) {
+            List<Short> lists = new ArrayList<>();
+            for (int i = 0, len = shorts.length; i < len; i++) {
+                lists.add(shorts[i]);
+            }
+            return lists;
+        }
+        return null;
+    }
+
+    /**
+     * 转换数组为集合
+     * @param longs long[]
+     * @return {@link List<Long>}
+     */
+    public static List<Long> asListArgs(final long... longs) {
+        if (longs != null) {
+            List<Long> lists = new ArrayList<>();
+            for (int i = 0, len = longs.length; i < len; i++) {
+                lists.add(longs[i]);
+            }
+            return lists;
+        }
+        return null;
+    }
+
+    /**
+     * 转换数组为集合
+     * @param floats float[]
+     * @return {@link List<Float>}
+     */
+    public static List<Float> asListArgs(final float... floats) {
+        if (floats != null) {
+            List<Float> lists = new ArrayList<>();
+            for (int i = 0, len = floats.length; i < len; i++) {
+                lists.add(floats[i]);
+            }
+            return lists;
+        }
+        return null;
+    }
+
+    /**
+     * 转换数组为集合
+     * @param doubles double[]
+     * @return {@link List<Double>}
+     */
+    public static List<Double> asListArgs(final double... doubles) {
+        if (doubles != null) {
+            List<Double> lists = new ArrayList<>();
+            for (int i = 0, len = doubles.length; i < len; i++) {
+                lists.add(doubles[i]);
+            }
+            return lists;
+        }
+        return null;
+    }
+
+    /**
+     * 转换数组为集合
+     * @param booleans boolean[]
+     * @return {@link List<Boolean>}
+     */
+    public static List<Boolean> asListArgs(final boolean... booleans) {
+        if (booleans != null) {
+            List<Boolean> lists = new ArrayList<>();
+            for (int i = 0, len = booleans.length; i < len; i++) {
+                lists.add(booleans[i]);
+            }
+            return lists;
+        }
+        return null;
+    }
+
+    // ===========
     // = 快捷判断 =
-    // ============
+    // ===========
 
     /**
      * 判断两个值是否一样
@@ -3123,9 +3270,9 @@ public final class ArrayUtils {
         return "";
     }
 
-    // ==============
+    // =============
     // = 最小值索引 =
-    // ==============
+    // =============
 
     /**
      * 获取数组中最小值索引
@@ -3223,9 +3370,9 @@ public final class ArrayUtils {
         return -1;
     }
 
-    // ==============
+    // =============
     // = 最大值索引 =
-    // ==============
+    // =============
 
     /**
      * 获取数组中最大值索引
@@ -3323,9 +3470,9 @@ public final class ArrayUtils {
         return -1;
     }
 
-    // ==============
+    // =============
     // = 获取最小值 =
-    // ==============
+    // =============
 
     /**
      * 获取数组中最小值
@@ -3383,9 +3530,9 @@ public final class ArrayUtils {
         return 0d;
     }
 
-    // ==============
+    // =============
     // = 获取最大值 =
-    // ==============
+    // =============
 
     /**
      * 获取数组中最大值
@@ -3443,9 +3590,9 @@ public final class ArrayUtils {
         return 0d;
     }
 
-    // ================
+    // ===============
     // = 计算数组总和 =
-    // ================
+    // ===============
 
     /**
      * 计算数组总和

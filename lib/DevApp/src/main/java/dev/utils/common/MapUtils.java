@@ -47,9 +47,9 @@ public final class MapUtils {
         return (map != null && map.size() != 0);
     }
 
-    // ============
+    // ===========
     // = 判断长度 =
-    // ============
+    // ===========
 
     /**
      * 获取 Map 长度
@@ -126,9 +126,9 @@ public final class MapUtils {
         return map != null && map.size() <= length;
     }
 
-    // ================
+    // ===============
     // = 获取长度总和 =
-    // ================
+    // ===============
 
     /**
      * 获取 Map 数组长度总和
@@ -144,9 +144,9 @@ public final class MapUtils {
         return count;
     }
 
-    // ============
+    // ===========
     // = 数据获取 =
-    // ============
+    // ===========
 
     /**
      * 获取 value
@@ -358,7 +358,7 @@ public final class MapUtils {
     /**
      * 获取最后一条数据
      * @param map          {@link Map}
-     * @param isReflection 是否通过反射获取
+     * @param isReflection 是否使用反射
      * @param <K>          key
      * @param <V>          value
      * @return 最后一条数据 {@link Map.Entry}
@@ -454,9 +454,9 @@ public final class MapUtils {
         return null;
     }
 
-    // ============
+    // ===========
     // = 添加数据 =
-    // ============
+    // ===========
 
     /**
      * 添加一条数据
@@ -497,7 +497,7 @@ public final class MapUtils {
     }
 
     /**
-     * 添加一条数据, 不允许 key 为 null
+     * 添加一条数据 ( 不允许 key 为 null )
      * @param map   {@link Map}
      * @param key   key
      * @param value value
@@ -548,7 +548,7 @@ public final class MapUtils {
     }
 
     /**
-     * 添加一条数据, 不允许 key 为 null
+     * 添加一条数据 ( 不允许 key 为 null )
      * @param map   {@link Map}
      * @param entry entry
      * @param <K>   key
@@ -740,9 +740,9 @@ public final class MapUtils {
         return putAll(map, mapData, true);
     }
 
-    // ============
+    // ===========
     // = 删除数据 =
-    // ============
+    // ===========
 
     /**
      * 移除一条数据
@@ -860,9 +860,9 @@ public final class MapUtils {
         return false;
     }
 
-    // ============
+    // ===========
     // = 快捷判断 =
-    // ============
+    // ===========
 
     /**
      * 判断两个值是否一样
@@ -924,7 +924,7 @@ public final class MapUtils {
     }
 
     /**
-     * 判断 Map 是否存储了 key
+     * 判断 Map 是否存储 key
      * @param map {@link Map}
      * @param key key
      * @param <K> key
@@ -943,7 +943,7 @@ public final class MapUtils {
     }
 
     /**
-     * 判断 Map 是否存储了 value
+     * 判断 Map 是否存储 value
      * @param map   {@link Map}
      * @param value value
      * @param <K>   key
@@ -961,12 +961,12 @@ public final class MapUtils {
         return false;
     }
 
-    // =================
+    // ================
     // = 特殊 Map 操作 =
-    // =================
+    // ================
 
     /**
-     * 添加一条数据 - (Value) List<T>
+     * 添加一条数据
      * @param map   待添加 {@link Map}
      * @param key   key
      * @param value value, add to list
@@ -974,12 +974,12 @@ public final class MapUtils {
      * @param <T>   value type
      * @return {@code true} success, {@code false} fail
      */
-    public static <K, T> boolean putToList(final Map<K, ArrayList<T>> map, final K key, final T value) {
+    public static <K, T> boolean putToList(final Map<K, List<T>> map, final K key, final T value) {
         return putToList(map, key, value, true);
     }
 
     /**
-     * 添加一条数据 - (Value) List<T>
+     * 添加一条数据
      * @param map   {@link Map}
      * @param key   key
      * @param value value, add to list
@@ -988,10 +988,10 @@ public final class MapUtils {
      * @param <T>   value type
      * @return {@code true} success, {@code false} fail
      */
-    public static <K, T> boolean putToList(final Map<K, ArrayList<T>> map, final K key, final T value, final boolean isNew) {
+    public static <K, T> boolean putToList(final Map<K, List<T>> map, final K key, final T value, final boolean isNew) {
         if (map != null) {
             if (map.containsKey(key)) {
-                ArrayList<T> lists = map.get(key);
+                List<T> lists = map.get(key);
                 if (lists != null) {
                     try {
                         lists.add(value);
@@ -1005,7 +1005,7 @@ public final class MapUtils {
                 // 判断是否创建
                 if (isNew) {
                     try {
-                        ArrayList<T> lists = new ArrayList<>();
+                        List<T> lists = new ArrayList<>();
                         lists.add(value);
                         map.put(key, lists);
                         return true;
@@ -1021,14 +1021,14 @@ public final class MapUtils {
     // =
 
     /**
-     * 移除一条数据 - (Value) List<T>
+     * 移除一条数据
      * @param map {@link Map}
      * @param key key
      * @param <K> key
      * @param <T> value type
      * @return {@code true} success, {@code false} fail
      */
-    public static <K, T> boolean removeToList(final Map<K, ArrayList<T>> map, final K key) {
+    public static <K, T> boolean removeToList(final Map<K, List<T>> map, final K key) {
         if (map != null) {
             try {
                 map.remove(key);
@@ -1041,7 +1041,7 @@ public final class MapUtils {
     }
 
     /**
-     * 移除一条数据 - (Value) List<T>
+     * 移除一条数据
      * @param map   {@link Map}
      * @param key   key
      * @param value value, remove to list
@@ -1049,10 +1049,10 @@ public final class MapUtils {
      * @param <T>   value type
      * @return {@code true} success, {@code false} fail
      */
-    public static <K, T> boolean removeToList(final Map<K, ArrayList<T>> map, final K key, final T value) {
+    public static <K, T> boolean removeToList(final Map<K, List<T>> map, final K key, final T value) {
         if (map != null) {
             if (map.containsKey(key)) {
-                ArrayList<T> lists = map.get(key);
+                List<T> lists = map.get(key);
                 if (lists != null) {
                     try {
                         lists.remove(value);
@@ -1067,7 +1067,7 @@ public final class MapUtils {
     }
 
     /**
-     * 移除多条数据 - (Value) List<T>
+     * 移除多条数据
      * @param map   {@link Map}
      * @param key   key
      * @param lists 删除的 list 数据源
@@ -1095,38 +1095,38 @@ public final class MapUtils {
     // =
 
     /**
-     * 移除多条数据 - 通过 Map 进行移除
+     * 移除多条数据 ( 通过 Map 进行移除 )
      * @param map       {@link Map}
      * @param removeMap {@link Map} 移除对比数据源
      * @param <K>       key
      * @param <T>       value type
      * @return {@code true} success, {@code false} fail
      */
-    public static <K, T> boolean removeToMap(final Map<K, ArrayList<T>> map, final Map<K, ArrayList<T>> removeMap) {
+    public static <K, T> boolean removeToMap(final Map<K, List<T>> map, final Map<K, List<T>> removeMap) {
         return removeToMap(map, removeMap, true, false);
     }
 
     /**
-     * 移除多条数据 - 通过 Map 进行移除
+     * 移除多条数据 ( 通过 Map 进行移除 )
      * @param map             {@link Map}
      * @param removeMap       {@link Map} 移除对比数据源
      * @param removeEmpty     是否移除 null、长度为 0 的数据
-     * @param isNullRemoveAll 如果待移除的 ArrayList 是 null, 是否移除全部
+     * @param isNullRemoveAll 如果待移除的 List 是 null, 是否移除全部
      * @param <K>             key
      * @param <T>             value type
      * @return {@code true} success, {@code false} fail
      */
-    public static <K, T> boolean removeToMap(final Map<K, ArrayList<T>> map, final Map<K, ArrayList<T>> removeMap,
+    public static <K, T> boolean removeToMap(final Map<K, List<T>> map, final Map<K, List<T>> removeMap,
                                              final boolean removeEmpty, final boolean isNullRemoveAll) {
         if (map != null && removeMap != null) {
-            Iterator<Map.Entry<K, ArrayList<T>>> iterator = removeMap.entrySet().iterator();
+            Iterator<Map.Entry<K, List<T>>> iterator = removeMap.entrySet().iterator();
             while (iterator.hasNext()) {
-                Map.Entry<K, ArrayList<T>> entry = iterator.next();
+                Map.Entry<K, List<T>> entry = iterator.next();
                 // 获取 key
                 K key = entry.getKey();
                 // 进行移除处理
                 if (map.containsKey(key)) {
-                    ArrayList<T> value = entry.getValue();
+                    List<T> value = entry.getValue();
                     try {
                         if (value != null) {
                             map.get(key).removeAll(value);
@@ -1140,7 +1140,7 @@ public final class MapUtils {
                     }
                     // 判断是否移除 null、长度为 0 的数据
                     if (removeEmpty) {
-                        ArrayList<T> lists = map.get(key);
+                        List<T> lists = map.get(key);
                         try {
                             // 不存在数据了, 则移除
                             if (lists == null || lists.size() == 0) {

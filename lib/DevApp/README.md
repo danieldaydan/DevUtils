@@ -6,7 +6,7 @@
 //implementation 'com.afkt:DevApp:1.9.4'
 
 // AndroidX
-implementation 'com.afkt:DevAppX:1.9.7'
+implementation 'com.afkt:DevAppX:2.0.7'
 ```
 
 ## 目录结构
@@ -34,6 +34,7 @@ implementation 'com.afkt:DevAppX:1.9.7'
          - search    | 搜索相关 ( 文件搜索等 )
       - cipher       | 编 / 解码工具类
       - encrypt      | 加密工具类
+      - file         | 文件分片相关
       - random       | 随机概率算法工具类
       - thread       | 线程相关
       - validator    | 数据校验工具类
@@ -42,11 +43,11 @@ implementation 'com.afkt:DevAppX:1.9.7'
 
 ## 使用
 
-> ##### ~~只需要在 Application 中调用 `DevUtils.init()` 进行初始化就行~~ , 在 DevUtils FileProviderDevApp 中已初始化 , 无需主动调用
+> ##### ~~只需要在 Application 中调用 `DevUtils.init()` 进行初始化~~ , 在 DevUtils FileProviderDevApp 中已初始化 , 无需主动调用
 
 ## 事项
 
-- 内部存在两个日志工具类 (工具类内部调用)，对外使用 [DevLogger](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/utils_readme/logger/DevLogger.md)
+- 内部存在两个日志工具类 ( 工具类内部调用 )，对外使用 [DevLogger](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/utils_readme/logger/DevLogger.md)
 
 ```java
 // 整个工具类内部日志信息，都通过以下两个工具类输出打印，并且通过 DevUtils.openLog() 控制开关
@@ -59,10 +60,20 @@ JCLogUtils
 
 - 开启日志
 ```java
-// 打开 lib 内部日志 - 线上 (release) 环境，不调用方法就行
+// 打开 lib 内部日志 - 线上 (release) 环境，不调用方法
 DevUtils.openLog();
 // 标示 debug 模式
 DevUtils.openDebug();
+```
+
+- 如果出现 ```Failed to resolve: DevAppX-x.x.x``` 可在根目录 build.gradle 添加
+```java
+allprojects {
+    repositories {
+        // bintray maven 出现 Failed to resolve: DevAppX-x.x.x 可考虑加上这句
+        maven { url 'https://dl.bintray.com/afkt/maven' }
+    }
+}
 ```
 
 - 工具类部分模块配置与使用 - [Use and Config](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/utils_readme/USE_CONFIG.md)
@@ -102,6 +113,7 @@ DevUtils.openDebug();
          - [search](#devutilscommonassistsearch)      | 搜索相关 ( 文件搜索等 )
       - [cipher](#devutilscommoncipher)               | 编 / 解码工具类
       - [encrypt](#devutilscommonencrypt)             | 加密工具类
+      - [file](#devutilscommonfile)                   | 文件分片相关
       - [random](#devutilscommonrandom)               | 随机概率算法工具类
       - [thread](#devutilscommonthread)               | 线程相关
       - [validator](#devutilscommonvalidator)         | 数据校验工具类
@@ -153,9 +165,9 @@ DevUtils.openDebug();
 | getActivityLogo | 获取 Activity 对应的 logo |
 | getActivityToLauncher | 获取对应包名应用启动的 Activity |
 | getLauncherCategoryHomeToResolveInfo | 获取系统桌面信息 |
-| getLauncherCategoryHomeToPackageName | 获取系统桌面信息 - packageName |
-| getLauncherCategoryHomeToActivityName | 获取系统桌面信息 - activityName |
-| getLauncherCategoryHomeToPackageAndName | 获取系统桌面信息 - package/activityName |
+| getLauncherCategoryHomeToPackageName | 获取系统桌面信息 ( packageName ) |
+| getLauncherCategoryHomeToActivityName | 获取系统桌面信息 ( activityName ) |
+| getLauncherCategoryHomeToPackageAndName | 获取系统桌面信息 ( package/activityName ) |
 | getOptionsBundle | 设置跳转动画 |
 | getManager | 获取 ActivityUtils 管理实例 |
 | getActivityStacks | 获取 Activity 栈 |
@@ -187,7 +199,7 @@ DevUtils.openDebug();
 | getAppListToFilter | 获取包名包含字符串 xxx 的应用列表 |
 | isInstalledApp | 判断是否安装应用 |
 | getAppInstallPath | 查看应用安装路径 |
-| clearAppDataCache | 清除应用数据与缓存 - 相当于在设置里的应用信息界面点击了「清除缓存」和「清除数据」 |
+| clearAppDataCache | 清除应用数据与缓存 ( 相当于在设置里的应用信息界面点击了「清除缓存」和「清除数据」 ) |
 | getAppMessage | 查看应用详细信息 |
 | getVersionCode | 获取 APP versionCode |
 | getVersionName | 获取 APP versionName |
@@ -202,7 +214,7 @@ DevUtils.openDebug();
 | getActivityCurrent | 获取当前显示的 Activity |
 | getActivitys | 获取 Activity 栈 |
 | getActivitysToPackage | 获取对应包名的 Activity 栈 |
-| getActivitysToPackageLists | 获取对应包名的 Activity 栈 ( 处理成 List) - 最新的 Activity 越靠后 |
+| getActivitysToPackageLists | 获取对应包名的 Activity 栈 ( 最新的 Activity 越靠后 ) |
 | isActivityTopRepeat | 判断 Activity 栈顶是否重复 |
 | getActivityTopRepeatCount | 获取 Activity 栈顶重复总数 |
 | getServices | 查看正在运行的 Services |
@@ -217,7 +229,7 @@ DevUtils.openDebug();
 | tap | 点击某个区域 |
 | swipeClick | 按压某个区域 ( 点击 ) |
 | swipe | 滑动到某个区域 |
-| text | 输入文本 - 不支持中文 |
+| text | 输入文本 ( 不支持中文 ) |
 | keyevent | 触发某些按键 |
 | screencap | 屏幕截图 |
 | screenrecord | 录制屏幕 ( 以 mp4 格式保存 ) |
@@ -232,7 +244,7 @@ DevUtils.openDebug();
 | sendEventSlide | 发送事件滑动 |
 | getSDKVersion | 获取 SDK 版本 |
 | getAndroidVersion | 获取 Android 系统版本 |
-| getModel | 获取设备型号 - 如 RedmiNote4X |
+| getModel | 获取设备型号 ( 如 RedmiNote4X ) |
 | getBrand | 获取设备品牌 |
 | getDeviceName | 获取设备名 |
 | getCpuAbiList | 获取 CPU 支持的 abi 列表 |
@@ -268,7 +280,7 @@ DevUtils.openDebug();
 | closeAccessibility | 关闭无障碍辅助功能 |
 
 
-* **AlarmManager( 全局定时器、闹钟 ) 工具类 ->** [AlarmUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/app/AlarmUtils.java)
+* **AlarmManager ( 全局定时器、闹钟 ) 工具类 ->** [AlarmUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/app/AlarmUtils.java)
 
 | 方法 | 注释 |
 | :- | :- |
@@ -299,7 +311,7 @@ DevUtils.openDebug();
 | setLogFolderName | 设置日志文件夹名 |
 | getLogStoragePath | 获取日志存储路径 |
 | setLogStoragePath | 设置日志存储路径 |
-| obtain | 获取日志记录分析文件对象 |
+| get | 获取日志记录分析文件对象 |
 | getStoragePath | 获取存储路径 |
 | getFileName | 获取日志文件名 |
 | getFileFunction | 获取日志文件记录功能 |
@@ -338,10 +350,11 @@ DevUtils.openDebug();
 | isO_MR1 | 是否在 8.1 版本及以上 |
 | isP | 是否在 9.0 版本及以上 |
 | isQ | 是否在 10.0 版本及以上 |
+| isR | 是否在 11.0 版本及以上 |
 | convertSDKVersion | 转换 SDK 版本 convertSDKVersion(14) = Android 4.0.0-2 |
 
 
-* **APP (Android) 工具类 ->** [AppUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/app/AppUtils.java)
+* **APP ( Android ) 工具类 ->** [AppUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/app/AppUtils.java)
 
 | 方法 | 注释 |
 | :- | :- |
@@ -402,7 +415,7 @@ DevUtils.openDebug();
 | launchAppDetailsSettings | 跳转到 APP 设置详情页面 |
 | launchAppDetails | 跳转到 APP 应用商城详情页面 |
 | openFile | 打开文件 |
-| openFileByApp | 打开文件 - 指定应用 |
+| openFileByApp | 打开文件 ( 指定应用 ) |
 | openPDFFile | 打开 PDF 文件 |
 | openWordFile | 打开 Word 文件 |
 | openOfficeByWPS | 调用 WPS 打开 office 文档 |
@@ -527,13 +540,13 @@ DevUtils.openDebug();
 
 | 方法 | 注释 |
 | :- | :- |
-| cleanCache | 清除外部缓存 - path /storage/emulated/0/android/data/package/cache |
-| cleanAppCache | 清除内部缓存 - path /data/data/package/cache |
-| cleanAppFiles | 清除内部文件 - path /data/data/package/files |
-| cleanAppSp | 清除内部 SP - path /data/data/package/shared_prefs |
-| cleanAppDbs | 清除内部数据库 - path /data/data/package/databases |
-| cleanAppDbByName | 根据名称清除数据库 - path /data/data/package/databases/dbName |
-| cleanCustomDir | 清除自定义路径下的文件, 使用需小心请不要误删, 而且只支持目录下的文件删除 |
+| cleanCache | 清除外部缓存 ( path /storage/emulated/0/android/data/package/cache ) |
+| cleanAppCache | 清除内部缓存 ( path /data/data/package/cache ) |
+| cleanAppFiles | 清除内部文件 ( path /data/data/package/files ) |
+| cleanAppSp | 清除内部 SP ( path /data/data/package/shared_prefs ) |
+| cleanAppDbs | 清除内部数据库 ( path /data/data/package/databases ) |
+| cleanAppDbByName | 根据名称清除数据库 ( path /data/data/package/databases/dbName ) |
+| cleanCustomDir | 清除自定义路径下的文件 |
 | cleanApplicationData | 清除本应用所有的数据 |
 
 
@@ -542,10 +555,11 @@ DevUtils.openDebug();
 | 方法 | 注释 |
 | :- | :- |
 | addTouchArea | 增加控件的触摸范围, 最大范围只能是父布局所包含的的区域 |
+| setCheckViewId | 设置全局是否校验 viewId |
 | setGlobalIntervalTime | 设置全局双击间隔时间 |
 | get | 获取对应功能模块点击辅助类 |
 | remove | 移除对应功能模块点击辅助类 |
-| isFastDoubleClick | 判断是否双击 ( 无效点击 - 短时间内多次点击 ) |
+| isFastDoubleClick | 判断是否双击 ( 无效点击, 短时间内多次点击 ) |
 | initConfig | 初始化配置信息 |
 | putConfig | 添加配置信息 |
 | removeConfig | 移除配置信息 |
@@ -573,6 +587,7 @@ DevUtils.openDebug();
 | 方法 | 注释 |
 | :- | :- |
 | getDataColumn | 获取 Uri Cursor 对应条件的数据行 data 字段 |
+| getDisplayNameColumn | 获取 Uri Cursor 对应条件的数据行 display_name 字段 |
 | delete | 删除多媒体资源 |
 | update | 更新多媒体资源 |
 | deleteDocument | 删除文件 |
@@ -616,8 +631,8 @@ DevUtils.openDebug();
 
 | 方法 | 注释 |
 | :- | :- |
-| getAppDbsPath | 获取应用内部存储数据库路径 - path /data/data/package/databases |
-| getAppDbPath | 获取应用内部存储数据库路径 - path /data/data/package/databases/name |
+| getAppDbsPath | 获取应用内部存储数据库路径 ( path /data/data/package/databases ) |
+| getAppDbPath | 获取应用内部存储数据库路径 ( path /data/data/package/databases/name ) |
 | startExportDatabase | 导出数据库 |
 | startImportDatabase | 导入数据库 |
 
@@ -728,8 +743,8 @@ DevUtils.openDebug();
 | addTextChangedListener | 添加输入监听事件 |
 | removeTextChangedListener | 移除输入监听事件 |
 | setKeyListener | 设置 KeyListener |
-| getLettersKeyListener | 获取 DigitsKeyListener ( 限制只能输入字母, 默认弹出英文输入法 ) |
-| getNumberAndLettersKeyListener | 获取 DigitsKeyListener ( 限制只能输入字母和数字, 默认弹出英文输入法 ) |
+| getLettersKeyListener | 获取 DigitsKeyListener ( 限制只能输入字母, 默认弹出英文软键盘 ) |
+| getNumberAndLettersKeyListener | 获取 DigitsKeyListener ( 限制只能输入字母和数字, 默认弹出英文软键盘 ) |
 | getNumberKeyListener | 获取 DigitsKeyListener ( 限制只能输入数字, 默认弹出数字列表 ) |
 | createDigitsKeyListener | 创建 DigitsKeyListener |
 
@@ -752,8 +767,14 @@ DevUtils.openDebug();
 | 方法 | 注释 |
 | :- | :- |
 | getMainHandler | 获取主线程 Handler |
+| isMainThread | 当前线程是否主线程 |
 | postRunnable | 在主线程 Handler 中执行任务 |
 | removeRunnable | 在主线程 Handler 中清除任务 |
+| getRunnableMaps | 获取 Key Runnable Map |
+| clearRunnableMaps | 清空 Key Runnable Map |
+| containsKey | 判断 Map 是否存储 key Runnable |
+| put | 通过 Key 存储 Runnable |
+| remove | 通过 Key 移除 Runnable |
 
 
 * **ImageView 工具类 ->** [ImageViewUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/app/ImageViewUtils.java)
@@ -793,6 +814,7 @@ DevUtils.openDebug();
 | :- | :- |
 | getIntent | 获取 Intent |
 | isIntentAvailable | 判断 Intent 是否可用 |
+| getCategoryLauncherIntent | 获取 CATEGORY_LAUNCHER Intent |
 | getInstallAppIntent | 获取安装 APP( 支持 8.0) 的意图 |
 | getUninstallAppIntent | 获取卸载 APP 的意图 |
 | getLaunchAppIntent | 获取打开 APP 的意图 |
@@ -823,7 +845,7 @@ DevUtils.openDebug();
 | :- | :- |
 | toJson | 转换为 JSON 格式字符串 |
 | fromJson | Object 转换 JSON 对象 |
-| wrap | 包装转换 Object - {@link JSONObject#wrap(Object)} |
+| wrap | 包装转换 Object |
 | stringJSONEscape | 字符串 JSON 转义处理 |
 | isJSON | 判断字符串是否 JSON 格式 |
 | isJSONObject | 判断字符串是否 JSON Object 格式 |
@@ -841,9 +863,10 @@ DevUtils.openDebug();
 | 方法 | 注释 |
 | :- | :- |
 | setDelayMillis | 设置延迟时间 |
+| setSoftInputMode | 设置 Window 软键盘是否显示 |
 | openKeyboard | 打开软键盘 |
 | closeKeyboard | 关闭软键盘 |
-| closeKeyBoardSpecial | 关闭软键盘 - 特殊处理 |
+| closeKeyBoardSpecial | 关闭软键盘 |
 | toggleKeyboard | 自动切换键盘状态, 如果键盘显示了则隐藏, 隐藏着显示 |
 | judgeView | 设置某个 View 内所有非 EditText 的子 View OnTouchListener 事件 |
 | isSoftInputVisible | 判断软键盘是否可见 |
@@ -857,8 +880,8 @@ DevUtils.openDebug();
 | 方法 | 注释 |
 | :- | :- |
 | getInstance | 获取 KeyguardUtils 实例 |
-| isKeyguardLocked | 是否锁屏 - android 4.1 以上支持 |
-| isKeyguardSecure | 是否有锁屏密码 - android 4.1 以上支持 |
+| isKeyguardLocked | 是否锁屏 ( android 4.1 以上支持 ) |
+| isKeyguardSecure | 是否有锁屏密码 ( android 4.1 以上支持 ) |
 | inKeyguardRestrictedInputMode | 是否锁屏 |
 | getKeyguardManager | 获取 KeyguardManager |
 | setKeyguardManager | 设置 KeyguardManager |
@@ -915,11 +938,11 @@ DevUtils.openDebug();
 | scrollToTop | 滑动到顶部 ( 无滚动过程 ) |
 | smoothScrollToBottom | 滑动到底部 ( 有滚动过程 ) |
 | scrollToBottom | 滑动到底部 ( 无滚动过程 ) |
-| smoothScrollTo | 滚动到指定位置 ( 有滚动过程 ) - 相对于初始位置移动 |
-| smoothScrollBy | 滚动到指定位置 ( 有滚动过程 ) - 相对于上次移动的最后位置移动 |
+| smoothScrollTo | 滚动到指定位置 ( 有滚动过程, 相对于初始位置移动 ) |
+| smoothScrollBy | 滚动到指定位置 ( 有滚动过程, 相对于上次移动的最后位置移动 ) |
 | fullScroll | 滚动方向 ( 有滚动过程 ) |
-| scrollTo | View 内容滚动位置 - 相对于初始位置移动 |
-| scrollBy | View 内部滚动位置 - 相对于上次移动的最后位置移动 |
+| scrollTo | View 内容滚动位置 ( 相对于初始位置移动 ) |
+| scrollBy | View 内部滚动位置 ( 相对于上次移动的最后位置移动 ) |
 | setScrollX | 设置 View 滑动的 X 轴坐标 |
 | setScrollY | 设置 View 滑动的 Y 轴坐标 |
 | getScrollX | 获取 View 滑动的 X 轴坐标 |
@@ -937,7 +960,7 @@ DevUtils.openDebug();
 | isGpsEnabled | 判断 GPS 是否可用 |
 | isLocationEnabled | 判断定位是否可用 |
 | openGpsSettings | 打开 GPS 设置界面 |
-| register | 注册 - 使用完记得调用 {@link #unregister()} |
+| register | 注册 |
 | unregister | 注销监听 |
 | getLocation | 获取位置 ( 需要先判断是否开启了定位 ) |
 | getAddress | 根据经纬度获取地理位置 |
@@ -1021,7 +1044,7 @@ DevUtils.openDebug();
 | is4G | 判断是否 4G 网络 |
 | getWifiEnabled | 判断 Wifi 是否打开 |
 | isWifiAvailable | 判断 Wifi 数据是否可用 |
-| getNetworkOperatorName | 获取网络运营商名称 - 中国移动、如中国联通、中国电信 |
+| getNetworkOperatorName | 获取网络运营商名称 ( 中国移动、如中国联通、中国电信 ) |
 | getNetworkType | 获取当前网络类型 |
 | getNetworkClass | 获取移动网络连接类型 |
 | getBroadcastIpAddress | 获取广播 IP 地址 |
@@ -1042,12 +1065,12 @@ DevUtils.openDebug();
 | checkAndIntentSetting | 检查是否有获取通知栏信息权限并跳转设置页面 |
 | isNotificationListenerEnabled | 判断是否有获取通知栏信息权限 |
 | startNotificationListenSettings | 跳转到设置页面, 开启获取通知栏信息权限 |
-| cancelAll | 移除通知 - 移除所有通知 |
-| cancel | 移除通知 - 移除标记为 id 的通知 |
+| cancelAll | 移除通知 ( 移除所有通知 ) |
+| cancel | 移除通知 ( 移除标记为 id 的通知 ) |
 | notify | 进行通知 |
 | createPendingIntent | 获取 PendingIntent |
 | createNotification | 创建通知栏对象 |
-| obtain | 获取 Led 配置参数 |
+| get | 获取 Led 配置参数 |
 | isEmpty | 判断是否为 null |
 
 
@@ -1059,81 +1082,81 @@ DevUtils.openDebug();
 | getAppExternal | 获取应用外部存储路径类 |
 | getSDCard | 获取 SDCard 外部存储路径类 |
 | isSDCardEnable | 判断 SDCard 是否正常挂载 |
-| getSDCardFile | 获取 SDCard 外部存储路径 - path /storage/emulated/0/ |
-| getSDCardPath | 获取 SDCard 外部存储路径 - path /storage/emulated/0/ |
-| getExternalStoragePublicPath | 获取 SDCard 外部存储文件路径 - path /storage/emulated/0/ |
-| getExternalStoragePublicDir | 获取 SDCard 外部存储文件路径 - path /storage/emulated/0/ |
-| getMusicPath | 获取 SDCard 外部存储音乐路径 - path /storage/emulated/0/Music |
-| getMusicDir | 获取 SDCard 外部存储音乐路径 - path /storage/emulated/0/Music |
-| getPodcastsPath | 获取 SDCard 外部存储播客路径 - path /storage/emulated/0/Podcasts |
-| getPodcastsDir | 获取 SDCard 外部存储播客路径 - path /storage/emulated/0/Podcasts |
-| getRingtonesPath | 获取 SDCard 外部存储铃声路径 - path /storage/emulated/0/Ringtones |
-| getRingtonesDir | 获取 SDCard 外部存储铃声路径 - path /storage/emulated/0/Ringtones |
-| getAlarmsPath | 获取 SDCard 外部存储闹铃路径 - path /storage/emulated/0/Alarms |
-| getAlarmsDir | 获取 SDCard 外部存储闹铃路径 - path /storage/emulated/0/Alarms |
-| getNotificationsPath | 获取 SDCard 外部存储通知路径 - path /storage/emulated/0/Notifications |
-| getNotificationsDir | 获取 SDCard 外部存储通知路径 - path /storage/emulated/0/Notifications |
-| getPicturesPath | 获取 SDCard 外部存储图片路径 - path /storage/emulated/0/Pictures |
-| getPicturesDir | 获取 SDCard 外部存储图片路径 - path /storage/emulated/0/Pictures |
-| getMoviesPath | 获取 SDCard 外部存储影片路径 - path /storage/emulated/0/Movies |
-| getMoviesDir | 获取 SDCard 外部存储影片路径 - path /storage/emulated/0/Movies |
-| getDownloadPath | 获取 SDCard 外部存储下载路径 - path /storage/emulated/0/Download |
-| getDownloadDir | 获取 SDCard 外部存储下载路径 - path /storage/emulated/0/Download |
-| getDCIMPath | 获取 SDCard 外部存储数码相机图片路径 - path /storage/emulated/0/DCIM |
-| getDCIMDir | 获取 SDCard 外部存储数码相机图片路径 - path /storage/emulated/0/DCIM |
-| getDocumentsPath | 获取 SDCard 外部存储文档路径 - path /storage/emulated/0/Documents |
-| getDocumentsDir | 获取 SDCard 外部存储文档路径 - path /storage/emulated/0/Documents |
-| getAudiobooksPath | 获取 SDCard 外部存储有声读物路径 - path /storage/emulated/0/Audiobooks |
-| getAudiobooksDir | 获取 SDCard 外部存储有声读物路径 - path /storage/emulated/0/Audiobooks |
-| getAppDataPath | 获取应用外部存储数据路径 - path /storage/emulated/0/Android/data/package |
-| getAppDataDir | 获取应用外部存储数据路径 - path /storage/emulated/0/Android/data/package |
-| getAppCachePath | 获取应用外部存储缓存路径 - path /storage/emulated/0/Android/data/package/cache |
-| getAppCacheDir | 获取应用外部存储缓存路径 - path /storage/emulated/0/Android/data/package/cache |
-| getExternalFilesPath | 获取应用外部存储文件路径 - path /storage/emulated/0/Android/data/package/files |
-| getExternalFilesDir | 获取应用外部存储文件路径 - path /storage/emulated/0/Android/data/package/files |
-| getAppFilesPath | 获取应用外部存储文件路径 - path /storage/emulated/0/Android/data/package/files |
-| getAppFilesDir | 获取应用外部存储文件路径 - path /storage/emulated/0/Android/data/package/files |
-| getAppMusicPath | 获取应用外部存储音乐路径 - path /storage/emulated/0/Android/data/package/files/Music |
-| getAppMusicDir | 获取应用外部存储音乐路径 - path /storage/emulated/0/Android/data/package/files/Music |
-| getAppPodcastsPath | 获取应用外部存储播客路径 - path /storage/emulated/0/Android/data/package/files/Podcasts |
-| getAppPodcastsDir | 获取应用外部存储播客路径 - path /storage/emulated/0/Android/data/package/files/Podcasts |
-| getAppRingtonesPath | 获取应用外部存储铃声路径 - path /storage/emulated/0/Android/data/package/files/Ringtones |
-| getAppRingtonesDir | 获取应用外部存储铃声路径 - path /storage/emulated/0/Android/data/package/files/Ringtones |
-| getAppAlarmsPath | 获取应用外部存储闹铃路径 - path /storage/emulated/0/Android/data/package/files/Alarms |
-| getAppAlarmsDir | 获取应用外部存储闹铃路径 - path /storage/emulated/0/Android/data/package/files/Alarms |
-| getAppNotificationsPath | 获取应用外部存储通知路径 - path /storage/emulated/0/Android/data/package/files/Notifications |
-| getAppNotificationsDir | 获取应用外部存储通知路径 - path /storage/emulated/0/Android/data/package/files/Notifications |
-| getAppPicturesPath | 获取应用外部存储图片路径 - path /storage/emulated/0/Android/data/package/files/Pictures |
-| getAppPicturesDir | 获取应用外部存储图片路径 - path /storage/emulated/0/Android/data/package/files/Pictures |
-| getAppMoviesPath | 获取应用外部存储影片路径 - path /storage/emulated/0/Android/data/package/files/Movies |
-| getAppMoviesDir | 获取应用外部存储影片路径 - path /storage/emulated/0/Android/data/package/files/Movies |
-| getAppDownloadPath | 获取应用外部存储下载路径 - path /storage/emulated/0/Android/data/package/files/Download |
-| getAppDownloadDir | 获取应用外部存储下载路径 - path /storage/emulated/0/Android/data/package/files/Download |
-| getAppDCIMPath | 获取应用外部存储数码相机图片路径 - path /storage/emulated/0/Android/data/package/files/DCIM |
-| getAppDCIMDir | 获取应用外部存储数码相机图片路径 - path /storage/emulated/0/Android/data/package/files/DCIM |
-| getAppDocumentsPath | 获取应用外部存储文档路径 - path /storage/emulated/0/Android/data/package/files/Documents |
-| getAppDocumentsDir | 获取应用外部存储文档路径 - path /storage/emulated/0/Android/data/package/files/Documents |
-| getAppAudiobooksPath | 获取应用外部存储有声读物路径 - path /storage/emulated/0/Android/data/package/files/Audiobooks |
-| getAppAudiobooksDir | 获取应用外部存储有声读物路径 - path /storage/emulated/0/Android/data/package/files/Audiobooks |
-| getAppObbPath | 获取应用外部存储 OBB 路径 - path /storage/emulated/0/Android/obb/package |
-| getAppObbDir | 获取应用外部存储 OBB 路径 - path /storage/emulated/0/Android/obb/package |
-| getRootPath | 获取 Android 系统根目录 - path /system |
-| getRootDirectory | 获取 Android 系统根目录 - path /system |
-| getDataPath | 获取 data 目录 - path /data |
-| getDataDirectory | 获取 data 目录 - path /data |
-| getDownloadCachePath | 获取下载缓存目录 - path data/cache |
-| getDownloadCacheDirectory | 获取下载缓存目录 - path data/cache |
-| getAppCodeCachePath | 获取应用内部存储代码缓存路径 - path /data/data/package/code_cache |
-| getAppCodeCacheDir | 获取应用内部存储代码缓存路径 - path /data/data/package/code_cache |
-| getAppDbsPath | 获取应用内部存储数据库路径 - path /data/data/package/databases |
-| getAppDbsDir | 获取应用内部存储数据库路径 - path /data/data/package/databases |
-| getAppDbPath | 获取应用内部存储数据库路径 - path /data/data/package/databases/name |
-| getAppDbFile | 获取应用内部存储数据库路径 - path /data/data/package/databases/name |
-| getAppSpPath | 获取应用内部存储 SP 路径 - path /data/data/package/shared_prefs |
-| getAppSpDir | 获取应用内部存储 SP 路径 - path /data/data/package/shared_prefs |
-| getAppSpFile | 获取应用内部存储 SP 路径 - path /data/data/package/shared_prefs |
-| getAppNoBackupFilesPath | 获取应用内部存储未备份文件路径 - path /data/data/package/no_backup |
-| getAppNoBackupFilesDir | 获取应用内部存储未备份文件路径 - path /data/data/package/no_backup |
+| getSDCardFile | 获取 SDCard 外部存储路径 ( path /storage/emulated/0/ ) |
+| getSDCardPath | 获取 SDCard 外部存储路径 ( path /storage/emulated/0/ ) |
+| getExternalStoragePublicPath | 获取 SDCard 外部存储文件路径 ( path /storage/emulated/0/ ) |
+| getExternalStoragePublicDir | 获取 SDCard 外部存储文件路径 ( path /storage/emulated/0/ ) |
+| getMusicPath | 获取 SDCard 外部存储音乐路径 ( path /storage/emulated/0/Music ) |
+| getMusicDir | 获取 SDCard 外部存储音乐路径 ( path /storage/emulated/0/Music ) |
+| getPodcastsPath | 获取 SDCard 外部存储播客路径 ( path /storage/emulated/0/Podcasts ) |
+| getPodcastsDir | 获取 SDCard 外部存储播客路径 ( path /storage/emulated/0/Podcasts ) |
+| getRingtonesPath | 获取 SDCard 外部存储铃声路径 ( path /storage/emulated/0/Ringtones ) |
+| getRingtonesDir | 获取 SDCard 外部存储铃声路径 ( path /storage/emulated/0/Ringtones ) |
+| getAlarmsPath | 获取 SDCard 外部存储闹铃路径 ( path /storage/emulated/0/Alarms ) |
+| getAlarmsDir | 获取 SDCard 外部存储闹铃路径 ( path /storage/emulated/0/Alarms ) |
+| getNotificationsPath | 获取 SDCard 外部存储通知路径 ( path /storage/emulated/0/Notifications ) |
+| getNotificationsDir | 获取 SDCard 外部存储通知路径 ( path /storage/emulated/0/Notifications ) |
+| getPicturesPath | 获取 SDCard 外部存储图片路径 ( path /storage/emulated/0/Pictures ) |
+| getPicturesDir | 获取 SDCard 外部存储图片路径 ( path /storage/emulated/0/Pictures ) |
+| getMoviesPath | 获取 SDCard 外部存储影片路径 ( path /storage/emulated/0/Movies ) |
+| getMoviesDir | 获取 SDCard 外部存储影片路径 ( path /storage/emulated/0/Movies ) |
+| getDownloadPath | 获取 SDCard 外部存储下载路径 ( path /storage/emulated/0/Download ) |
+| getDownloadDir | 获取 SDCard 外部存储下载路径 ( path /storage/emulated/0/Download ) |
+| getDCIMPath | 获取 SDCard 外部存储数码相机图片路径 ( path /storage/emulated/0/DCIM ) |
+| getDCIMDir | 获取 SDCard 外部存储数码相机图片路径 ( path /storage/emulated/0/DCIM ) |
+| getDocumentsPath | 获取 SDCard 外部存储文档路径 ( path /storage/emulated/0/Documents ) |
+| getDocumentsDir | 获取 SDCard 外部存储文档路径 ( path /storage/emulated/0/Documents ) |
+| getAudiobooksPath | 获取 SDCard 外部存储有声读物路径 ( path /storage/emulated/0/Audiobooks ) |
+| getAudiobooksDir | 获取 SDCard 外部存储有声读物路径 ( path /storage/emulated/0/Audiobooks ) |
+| getAppDataPath | 获取应用外部存储数据路径 ( path /storage/emulated/0/Android/data/package ) |
+| getAppDataDir | 获取应用外部存储数据路径 ( path /storage/emulated/0/Android/data/package ) |
+| getAppCachePath | 获取应用外部存储缓存路径 ( path /storage/emulated/0/Android/data/package/cache ) |
+| getAppCacheDir | 获取应用外部存储缓存路径 ( path /storage/emulated/0/Android/data/package/cache ) |
+| getExternalFilesPath | 获取应用外部存储文件路径 ( path /storage/emulated/0/Android/data/package/files ) |
+| getExternalFilesDir | 获取应用外部存储文件路径 ( path /storage/emulated/0/Android/data/package/files ) |
+| getAppFilesPath | 获取应用外部存储文件路径 ( path /storage/emulated/0/Android/data/package/files ) |
+| getAppFilesDir | 获取应用外部存储文件路径 ( path /storage/emulated/0/Android/data/package/files ) |
+| getAppMusicPath | 获取应用外部存储音乐路径 ( path /storage/emulated/0/Android/data/package/files/Music ) |
+| getAppMusicDir | 获取应用外部存储音乐路径 ( path /storage/emulated/0/Android/data/package/files/Music ) |
+| getAppPodcastsPath | 获取应用外部存储播客路径 ( path /storage/emulated/0/Android/data/package/files/Podcasts ) |
+| getAppPodcastsDir | 获取应用外部存储播客路径 ( path /storage/emulated/0/Android/data/package/files/Podcasts ) |
+| getAppRingtonesPath | 获取应用外部存储铃声路径 ( path /storage/emulated/0/Android/data/package/files/Ringtones ) |
+| getAppRingtonesDir | 获取应用外部存储铃声路径 ( path /storage/emulated/0/Android/data/package/files/Ringtones ) |
+| getAppAlarmsPath | 获取应用外部存储闹铃路径 ( path /storage/emulated/0/Android/data/package/files/Alarms ) |
+| getAppAlarmsDir | 获取应用外部存储闹铃路径 ( path /storage/emulated/0/Android/data/package/files/Alarms ) |
+| getAppNotificationsPath | 获取应用外部存储通知路径 ( path /storage/emulated/0/Android/data/package/files/Notifications ) |
+| getAppNotificationsDir | 获取应用外部存储通知路径 ( path /storage/emulated/0/Android/data/package/files/Notifications ) |
+| getAppPicturesPath | 获取应用外部存储图片路径 ( path /storage/emulated/0/Android/data/package/files/Pictures ) |
+| getAppPicturesDir | 获取应用外部存储图片路径 ( path /storage/emulated/0/Android/data/package/files/Pictures ) |
+| getAppMoviesPath | 获取应用外部存储影片路径 ( path /storage/emulated/0/Android/data/package/files/Movies ) |
+| getAppMoviesDir | 获取应用外部存储影片路径 ( path /storage/emulated/0/Android/data/package/files/Movies ) |
+| getAppDownloadPath | 获取应用外部存储下载路径 ( path /storage/emulated/0/Android/data/package/files/Download ) |
+| getAppDownloadDir | 获取应用外部存储下载路径 ( path /storage/emulated/0/Android/data/package/files/Download ) |
+| getAppDCIMPath | 获取应用外部存储数码相机图片路径 ( path /storage/emulated/0/Android/data/package/files/DCIM ) |
+| getAppDCIMDir | 获取应用外部存储数码相机图片路径 ( path /storage/emulated/0/Android/data/package/files/DCIM ) |
+| getAppDocumentsPath | 获取应用外部存储文档路径 ( path /storage/emulated/0/Android/data/package/files/Documents ) |
+| getAppDocumentsDir | 获取应用外部存储文档路径 ( path /storage/emulated/0/Android/data/package/files/Documents ) |
+| getAppAudiobooksPath | 获取应用外部存储有声读物路径 ( path /storage/emulated/0/Android/data/package/files/Audiobooks ) |
+| getAppAudiobooksDir | 获取应用外部存储有声读物路径 ( path /storage/emulated/0/Android/data/package/files/Audiobooks ) |
+| getAppObbPath | 获取应用外部存储 OBB 路径 ( path /storage/emulated/0/Android/obb/package ) |
+| getAppObbDir | 获取应用外部存储 OBB 路径 ( path /storage/emulated/0/Android/obb/package ) |
+| getRootPath | 获取 Android 系统根目录 ( path /system ) |
+| getRootDirectory | 获取 Android 系统根目录 ( path /system ) |
+| getDataPath | 获取 data 目录 ( path /data ) |
+| getDataDirectory | 获取 data 目录 ( path /data ) |
+| getDownloadCachePath | 获取下载缓存目录 ( path data/cache ) |
+| getDownloadCacheDirectory | 获取下载缓存目录 ( path data/cache ) |
+| getAppCodeCachePath | 获取应用内部存储代码缓存路径 ( path /data/data/package/code_cache ) |
+| getAppCodeCacheDir | 获取应用内部存储代码缓存路径 ( path /data/data/package/code_cache ) |
+| getAppDbsPath | 获取应用内部存储数据库路径 ( path /data/data/package/databases ) |
+| getAppDbsDir | 获取应用内部存储数据库路径 ( path /data/data/package/databases ) |
+| getAppDbPath | 获取应用内部存储数据库路径 ( path /data/data/package/databases/name ) |
+| getAppDbFile | 获取应用内部存储数据库路径 ( path /data/data/package/databases/name ) |
+| getAppSpPath | 获取应用内部存储 SP 路径 ( path /data/data/package/shared_prefs ) |
+| getAppSpDir | 获取应用内部存储 SP 路径 ( path /data/data/package/shared_prefs ) |
+| getAppSpFile | 获取应用内部存储 SP 路径 ( path /data/data/package/shared_prefs ) |
+| getAppNoBackupFilesPath | 获取应用内部存储未备份文件路径 ( path /data/data/package/no_backup ) |
+| getAppNoBackupFilesDir | 获取应用内部存储未备份文件路径 ( path /data/data/package/no_backup ) |
 
 
 * **手机相关工具类 ->** [PhoneUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/app/PhoneUtils.java)
@@ -1204,57 +1227,136 @@ DevUtils.openDebug();
 | killBackgroundProcesses | 杀死后台服务进程 |
 
 
+* **APK Resource 工具类 ->** [ResourcePluginUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/app/ResourcePluginUtils.java)
+
+| 方法 | 注释 |
+| :- | :- |
+| invokeByPackageName | 通过 packageName 获取 APK Resources |
+| invokeByAPKPath | 通过 APK 文件获取 APK Resources |
+| getResourceAssist | 获取 Resources 辅助类 |
+| getResources | 获取 Resources |
+| getPackageName | 获取 APK 包名 |
+| getAPKPath | 获取 APK 文件路径 |
+| getApkInfoItem | 获取 APK 信息 Item |
+| getDisplayMetrics | 获取 DisplayMetrics |
+| getConfiguration | 获取 Configuration |
+| getAssets | 获取 AssetManager |
+| getIdentifier | 获取资源 id |
+| getResourceName | 获取给定资源标识符的全名 |
+| getStringId | 获取 String id |
+| getString | 获取 String |
+| getDimenId | 获取 Dimension id |
+| getDimension | 获取 Dimension |
+| getDimensionInt | 获取 Dimension |
+| getColorId | 获取 Color id |
+| getColor | 获取 Color |
+| getDrawableId | 获取 Drawable id |
+| getDrawable | 获取 Drawable |
+| getNinePatchDrawable | 获取 .9 Drawable |
+| getBitmap | 获取 Bitmap |
+| getMipmapId | 获取 Mipmap id |
+| getDrawableMipmap | 获取 Mipmap Drawable |
+| getNinePatchDrawableMipmap | 获取 Mipmap .9 Drawable |
+| getBitmapMipmap | 获取 Mipmap Bitmap |
+| getAnimId | 获取 Anim id |
+| getAnimationXml | 获取 Animation Xml |
+| getAnimation | 获取 Animation |
+| getBooleanId | 获取 Boolean id |
+| getBoolean | 获取 Boolean |
+| getIntegerId | 获取 Integer id |
+| getInteger | 获取 Integer |
+| getArrayId | 获取 Array id |
+| getIntArray | 获取 int[] |
+| getStringArray | 获取 String[] |
+| getTextArray | 获取 CharSequence[] |
+| getId | 获取 id ( view ) |
+| getLayoutId | 获取 Layout id |
+| getMenuId | 获取 Menu id |
+| getRawId | 获取 Raw id |
+| getAttrId | 获取 Attr id |
+| getStyleId | 获取 Style id |
+| getStyleableId | 获取 Styleable id |
+| getAnimatorId | 获取 Animator id |
+| getXmlId | 获取 Xml id |
+| getInterpolatorId | 获取 Interpolator id |
+| getPluralsId | 获取 Plurals id |
+| getColorStateList | 获取 ColorStateList |
+| getColorDrawable | 获取十六进制颜色值 Drawable |
+| open | 获取 AssetManager 指定资源 InputStream |
+| openFd | 获取 AssetManager 指定资源 AssetFileDescriptor |
+| openNonAssetFd | 获取 AssetManager 指定资源 AssetFileDescriptor |
+| openRawResource | 获取对应资源 InputStream |
+| openRawResourceFd | 获取对应资源 AssetFileDescriptor |
+| readBytesFromAssets | 获取 Assets 资源文件数据 |
+| readStringFromAssets | 获取 Assets 资源文件数据 |
+| readBytesFromRaw | 获取 Raw 资源文件数据 |
+| readStringFromRaw | 获取 Raw 资源文件数据 |
+| geFileToListFromAssets | 获取 Assets 资源文件数据 ( 返回 List<String> 一行的全部内容属于一个索引 ) |
+| geFileToListFromRaw | 获取 Raw 资源文件数据 ( 返回 List<String> 一行的全部内容属于一个索引 ) |
+| saveAssetsFormFile | 获取 Assets 资源文件数据并保存到本地 |
+| saveRawFormFile | 获取 Raw 资源文件数据并保存到本地 |
+
+
 * **资源文件工具类 ->** [ResourceUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/app/ResourceUtils.java)
 
 | 方法 | 注释 |
 | :- | :- |
 | getResources | 获取 Resources |
 | getTheme | 获取 Resources.Theme |
-| getAssets | 获取 AssetManager |
 | getContentResolver | 获取 ContentResolver |
 | getDisplayMetrics | 获取 DisplayMetrics |
 | getConfiguration | 获取 Configuration |
-| getColorStateList | 获取 ColorStateList |
+| getAssets | 获取 AssetManager |
+| getIdentifier | 获取资源 id |
+| getResourceName | 获取给定资源标识符的全名 |
+| getStringId | 获取 String id |
 | getString | 获取 String |
-| getColor | 获取 Color |
-| getDrawable | 获取 Drawable |
-| getNinePatchDrawable | 获取 .9 Drawable |
-| getColorDrawable | 获取指定颜色 Drawable |
-| getBitmap | 获取 Bitmap |
+| getDimenId | 获取 Dimension id |
 | getDimension | 获取 Dimension |
 | getDimensionInt | 获取 Dimension |
-| getBoolean | 获取 Boolean |
-| getInteger | 获取 Integer |
+| getColorId | 获取 Color id |
+| getColor | 获取 Color |
+| getDrawableId | 获取 Drawable id |
+| getDrawable | 获取 Drawable |
+| getNinePatchDrawable | 获取 .9 Drawable |
+| getBitmap | 获取 Bitmap |
+| getMipmapId | 获取 Mipmap id |
+| getDrawableMipmap | 获取 Mipmap Drawable |
+| getNinePatchDrawableMipmap | 获取 Mipmap .9 Drawable |
+| getBitmapMipmap | 获取 Mipmap Bitmap |
+| getAnimId | 获取 Anim id |
+| getAnimationXml | 获取 Animation Xml |
 | getAnimation | 获取 Animation |
-| getResourceName | 获取给定资源标识符的全名 |
+| getBooleanId | 获取 Boolean id |
+| getBoolean | 获取 Boolean |
+| getIntegerId | 获取 Integer id |
+| getInteger | 获取 Integer |
+| getArrayId | 获取 Array id |
 | getIntArray | 获取 int[] |
 | getStringArray | 获取 String[] |
 | getTextArray | 获取 CharSequence[] |
-| getLayoutId | 获取 layout id |
-| getDrawableId | 获取 drawable id |
-| getMipmapId | 获取 mipmap id |
-| getMenuId | 获取 menu id |
-| getRawId | 获取 raw id |
-| getAnimId | 获取 anim id |
-| getColorId | 获取 color id |
-| getDimenId | 获取 dimen id |
-| getAttrId | 获取 attr id |
-| getStyleId | 获取 style id |
-| getStyleableId | 获取 styleable id |
-| getId | 获取 id |
-| getStringId | 获取 string id |
-| getBoolId | 获取 bool id |
-| getIntegerId | 获取 integer id |
-| getIdentifier | 获取资源 id |
+| getId | 获取 id ( view ) |
+| getLayoutId | 获取 Layout id |
+| getMenuId | 获取 Menu id |
+| getRawId | 获取 Raw id |
+| getAttrId | 获取 Attr id |
+| getStyleId | 获取 Style id |
+| getStyleableId | 获取 Styleable id |
+| getAnimatorId | 获取 Animator id |
+| getXmlId | 获取 Xml id |
+| getInterpolatorId | 获取 Interpolator id |
+| getPluralsId | 获取 Plurals id |
+| getColorStateList | 获取 ColorStateList |
+| getColorDrawable | 获取十六进制颜色值 Drawable |
+| openInputStream | 获取 Uri InputStream |
+| openOutputStream | 获取 Uri OutputStream |
+| openFileDescriptor | 获取 Uri ParcelFileDescriptor |
+| openAssetFileDescriptor | 获取 Uri AssetFileDescriptor |
 | open | 获取 AssetManager 指定资源 InputStream |
 | openFd | 获取 AssetManager 指定资源 AssetFileDescriptor |
 | openNonAssetFd | 获取 AssetManager 指定资源 AssetFileDescriptor |
 | openRawResource | 获取对应资源 InputStream |
 | openRawResourceFd | 获取对应资源 AssetFileDescriptor |
-| openInputStream | 获取 Uri InputStream |
-| openOutputStream | 获取 Uri OutputStream |
-| openFileDescriptor | 获取 Uri ParcelFileDescriptor |
-| openAssetFileDescriptor | 获取 Uri AssetFileDescriptor |
 | readBytesFromAssets | 获取 Assets 资源文件数据 |
 | readStringFromAssets | 获取 Assets 资源文件数据 |
 | readBytesFromRaw | 获取 Raw 资源文件数据 |
@@ -1292,6 +1394,24 @@ DevUtils.openDebug();
 | getRomInfo | 获取 ROM 信息 |
 
 
+* **截图监听工具类 ->** [ScreenshotUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/app/ScreenshotUtils.java)
+
+| 方法 | 注释 |
+| :- | :- |
+| getInstance | 获取 ScreenshotUtils 实例 |
+| getStartListenTime | 获取开始监听时间 |
+| isCheckPrefix | 是否判断文件名前缀 |
+| setCheckPrefix | 设置是否判断文件名前缀 |
+| getScreenshotChecker | 获取截图校验接口 |
+| setScreenshotChecker | 设置截图校验接口 |
+| getListener | 获取截图校验成功回调接口 |
+| setListener | 设置截图校验成功回调接口 |
+| startListen | 启动截图监听 |
+| stopListen | 停止截图监听 |
+| handleMediaContentChange | 内容变更处理 |
+| handleMediaChecker | 内容校验处理 |
+
+
 * **屏幕相关工具类 ->** [ScreenUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/app/ScreenUtils.java)
 
 | 方法 | 注释 |
@@ -1302,7 +1422,7 @@ DevUtils.openDebug();
 | getScreenWidthHeight | 获取屏幕宽高 |
 | getScreenWidthHeightToPoint | 获取屏幕宽高 |
 | getScreenSize | 获取屏幕分辨率 |
-| getScreenSizeOfDevice | 获取屏幕英寸 - 例 5.5 英寸 |
+| getScreenSizeOfDevice | 获取屏幕英寸 ( 例 5.5 英寸 ) |
 | getDensity | 获取屏幕密度 |
 | getDensityDpi | 获取屏幕密度 dpi |
 | getScaledDensity | 获取屏幕缩放密度 |
@@ -1335,8 +1455,8 @@ DevUtils.openDebug();
 | 方法 | 注释 |
 | :- | :- |
 | isSDCardEnable | 判断 SDCard 是否正常挂载 |
-| getSDCardFile | 获取 SDCard 外部存储路径 - path /storage/emulated/0/ |
-| getSDCardPath | 获取 SDCard 外部存储路径 - path /storage/emulated/0/ |
+| getSDCardFile | 获取 SDCard 外部存储路径 ( path /storage/emulated/0/ ) |
+| getSDCardPath | 获取 SDCard 外部存储路径 ( path /storage/emulated/0/ ) |
 | isSDCardEnablePath | 判断 SDCard 是否可用 |
 | getSDCardPaths | 获取 SDCard 路径 |
 | getAllBlockSize | 获取内置 SDCard 空间总大小 |
@@ -1366,20 +1486,29 @@ DevUtils.openDebug();
 | :- | :- |
 | getDrawable | 获取 GradientDrawable |
 | setDrawable | 设置 Drawable 背景 |
-| newBuilder | 创建新的 Shape Builder 对象 |
-| newBuilderToLeft | 创建新的 Shape Builder 对象 |
-| newBuilderToRight | 创建新的 Shape Builder 对象 |
-| newBuilderToGradient | 创建渐变的 Shape Builder 对象 |
-| build | build ShapeUtils 对象 |
-| setRadius | 设置圆角 |
-| setRadiusLeft | 设置圆角 |
-| setRadiusRight | 设置圆角 |
-| setCornerRadii | 设置圆角 ( 统一处理方法 ) |
-| setColor | 设置背景色 ( 填充铺满 ) |
-| setStroke | 设置边框颜色 |
-| setSize | 设置大小 |
-| setPadding | 设置边距 |
 | getOrientation | 获取渐变角度 |
+| newShape | 创建 Shape |
+| setAlpha | 设置透明度 |
+| setShape | 设置形状类型 |
+| setInnerRadius | 设置内环半径 |
+| setInnerRadiusRatio | 设置内环半径相对于环的宽度比例 |
+| setThickness | 设置环厚度 |
+| setThicknessRatio | 设置环厚度相对于环的宽度比例 |
+| setColor | 设置背景填充颜色 |
+| setStroke | 设置描边 |
+| setCornerRadius | 设置圆角 |
+| setCornerRadiusLeft | 设置 leftTop、leftBottom 圆角 |
+| setCornerRadiusRight | 设置 rightTop、rightBottom 圆角 |
+| setCornerRadiusTop | 设置 leftTop、rightTop 圆角 |
+| setCornerRadiusBottom | 设置 leftBottom、rightBottom 圆角 |
+| setColors | 设置渐变颜色 |
+| setGradientType | 设置渐变类型 |
+| setOrientation | 设置渐变角度 |
+| setGradientCenter | 设置渐变中心坐标值 |
+| setGradientRadius | 设置渐变色半径 |
+| setUseLevel | 是否使用 LevelListDrawable |
+| setPadding | 设置内边距 |
+| setSize | 设置 shape drawable 宽高 |
 
 
 * **Shell 命令工具类 ->** [ShellUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/app/ShellUtils.java)
@@ -1418,7 +1547,7 @@ DevUtils.openDebug();
 | getCertificateFromApk | 从 APK 中读取签名 |
 
 
-* **大小工具类 (dp, px, sp 转换、View 获取宽高等 ) ->** [SizeUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/app/SizeUtils.java)
+* **大小工具类 ( dp, px, sp 转换、View 获取宽高等 ) ->** [SizeUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/app/SizeUtils.java)
 
 | 方法 | 注释 |
 | :- | :- |
@@ -1430,8 +1559,8 @@ DevUtils.openDebug();
 | spConvertPxf | sp 转 px (float) |
 | pxConvertSp | px 转 sp |
 | pxConvertSpf | px 转 sp (float) |
-| applyDimension | 各种单位转换 - 该方法存在于 TypedValue.applyDimension |
-| forceGetViewSize | 在 onCreate 中获取视图的尺寸 - 需回调 onGetSizeListener 接口, 在 onGetSize 中获取 View 宽高 |
+| applyDimension | 各种单位转换 ( 该方法存在于 TypedValue.applyDimension ) |
+| forceGetViewSize | 在 onCreate 中获取视图的尺寸 ( 需回调 onGetSizeListener 接口, 在 onGetSize 中获取 View 宽高 ) |
 | measureView | 测量 View |
 | getMeasuredWidth | 获取 View 的宽度 |
 | getMeasuredHeight | 获取 View 的高度 |
@@ -1448,6 +1577,8 @@ DevUtils.openDebug();
 | getSnackbarView | 获取 Snackbar View |
 | getTextView | 获取 Snackbar TextView(snackbar_text) |
 | getActionButton | 获取 Snackbar Action Button(snackbar_action) |
+| getSnackbarLayout | 获取 Snackbar.SnackbarLayout ( FrameLayout ) |
+| getSnackbarContentLayout | 获取 SnackbarContentLayout ( LinearLayout ( messageView、actionView ) ) |
 | addView | 向 Snackbar 布局中添加 View ( Google 不建议, 复杂的布局应该使用 DialogFragment 进行展示 ) |
 | setCallback | 设置 Snackbar 展示完成、隐藏完成 的监听 |
 | setAction | 设置 Action 按钮文字内容及点击监听 |
@@ -1464,11 +1595,11 @@ DevUtils.openDebug();
 | bellow | 设置 Snackbar 显示在指定 View 的下方 |
 
 
-* **SpannableString 工具类 ->** [SpannableStringUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/app/SpannableStringUtils.java)
+* **SpannableString 工具类 ->** [SpanUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/app/SpanUtils.java)
 
 | 方法 | 注释 |
 | :- | :- |
-| with | 获取持有 TextView SpannableStringUtils |
+| with | 获取持有 TextView SpannableString Utils |
 | setFlag | 设置标识 |
 | setForegroundColor | 设置前景色 |
 | setBackgroundColor | 设置背景色 |
@@ -1535,13 +1666,13 @@ DevUtils.openDebug();
 | setHtmlTexts | 设置多个 TextView Html 内容 |
 | getTypeface | 获取字体 |
 | setTypeface | 设置字体 |
-| setTextSizeByPx | 设置字体大小 - px 像素 |
-| setTextSizeBySp | 设置字体大小 - sp 缩放像素 |
-| setTextSizeByDp | 设置字体大小 - dp 与设备无关的像素 |
-| setTextSizeByIn | 设置字体大小 - inches 英寸 |
+| setTextSizeByPx | 设置字体大小 ( px 像素 ) |
+| setTextSizeBySp | 设置字体大小 ( sp 缩放像素 ) |
+| setTextSizeByDp | 设置字体大小 ( dp 与设备无关的像素 ) |
+| setTextSizeByIn | 设置字体大小 ( inches 英寸 ) |
 | setTextSize | 设置字体大小 |
 | setTextSizes | 设置多个 TextView 字体大小 |
-| getTextSize | 获取 TextView 字体大小 - px |
+| getTextSize | 获取 TextView 字体大小 ( px ) |
 | clearFlags | 清空 flags |
 | setPaintFlags | 设置 TextView flags |
 | setAntiAliasFlag | 设置 TextView 抗锯齿 flags |
@@ -1600,11 +1731,11 @@ DevUtils.openDebug();
 | setCompoundDrawablesByRight | 设置 Right CompoundDrawables |
 | setCompoundDrawablesByBottom | 设置 Bottom CompoundDrawables |
 | setCompoundDrawables | 设置 CompoundDrawables |
-| setCompoundDrawablesWithIntrinsicBoundsByLeft | 设置 Left CompoundDrawables - 按照原有比例大小显示图片 |
-| setCompoundDrawablesWithIntrinsicBoundsByTop | 设置 Top CompoundDrawables - 按照原有比例大小显示图片 |
-| setCompoundDrawablesWithIntrinsicBoundsByRight | 设置 Right CompoundDrawables - 按照原有比例大小显示图片 |
-| setCompoundDrawablesWithIntrinsicBoundsByBottom | 设置 Bottom CompoundDrawables - 按照原有比例大小显示图片 |
-| setCompoundDrawablesWithIntrinsicBounds | 设置 CompoundDrawables - 按照原有比例大小显示图片 |
+| setCompoundDrawablesWithIntrinsicBoundsByLeft | 设置 Left CompoundDrawables ( 按照原有比例大小显示图片 ) |
+| setCompoundDrawablesWithIntrinsicBoundsByTop | 设置 Top CompoundDrawables ( 按照原有比例大小显示图片 ) |
+| setCompoundDrawablesWithIntrinsicBoundsByRight | 设置 Right CompoundDrawables ( 按照原有比例大小显示图片 ) |
+| setCompoundDrawablesWithIntrinsicBoundsByBottom | 设置 Bottom CompoundDrawables ( 按照原有比例大小显示图片 ) |
+| setCompoundDrawablesWithIntrinsicBounds | 设置 CompoundDrawables ( 按照原有比例大小显示图片 ) |
 
 
 * **Uri 工具类 ->** [UriUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/app/UriUtils.java)
@@ -1616,6 +1747,7 @@ DevUtils.openDebug();
 | getUriForFileToName | 获取 FileProvider File Path Uri ( 自动添加包名 ${applicationId} ) |
 | isUriExists | 判断 Uri 路径资源是否存在 |
 | getMediaUri | 通过 File 获取 Media Uri |
+| copyByUri | 通过 Uri 复制文件 |
 | getFilePathByUri | 通过 Uri 获取文件路径 |
 | isExternalStorageDocument | 判读 Uri authority 是否为 ExternalStorage Provider |
 | isDownloadsDocument | 判读 Uri authority 是否为 Downloads Provider |
@@ -1667,8 +1799,8 @@ DevUtils.openDebug();
 | setAlpha | 设置 View 透明度 |
 | getTag | 获取 View Tag |
 | setTag | 设置 View Tag |
-| scrollTo | View 内容滚动位置 - 相对于初始位置移动 |
-| scrollBy | View 内部滚动位置 - 相对于上次移动的最后位置移动 |
+| scrollTo | View 内容滚动位置 ( 相对于初始位置移动 ) |
+| scrollBy | View 内部滚动位置 ( 相对于上次移动的最后位置移动 ) |
 | setScrollX | 设置 View 滑动的 X 轴坐标 |
 | setScrollY | 设置 View 滑动的 Y 轴坐标 |
 | getScrollX | 获取 View 滑动的 X 轴坐标 |
@@ -1792,7 +1924,7 @@ DevUtils.openDebug();
 | getAnimation | 获取动画 |
 | clearAnimation | 清空动画 |
 | startAnimation | 启动动画 |
-| cancel | 取消动画 |
+| cancelAnimation | 取消动画 |
 | setBackground | 设置背景图片 |
 | setBackgroundColor | 设置背景颜色 |
 | setBackgroundResource | 设置背景资源 |
@@ -1838,7 +1970,7 @@ DevUtils.openDebug();
 | getAnimation | 获取动画 |
 | clearAnimation | 清空动画 |
 | startAnimation | 启动动画 |
-| cancel | 取消动画 |
+| cancelAnimation | 取消动画 |
 | getRotateAnimation | 获取一个旋转动画 |
 | getRotateAnimationByCenter | 获取一个根据视图自身中心点旋转的动画 |
 | getAlphaAnimation | 获取一个透明度渐变动画 |
@@ -1852,13 +1984,13 @@ DevUtils.openDebug();
 | getShakeAnimation | 获取一个视图摇晃动画 |
 
 
-* **视图动画工具类 (AnimationUtils 基础上封装 ), 提供简单的控制视图的动画的工具方法 ->** [ViewAnimationUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/app/anim/ViewAnimationUtils.java)
+* **View 动画工具类 ->** [ViewAnimationUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/app/anim/ViewAnimationUtils.java)
 
 | 方法 | 注释 |
 | :- | :- |
-| invisibleViewByAlpha | 将给定视图渐渐隐去 - view.setVisibility(View.INVISIBLE) |
-| goneViewByAlpha | 将给定视图渐渐隐去最后从界面中移除 - view.setVisibility(View.GONE) |
-| visibleViewByAlpha | 将给定视图渐渐显示出来 - view.setVisibility(View.VISIBLE) |
+| invisibleViewByAlpha | 将给定视图渐渐隐去 |
+| goneViewByAlpha | 将给定视图渐渐隐去最后从界面中移除 |
+| visibleViewByAlpha | 将给定视图渐渐显示出来 |
 | translate | 视图移动 |
 | shake | 视图摇晃 |
 
@@ -1886,6 +2018,84 @@ DevUtils.openDebug();
 | onPause | 暂停检测 |
 | onResume | 回到 Activity 处理 |
 | onDestroy | Activity 销毁处理 |
+
+
+* **Resources 辅助类 ->** [ResourceAssist.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/app/assist/ResourceAssist.java)
+
+| 方法 | 注释 |
+| :- | :- |
+| getInstance | 获取 ResourceAssist 实例 |
+| get | 获取 ResourceAssist |
+| staticResources | 获取 Resources |
+| staticTheme | 获取 Resources.Theme |
+| staticContentResolver | 获取 ContentResolver |
+| staticDisplayMetrics | 获取 DisplayMetrics |
+| staticConfiguration | 获取 Configuration |
+| staticAssets | 获取 AssetManager |
+| reset | 重置操作 |
+| getPackageName | 获取应用包名 |
+| getResources | 获取 Resources |
+| getDisplayMetrics | 获取 DisplayMetrics |
+| getConfiguration | 获取 Configuration |
+| getAssets | 获取 AssetManager |
+| getIdentifier | 获取资源 id |
+| getResourceName | 获取给定资源标识符的全名 |
+| getStringId | 获取 String id |
+| getString | 获取 String |
+| getDimenId | 获取 Dimension id |
+| getDimension | 获取 Dimension |
+| getDimensionInt | 获取 Dimension |
+| getColorId | 获取 Color id |
+| getColor | 获取 Color |
+| getDrawableId | 获取 Drawable id |
+| getDrawable | 获取 Drawable |
+| getNinePatchDrawable | 获取 .9 Drawable |
+| getBitmap | 获取 Bitmap |
+| getMipmapId | 获取 Mipmap id |
+| getDrawableMipmap | 获取 Mipmap Drawable |
+| getNinePatchDrawableMipmap | 获取 Mipmap .9 Drawable |
+| getBitmapMipmap | 获取 Mipmap Bitmap |
+| getAnimId | 获取 Anim id |
+| getAnimationXml | 获取 Animation Xml |
+| getAnimation | 获取 Animation |
+| getBooleanId | 获取 Boolean id |
+| getBoolean | 获取 Boolean |
+| getIntegerId | 获取 Integer id |
+| getInteger | 获取 Integer |
+| getArrayId | 获取 Array id |
+| getIntArray | 获取 int[] |
+| getStringArray | 获取 String[] |
+| getTextArray | 获取 CharSequence[] |
+| getId | 获取 id ( view ) |
+| getLayoutId | 获取 Layout id |
+| getMenuId | 获取 Menu id |
+| getRawId | 获取 Raw id |
+| getAttrId | 获取 Attr id |
+| getStyleId | 获取 Style id |
+| getStyleableId | 获取 Styleable id |
+| getAnimatorId | 获取 Animator id |
+| getXmlId | 获取 Xml id |
+| getInterpolatorId | 获取 Interpolator id |
+| getPluralsId | 获取 Plurals id |
+| getColorStateList | 获取 ColorStateList |
+| getColorDrawable | 获取十六进制颜色值 Drawable |
+| openInputStream | 获取 Uri InputStream |
+| openOutputStream | 获取 Uri OutputStream |
+| openFileDescriptor | 获取 Uri ParcelFileDescriptor |
+| openAssetFileDescriptor | 获取 Uri AssetFileDescriptor |
+| open | 获取 AssetManager 指定资源 InputStream |
+| openFd | 获取 AssetManager 指定资源 AssetFileDescriptor |
+| openNonAssetFd | 获取 AssetManager 指定资源 AssetFileDescriptor |
+| openRawResource | 获取对应资源 InputStream |
+| openRawResourceFd | 获取对应资源 AssetFileDescriptor |
+| readBytesFromAssets | 获取 Assets 资源文件数据 |
+| readStringFromAssets | 获取 Assets 资源文件数据 |
+| readBytesFromRaw | 获取 Raw 资源文件数据 |
+| readStringFromRaw | 获取 Raw 资源文件数据 |
+| geFileToListFromAssets | 获取 Assets 资源文件数据 ( 返回 List<String> 一行的全部内容属于一个索引 ) |
+| geFileToListFromRaw | 获取 Raw 资源文件数据 ( 返回 List<String> 一行的全部内容属于一个索引 ) |
+| saveAssetsFormFile | 获取 Assets 资源文件数据并保存到本地 |
+| saveRawFormFile | 获取 Raw 资源文件数据并保存到本地 |
 
 
 * **屏幕传感器辅助类 ( 监听是否横竖屏 ) ->** [ScreenSensorAssist.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/app/assist/ScreenSensorAssist.java)
@@ -1939,7 +2149,7 @@ DevUtils.openDebug();
 
 | 方法 | 注释 |
 | :- | :- |
-| obtain | 获取 DevCache - 默认缓存文件名 |
+| newCache | 获取 DevCache ( 默认缓存文件名 ) |
 | put | 保存 String 数据到缓存中 |
 | getAsString | 读取 String 数据 |
 | getAsJSONObject | 读取 JSONObject 数据 |
@@ -2027,26 +2237,27 @@ DevUtils.openDebug();
 | get | 获取单例 DevHelper |
 | viewHelper | 获取 ViewHelper |
 | devHelper | 获取 DevHelper |
+| quickHelper | 获取 QuickHelper |
 | postRunnable | 在主线程 Handler 中执行任务 |
 | removeRunnable | 在主线程 Handler 中清除任务 |
 | startTimer | 运行定时器 |
 | closeTimer | 关闭定时器 |
 | recycle | Bitmap 通知回收 |
-| saveBitmapToSDCardJPEG | 保存图片到 SDCard - JPEG |
-| saveBitmapToSDCardPNG | 保存图片到 SDCard - PNG |
-| saveBitmapToSDCardWEBP | 保存图片到 SDCard - WEBP |
+| saveBitmapToSDCardJPEG | 保存图片到 SDCard ( JPEG ) |
+| saveBitmapToSDCardPNG | 保存图片到 SDCard ( PNG ) |
+| saveBitmapToSDCardWEBP | 保存图片到 SDCard ( WEBP ) |
 | saveBitmapToSDCard | 保存图片到 SDCard |
 | addTextChangedListener | 添加输入监听事件 |
 | removeTextChangedListener | 移除输入监听事件 |
 | setKeyListener | 设置 KeyListener |
 | record | 日志记录 |
-| cleanAppCache | 清除内部缓存 - path /data/data/package/cache |
-| cleanAppFiles | 清除内部文件 - path /data/data/package/files |
-| cleanAppDbs | 清除内部数据库 - path /data/data/package/databases |
-| cleanAppDbByName | 根据名称清除数据库 - path /data/data/package/databases/dbName |
-| cleanAppSp | 清除内部 SP - path /data/data/package/shared_prefs |
-| cleanCache | 清除外部缓存 - path /storage/emulated/0/android/data/package/cache |
-| cleanCustomDir | 清除自定义路径下的文件, 使用需小心请不要误删, 而且只支持目录下的文件删除 |
+| cleanAppCache | 清除内部缓存 ( path /data/data/package/cache ) |
+| cleanAppFiles | 清除内部文件 ( path /data/data/package/files ) |
+| cleanAppDbs | 清除内部数据库 ( path /data/data/package/databases ) |
+| cleanAppDbByName | 根据名称清除数据库 ( path /data/data/package/databases/dbName ) |
+| cleanAppSp | 清除内部 SP ( path /data/data/package/shared_prefs ) |
+| cleanCache | 清除外部缓存 ( path /storage/emulated/0/android/data/package/cache ) |
+| cleanCustomDir | 清除自定义路径下的文件 |
 | cleanApplicationData | 清除本应用所有的数据 |
 | copyText | 复制文本到剪贴板 |
 | copyUri | 复制 URI 到剪贴板 |
@@ -2061,7 +2272,7 @@ DevUtils.openDebug();
 | autoClosePopupWindow | 自动关闭 PopupWindow |
 | openKeyboard | 打开软键盘 |
 | closeKeyboard | 关闭软键盘 |
-| closeKeyBoardSpecial | 关闭软键盘 - 特殊处理 |
+| closeKeyBoardSpecial | 关闭软键盘 |
 | judgeView | 设置某个 View 内所有非 EditText 的子 View OnTouchListener 事件 |
 | registerSoftInputChangedListener | 注册软键盘改变监听 |
 | registerSoftInputChangedListener2 | 注册软键盘改变监听 |
@@ -2070,8 +2281,8 @@ DevUtils.openDebug();
 | setOnLongClicks | 设置长按事件 |
 | setOnTouchs | 设置触摸事件 |
 | addTouchArea | 增加控件的触摸范围, 最大范围只能是父布局所包含的的区域 |
-| cancelAllNotification | 移除通知 - 移除所有通知 ( 只是针对当前 Context 下的 Notification) |
-| cancelNotification | 移除通知 - 移除标记为 id 的通知 ( 只是针对当前 Context 下的所有 Notification) |
+| cancelAllNotification | 移除通知 ( 移除所有通知 ) |
+| cancelNotification | 移除通知 ( 移除标记为 id 的通知 ) |
 | notifyNotification | 进行通知 |
 | saveAssetsFormFile | 获取 Assets 资源文件数据并保存到本地 |
 | saveRawFormFile | 获取 Raw 资源文件数据并保存到本地 |
@@ -2081,12 +2292,16 @@ DevUtils.openDebug();
 | setLandscape | 设置屏幕为横屏 |
 | setPortrait | 设置屏幕为竖屏 |
 | toggleScreenOrientation | 切换屏幕方向 |
-| forceGetViewSize | 在 onCreate 中获取视图的尺寸 - 需回调 onGetSizeListener 接口, 在 onGetSize 中获取 View 宽高 |
+| forceGetViewSize | 在 onCreate 中获取视图的尺寸 ( 需回调 onGetSizeListener 接口, 在 onGetSize 中获取 View 宽高 ) |
 | vibrate | 震动 |
 | cancel | 取消震动 |
 | closeIO | 关闭 IO |
 | closeIOQuietly | 安静关闭 IO |
-| getNetTime | 获取网络时间 - 默认使用百度链接 |
+| flush | 将缓冲区数据输出 |
+| flushQuietly | 安静将缓冲区数据输出 |
+| flushCloseIO | 将缓冲区数据输出并关闭流 |
+| flushCloseIOQuietly | 安静将缓冲区数据输出并关闭流 |
+| getNetTime | 获取网络时间 ( 默认使用百度链接 ) |
 | waitForEndAsyn | 设置等待一段时间后, 通知方法 ( 异步 ) |
 | waitForEnd | 设置等待一段时间后, 通知方法 ( 同步 ) |
 | setAnimationListener | 设置动画事件 |
@@ -2100,6 +2315,7 @@ DevUtils.openDebug();
 | getView | 获取 View |
 | viewHelper | 获取 ViewHelper |
 | devHelper | 获取 DevHelper |
+| quickHelper | 获取 QuickHelper |
 | postRunnable | 在主线程 Handler 中执行任务 |
 | removeRunnable | 在主线程 Handler 中清除任务 |
 | setHint | 设置 Hint 文本 |
@@ -2108,10 +2324,10 @@ DevUtils.openDebug();
 | setHintTextColor | 设置 Hint 字体颜色 |
 | setTextColor | 设置字体颜色 |
 | setTypeface | 设置字体 |
-| setTextSizeByPx | 设置字体大小 - px 像素 |
-| setTextSizeBySp | 设置字体大小 - sp 缩放像素 |
-| setTextSizeByDp | 设置字体大小 - dp 与设备无关的像素 |
-| setTextSizeByIn | 设置字体大小 - inches 英寸 |
+| setTextSizeByPx | 设置字体大小 ( px 像素 ) |
+| setTextSizeBySp | 设置字体大小 ( sp 缩放像素 ) |
+| setTextSizeByDp | 设置字体大小 ( dp 与设备无关的像素 ) |
+| setTextSizeByIn | 设置字体大小 ( inches 英寸 ) |
 | setTextSize | 设置字体大小 |
 | clearFlags | 清空 flags |
 | setPaintFlags | 设置 TextView flags |
@@ -2179,8 +2395,8 @@ DevUtils.openDebug();
 | setMinimumWidth | 设置 View 最小宽度 |
 | setAlpha | 设置 View 透明度 |
 | setTag | 设置 View Tag |
-| scrollTo | View 内容滚动位置 - 相对于初始位置移动 |
-| scrollBy | View 内部滚动位置 - 相对于上次移动的最后位置移动 |
+| scrollTo | View 内容滚动位置 ( 相对于初始位置移动 ) |
+| scrollBy | View 内部滚动位置 ( 相对于上次移动的最后位置移动 ) |
 | setDescendantFocusability | 设置 ViewGroup 和其子控件两者之间的关系 |
 | setOverScrollMode | 设置 View 滚动模式 |
 | setHorizontalScrollBarEnabled | 设置是否绘制横向滚动条 |
@@ -2241,16 +2457,17 @@ DevUtils.openDebug();
 | setCompoundDrawablesByRight | 设置 Right CompoundDrawables |
 | setCompoundDrawablesByBottom | 设置 Bottom CompoundDrawables |
 | setCompoundDrawables | 设置 CompoundDrawables |
-| setCompoundDrawablesWithIntrinsicBoundsByLeft | 设置 Left CompoundDrawables - 按照原有比例大小显示图片 |
-| setCompoundDrawablesWithIntrinsicBoundsByTop | 设置 Top CompoundDrawables - 按照原有比例大小显示图片 |
-| setCompoundDrawablesWithIntrinsicBoundsByRight | 设置 Right CompoundDrawables - 按照原有比例大小显示图片 |
-| setCompoundDrawablesWithIntrinsicBoundsByBottom | 设置 Bottom CompoundDrawables - 按照原有比例大小显示图片 |
-| setCompoundDrawablesWithIntrinsicBounds | 设置 CompoundDrawables - 按照原有比例大小显示图片 |
+| setCompoundDrawablesWithIntrinsicBoundsByLeft | 设置 Left CompoundDrawables ( 按照原有比例大小显示图片 ) |
+| setCompoundDrawablesWithIntrinsicBoundsByTop | 设置 Top CompoundDrawables ( 按照原有比例大小显示图片 ) |
+| setCompoundDrawablesWithIntrinsicBoundsByRight | 设置 Right CompoundDrawables ( 按照原有比例大小显示图片 ) |
+| setCompoundDrawablesWithIntrinsicBoundsByBottom | 设置 Bottom CompoundDrawables ( 按照原有比例大小显示图片 ) |
+| setCompoundDrawablesWithIntrinsicBounds | 设置 CompoundDrawables ( 按照原有比例大小显示图片 ) |
 | addRule | 设置 RelativeLayout View 布局规则 |
 | removeRule | 移除 RelativeLayout View 布局规则 |
 | setAnimation | 设置动画 |
 | clearAnimation | 清空动画 |
 | startAnimation | 启动动画 |
+| cancelAnimation | 取消动画 |
 | setOnClicks | 设置点击事件 |
 | setOnLongClicks | 设置长按事件 |
 | setOnTouchs | 设置触摸事件 |
@@ -2261,13 +2478,13 @@ DevUtils.openDebug();
 | scrollToTop | 滑动到顶部 ( 无滚动过程 ) |
 | smoothScrollToBottom | 滑动到底部 ( 有滚动过程 ) |
 | scrollToBottom | 滑动到底部 ( 无滚动过程 ) |
-| smoothScrollTo | 滚动到指定位置 ( 有滚动过程 ) - 相对于初始位置移动 |
-| smoothScrollBy | 滚动到指定位置 ( 有滚动过程 ) - 相对于上次移动的最后位置移动 |
+| smoothScrollTo | 滚动到指定位置 ( 有滚动过程, 相对于初始位置移动 ) |
+| smoothScrollBy | 滚动到指定位置 ( 有滚动过程, 相对于上次移动的最后位置移动 ) |
 | fullScroll | 滚动方向 ( 有滚动过程 ) |
 | openKeyboard | 打开软键盘 |
 | closeKeyboard | 关闭软键盘 |
-| closeKeyBoardSpecial | 关闭软键盘 - 特殊处理 |
-| forceGetViewSize | 在 onCreate 中获取视图的尺寸 - 需回调 onGetSizeListener 接口, 在 onGetSize 中获取 View 宽高 |
+| closeKeyBoardSpecial | 关闭软键盘 |
+| forceGetViewSize | 在 onCreate 中获取视图的尺寸 ( 需回调 onGetSizeListener 接口, 在 onGetSize 中获取 View 宽高 ) |
 
 
 * **View 链式调用快捷设置 Helper 类 ->** [ViewHelper.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/app/helper/ViewHelper.java)
@@ -2277,6 +2494,7 @@ DevUtils.openDebug();
 | get | 获取单例 ViewHelper |
 | viewHelper | 获取 ViewHelper |
 | devHelper | 获取 DevHelper |
+| quickHelper | 获取 QuickHelper |
 | postRunnable | 在主线程 Handler 中执行任务 |
 | removeRunnable | 在主线程 Handler 中清除任务 |
 | setHint | 设置 Hint 文本 |
@@ -2289,10 +2507,10 @@ DevUtils.openDebug();
 | setTextColor | 设置字体颜色 |
 | setTextColors | 设置多个 TextView 字体颜色 |
 | setTypeface | 设置字体 |
-| setTextSizeByPx | 设置字体大小 - px 像素 |
-| setTextSizeBySp | 设置字体大小 - sp 缩放像素 |
-| setTextSizeByDp | 设置字体大小 - dp 与设备无关的像素 |
-| setTextSizeByIn | 设置字体大小 - inches 英寸 |
+| setTextSizeByPx | 设置字体大小 ( px 像素 ) |
+| setTextSizeBySp | 设置字体大小 ( sp 缩放像素 ) |
+| setTextSizeByDp | 设置字体大小 ( dp 与设备无关的像素 ) |
+| setTextSizeByIn | 设置字体大小 ( inches 英寸 ) |
 | setTextSize | 设置字体大小 |
 | setTextSizes | 设置多个 TextView 字体大小 |
 | clearFlags | 清空 flags |
@@ -2361,8 +2579,8 @@ DevUtils.openDebug();
 | setMinimumWidth | 设置 View 最小宽度 |
 | setAlpha | 设置 View 透明度 |
 | setTag | 设置 View Tag |
-| scrollTo | View 内容滚动位置 - 相对于初始位置移动 |
-| scrollBy | View 内部滚动位置 - 相对于上次移动的最后位置移动 |
+| scrollTo | View 内容滚动位置 ( 相对于初始位置移动 ) |
+| scrollBy | View 内部滚动位置 ( 相对于上次移动的最后位置移动 ) |
 | setDescendantFocusability | 设置 ViewGroup 和其子控件两者之间的关系 |
 | setOverScrollMode | 设置 View 滚动模式 |
 | setHorizontalScrollBarEnabled | 设置是否绘制横向滚动条 |
@@ -2424,11 +2642,11 @@ DevUtils.openDebug();
 | setCompoundDrawablesByRight | 设置 Right CompoundDrawables |
 | setCompoundDrawablesByBottom | 设置 Bottom CompoundDrawables |
 | setCompoundDrawables | 设置 CompoundDrawables |
-| setCompoundDrawablesWithIntrinsicBoundsByLeft | 设置 Left CompoundDrawables - 按照原有比例大小显示图片 |
-| setCompoundDrawablesWithIntrinsicBoundsByTop | 设置 Top CompoundDrawables - 按照原有比例大小显示图片 |
-| setCompoundDrawablesWithIntrinsicBoundsByRight | 设置 Right CompoundDrawables - 按照原有比例大小显示图片 |
-| setCompoundDrawablesWithIntrinsicBoundsByBottom | 设置 Bottom CompoundDrawables - 按照原有比例大小显示图片 |
-| setCompoundDrawablesWithIntrinsicBounds | 设置 CompoundDrawables - 按照原有比例大小显示图片 |
+| setCompoundDrawablesWithIntrinsicBoundsByLeft | 设置 Left CompoundDrawables ( 按照原有比例大小显示图片 ) |
+| setCompoundDrawablesWithIntrinsicBoundsByTop | 设置 Top CompoundDrawables ( 按照原有比例大小显示图片 ) |
+| setCompoundDrawablesWithIntrinsicBoundsByRight | 设置 Right CompoundDrawables ( 按照原有比例大小显示图片 ) |
+| setCompoundDrawablesWithIntrinsicBoundsByBottom | 设置 Bottom CompoundDrawables ( 按照原有比例大小显示图片 ) |
+| setCompoundDrawablesWithIntrinsicBounds | 设置 CompoundDrawables ( 按照原有比例大小显示图片 ) |
 | addRule | 设置 RelativeLayout View 布局规则 |
 | removeRule | 移除 RelativeLayout View 布局规则 |
 | addRules | 设置多个 RelativeLayout View 布局规则 |
@@ -2436,6 +2654,7 @@ DevUtils.openDebug();
 | setAnimation | 设置动画 |
 | clearAnimation | 清空动画 |
 | startAnimation | 启动动画 |
+| cancelAnimation | 取消动画 |
 | setOnClicks | 设置点击事件 |
 | setOnLongClicks | 设置长按事件 |
 | setOnTouchs | 设置触摸事件 |
@@ -2446,8 +2665,8 @@ DevUtils.openDebug();
 | scrollToTop | 滑动到顶部 ( 无滚动过程 ) |
 | smoothScrollToBottom | 滑动到底部 ( 有滚动过程 ) |
 | scrollToBottom | 滑动到底部 ( 无滚动过程 ) |
-| smoothScrollTo | 滚动到指定位置 ( 有滚动过程 ) - 相对于初始位置移动 |
-| smoothScrollBy | 滚动到指定位置 ( 有滚动过程 ) - 相对于上次移动的最后位置移动 |
+| smoothScrollTo | 滚动到指定位置 ( 有滚动过程, 相对于初始位置移动 ) |
+| smoothScrollBy | 滚动到指定位置 ( 有滚动过程, 相对于上次移动的最后位置移动 ) |
 | fullScroll | 滚动方向 ( 有滚动过程 ) |
 
 
@@ -2483,8 +2702,8 @@ DevUtils.openDebug();
 | combineToSameSize | 合并图片 ( 转为相同大小 ) |
 | reflection | 图片倒影处理 |
 | roundCorner | 图片圆角处理 ( 非圆形 ) |
-| roundCornerTop | 图片圆角处理 ( 非圆形 ) - 只有 leftTop、rightTop |
-| roundCornerBottom | 图片圆角处理 ( 非圆形 ) - 只有 leftBottom、rightBottom |
+| roundCornerTop | 图片圆角处理 ( 非圆形, 只有 leftTop、rightTop ) |
+| roundCornerBottom | 图片圆角处理 ( 非圆形, 只有 leftBottom、rightBottom ) |
 | round | 图片圆形处理 |
 | addCornerBorder | 添加圆角边框 |
 | addCircleBorder | 添加圆形边框 |
@@ -2498,6 +2717,7 @@ DevUtils.openDebug();
 | compressBySampleSize | 按采样大小压缩 |
 | calculateInSampleSize | 计算采样大小 |
 | calculateQuality | 计算最佳压缩质量值 |
+| getVideoThumbnail | 获取视频缩略图 |
 
 
 * **图片格式转换工具类 ->** [ImageConvertUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/app/image/ImageConvertUtils.java)
@@ -2519,7 +2739,7 @@ DevUtils.openDebug();
 | soften | 柔化效果处理 |
 | sharpen | 锐化效果处理 |
 | emboss | 浮雕效果处理 |
-| toGray | 转为灰度图片 |
+| gray | 转为灰度图片 |
 | saturation | 饱和度处理 |
 | lum | 亮度处理 |
 | hue | 色相处理 |
@@ -2547,16 +2767,16 @@ DevUtils.openDebug();
 | decodeStream | 获取 Bitmap |
 | decodeFileDescriptor | 获取 Bitmap |
 | decodeByteArray | 获取 Bitmap |
-| saveBitmapToSDCardJPEG | 保存图片到 SDCard - JPEG |
-| saveBitmapToSDCardPNG | 保存图片到 SDCard - PNG |
-| saveBitmapToSDCardWEBP | 保存图片到 SDCard - WEBP |
+| saveBitmapToSDCardJPEG | 保存图片到 SDCard ( JPEG ) |
+| saveBitmapToSDCardPNG | 保存图片到 SDCard ( PNG ) |
+| saveBitmapToSDCardWEBP | 保存图片到 SDCard ( WEBP ) |
 | saveBitmapToSDCard | 保存图片到 SDCard |
 | saveBitmapToStreamJPEG | 保存 JPEG 图片 |
 | saveBitmapToStreamPNG | 保存 PNG 图片 |
 | saveBitmapToStreamWEBP | 保存 WEBP 图片 |
 | saveBitmapToStream | 保存图片 |
 | get9PatchDrawable | 获取 .9 Drawable |
-| setColorFilter | 图片着色 - tint |
+| setColorFilter | 图片着色 ( tint ) |
 | getBitmap | 获取 Bitmap |
 | getBitmapFromView | 通过 View 绘制为 Bitmap |
 | getBitmapFromViewCache | 通过 View Cache 绘制为 Bitmap |
@@ -2576,7 +2796,7 @@ DevUtils.openDebug();
 
 | 方法 | 注释 |
 | :- | :- |
-| obtain | 获取 ApkInfoItem |
+| get | 获取 ApkInfoItem |
 | getAppInfoBean | 获取 AppInfoBean |
 | getListKeyValues | 获取 List 信息键对值集合 |
 | getAppMD5 | 获取 APP MD5 签名 |
@@ -2601,7 +2821,7 @@ DevUtils.openDebug();
 
 | 方法 | 注释 |
 | :- | :- |
-| obtain | 获取 AppInfoBean |
+| get | 获取 AppInfoBean |
 | getAppPackName | 获取 APP 包名 |
 | getAppName | 获取 APP 应用名 |
 | getAppIcon | 获取 APP 图标 |
@@ -2620,7 +2840,7 @@ DevUtils.openDebug();
 
 | 方法 | 注释 |
 | :- | :- |
-| obtain | 获取 AppInfoItem |
+| get | 获取 AppInfoItem |
 | getAppInfoBean | 获取 AppInfoBean |
 | getListKeyValues | 获取 List 信息键对值集合 |
 | getAppMD5 | 获取 APP MD5 签名 |
@@ -2666,7 +2886,6 @@ DevUtils.openDebug();
 | :- | :- |
 | getKey | 获取 key |
 | getValue | 获取 value |
-| toString | toString |
 | get | 通过 resId 设置 key, 并且初始化 KeyValueBean |
 
 
@@ -2735,7 +2954,7 @@ DevUtils.openDebug();
 | callBack | 设置回调方法 |
 | setRequestPermissionsResult | 设置是否需要在 Activity 的 onRequestPermissionsResult 回调中, 调用 PermissionUtils.onRequestPermissionsResult(this); |
 | request | 请求权限 |
-| onRequestPermissionsResult | 请求权限回调 - 需要在 Activity 的 onRequestPermissionsResult 回调中, 调用 PermissionUtils.onRequestPermissionsResult(this); |
+| onRequestPermissionsResult | 请求权限回调 ( 需要在 Activity 的 onRequestPermissionsResult 回调中, 调用 PermissionUtils.onRequestPermissionsResult(this); ) |
 | notifyPermissionsChange | 刷新权限改变处理 ( 清空已拒绝的权限记录 ) |
 | isGranted | 判断是否授予了权限 |
 | shouldShowRequestPermissionRationale | 获取拒绝权限询问勾选状态 |
@@ -2760,10 +2979,10 @@ DevUtils.openDebug();
 | setAudioStreamType | 设置流类型 |
 | playPrepareRaw | 播放 Raw 资源 |
 | playPrepareAssets | 播放 Assets 资源 |
-| playPrepare | 预加载播放 - (file-path or http/rtsp URL) http 资源、本地资源 |
+| playPrepare | 预加载播放 (file-path or http/rtsp URL) http 资源、本地资源 |
 | isPlaying | 是否播放中 |
 | pause | 暂停操作 |
-| stop | 停止操作 - 销毁 MediaPlayer |
+| stop | 停止操作 ( 销毁 MediaPlayer ) |
 | isIgnoreWhat | 是否忽略错误类型 |
 | setMeidaListener | 设置 MediaPlayer 回调事件 |
 | isNullMediaPlayer | 判断 MediaPlayer 是否为 null |
@@ -2805,11 +3024,10 @@ DevUtils.openDebug();
 ## <span id="devutilsappshare">**`dev.utils.app.share`**</span>
 
 
-* **SPUtils 工具类 ( 单独使用 ) ->** [SharedUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/app/share/SharedUtils.java)
+* **SPUtils 快捷工具类 ->** [SharedUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/app/share/SharedUtils.java)
 
 | 方法 | 注释 |
 | :- | :- |
-| init | 初始化操作 ( 内部已调用 ) |
 | put | 保存数据 |
 | putAll | 保存 Map 集合 ( 只能是 Integer、Long、Boolean、Float、String、Set) |
 | get | 根据 key 获取数据 |
@@ -2863,7 +3081,7 @@ DevUtils.openDebug();
 | custom | custom Toast |
 
 
-* **Simple Toast 工具类 ( 简单的 Toast 工具类, 支持子线程弹出 Toast) ->** [ToastUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/app/toast/ToastUtils.java)
+* **Simple Toast 工具类 ( 简单的 Toast 工具类, 支持子线程弹出 Toast ) ->** [ToastUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/app/toast/ToastUtils.java)
 
 | 方法 | 注释 |
 | :- | :- |
@@ -2896,7 +3114,7 @@ DevUtils.openDebug();
 | setIsHandler | 设置是否使用 Handler 显示 Toast |
 | setNullText | 设置 Text 为 null 的文本 |
 | setTextLength | 设置 Toast 文案长度转换 显示时间 |
-| init | Application 初始化调用 ( 内部已调用 ) |
+| init | 初始化调用 ( 内部已调用 ) |
 | style | 使用单次 Toast 样式配置 |
 | defaultStyle | 使用默认 Toast 样式 |
 | getToastStyle | 获取 Toast 样式配置 |
@@ -2956,7 +3174,7 @@ DevUtils.openDebug();
 | getWifiType | 获取加密类型 |
 | getWifiTypeInt | 获取加密类型 |
 | getWifiTypeStr | 获取加密类型 |
-| isConnNull | 判断是否连接为 null - unknown ssid |
+| isConnNull | 判断是否连接为 null ( unknown ssid ) |
 | isConnectAphot | 获取连接的 Wifi 热点 SSID |
 | getSecurity | 获取 Wifi 加密类型 |
 | isExistsPwd | 判断 Wifi 加密类型, 是否为加密类型 |
@@ -3030,6 +3248,32 @@ DevUtils.openDebug();
 | adjustDouble | 获取自己想要的数据格式 |
 
 
+* **日历工具类 ->** [CalendarUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/common/CalendarUtils.java)
+
+| 方法 | 注释 |
+| :- | :- |
+| isSupportLunar | 是否支持农历年份计算 |
+| isSupportSolar | 是否支持公历年份计算 |
+| solarToLunar | 公历转农历 |
+| lunarToSolar | 农历转公历 |
+| getLunarYearDays | 获取农历年份总天数 |
+| getLunarLeapDays | 获取农历年份闰月天数 |
+| getLunarLeapMonth | 获取农历年份哪个月是闰月 |
+| getLunarMonthDays | 获取农历年份与月份总天数 |
+| getLunarGanZhi | 获取干支历 |
+| getLunarMonthChinese | 获取农历中文月份 |
+| getLunarDayChinese | 获取农历中文天数 |
+| getSolarTermsIndex | 获取二十四节气 ( 公历 ) 索引 |
+| getSolarTerms | 获取二十四节气 ( 公历 ) |
+| getSolarTermsDate | 获取二十四节气 ( 公历 ) 时间 |
+| isFestival | 校验是否相同节日 |
+| getFestival | 获取符合条件的节日信息 |
+| getSolarFestival | 获取公历符合条件的节日信息 |
+| getLunarFestival | 获取农历符合条件的节日信息 |
+| getFestivalHook | 获取节日 Hook 接口 |
+| setFestivalHook | 设置节日 Hook 接口 |
+
+
 * **中文工具类 ->** [ChineseUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/common/ChineseUtils.java)
 
 | 方法 | 注释 |
@@ -3039,7 +3283,7 @@ DevUtils.openDebug();
 | numberToCHN | 数字转中文数值 |
 
 
-* **类 (Class) 工具类 ->** [ClassUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/common/ClassUtils.java)
+* **类 ( Class ) 工具类 ->** [ClassUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/common/ClassUtils.java)
 
 | 方法 | 注释 |
 | :- | :- |
@@ -3064,15 +3308,19 @@ DevUtils.openDebug();
 | serializableToBytes | 通过序列化实体类, 获取对应的 byte[] 数据 |
 
 
-* **关闭 (IO 流 ) 工具类 ->** [CloseUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/common/CloseUtils.java)
+* **关闭 ( IO 流 ) 工具类 ->** [CloseUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/common/CloseUtils.java)
 
 | 方法 | 注释 |
 | :- | :- |
 | closeIO | 关闭 IO |
 | closeIOQuietly | 安静关闭 IO |
+| flush | 将缓冲区数据输出 |
+| flushQuietly | 安静将缓冲区数据输出 |
+| flushCloseIO | 将缓冲区数据输出并关闭流 |
+| flushCloseIOQuietly | 安静将缓冲区数据输出并关闭流 |
 
 
-* **集合工具类 (Collection - List、Set、Queue) 等 ->** [CollectionUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/common/CollectionUtils.java)
+* **集合工具类 ( Collection - List、Set、Queue ) 等 ->** [CollectionUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/common/CollectionUtils.java)
 
 | 方法 | 注释 |
 | :- | :- |
@@ -3095,9 +3343,9 @@ DevUtils.openDebug();
 | getPrevious | 根据指定 value 获取 value 所在位置的上一个值 |
 | getPreviousNotNull | 根据指定 value 获取 value 所在位置的上一个值, 不允许值为 null |
 | add | 添加一条数据 |
-| addNotNull | 添加一条数据 - value 不允许为 null |
+| addNotNull | 添加一条数据 ( value 不允许为 null ) |
 | addAll | 添加集合数据 |
-| addAllNotNull | 添加集合数据 - values 内的值不允许为 null |
+| addAllNotNull | 添加集合数据 ( values 内的值不允许为 null ) |
 | remove | 移除一条数据 |
 | removeAll | 移除集合数据 |
 | clear | 清空集合中符合指定 value 的全部数据 |
@@ -3141,7 +3389,7 @@ DevUtils.openDebug();
 
 | 方法 | 注释 |
 | :- | :- |
-| toHexAlpha | 获取十六进制透明度字符串 |
+| hexAlpha | 获取十六进制透明度字符串 |
 | getARGB | 返回一个颜色 ARGB 色值数组 ( 返回十进制 ) |
 | alpha | 返回一个颜色中的透明度值 ( 返回十进制 ) |
 | alphaPercent | 返回一个颜色中的透明度百分比值 |
@@ -3184,11 +3432,10 @@ DevUtils.openDebug();
 | getHue | 获取颜色色调 |
 | getSaturation | 获取颜色饱和度 |
 | getBrightness | 获取颜色亮度 |
-| toString | toString |
 | handleColor | 处理 color |
 
 
-* **转换工具类 (Byte、Hex 等 ) ->** [ConvertUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/common/ConvertUtils.java)
+* **转换工具类 ( Byte、Hex 等 ) ->** [ConvertUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/common/ConvertUtils.java)
 
 | 方法 | 注释 |
 | :- | :- |
@@ -3260,25 +3507,25 @@ DevUtils.openDebug();
 
 | 方法 | 注释 |
 | :- | :- |
-| getDateNow | 获取当前日期的字符串 - yyyy-MM-dd HH:mm:ss |
+| getDateNow | 获取当前日期的字符串 ( yyyy-MM-dd HH:mm:ss ) |
 | formatTime | 将时间戳转换日期字符串 |
 | formatDate | 将 Date 转换日期字符串 |
 | parseDate | 将时间戳转换成 Date |
-| parseLong | 解析时间字符串转换为 long 毫秒 - 默认表示 time 属于 yyyy-MM-dd HH:mm:ss 格式 |
+| parseLong | 解析时间字符串转换为 long 毫秒 ( 默认表示 time 属于 yyyy-MM-dd HH:mm:ss 格式 ) |
 | parseToString | 转换时间为指定字符串 |
-| getTimeDiffMinute | 获取时间差 - 分钟 |
-| getTimeDiffHour | 获取时间差 - 小时 |
-| getTimeDiffDay | 获取时间差 - 天 |
-| getTimeDiff | 获取时间差 - ( 传入时间 - 当前时间 ) |
+| getTimeDiffMinute | 获取时间差 ( 分钟 ) |
+| getTimeDiffHour | 获取时间差 ( 小时 ) |
+| getTimeDiffDay | 获取时间差 ( 天 ) |
+| getTimeDiff | 获取时间差 ( 传入时间 - 当前时间 ) |
 | getYear | 获取年 |
-| getMonth | 获取月 (0 - 11) + 1 |
+| getMonth | 获取月 ( 0 - 11 ) + 1 |
 | getDay | 获取日 |
 | getWeek | 获取日期是星期几 |
-| get24Hour | 获取时 - 24 |
-| get12Hour | 获取时 - 12 |
+| get24Hour | 获取时 ( 24 ) |
+| get12Hour | 获取时 ( 12 ) |
 | getMinute | 获取分 |
 | getSecond | 获取秒 |
-| convertTime | 转换时间处理, 小于 10, 则自动补充 0x |
+| timeAddZero | 时间补 0 处理 ( 小于 10, 则自动补充 0x ) |
 | isLeapYear | 判断是否闰年 |
 | getMonthDayNumberAll | 根据年份、月份, 获取对应的天数 ( 完整天数, 无判断是否属于未来日期 ) |
 | getYearMonthNumber | 根据年份, 获取对应的月份 |
@@ -3290,7 +3537,7 @@ DevUtils.openDebug();
 | getArrayToHHMM | 生成 HH:mm 按间隔时间排序数组 |
 | getListToHHMM | 生成 HH:mm 按间隔时间排序集合 |
 | getListToHHMMPosition | 获取 HH:mm 按间隔时间排序的集合中, 指定时间所在索引 |
-| secToTimeRetain | 传入时间, 获取时间 (00:00:00 格式 ) - 不处理大于一天 |
+| secToTimeRetain | 传入时间, 获取时间 ( 00:00:00 格式, 不处理大于一天 ) |
 | convertTimeArys | 传入时间, 时间参数 ( 小时、分钟、秒 ) |
 | millisToFitTimeSpan | 转换时间 |
 | millisToTimeArys | 转换时间为数组 |
@@ -3300,6 +3547,9 @@ DevUtils.openDebug();
 | isInDate | 判断时间是否在 [startTime, endTime] 区间, 注意时间格式要一致 |
 | getEndTimeDiffHHmm | 获取指定时间距离该时间第二天的指定时段的时间 ( 判断凌晨情况 ) |
 | getEndTimeDiff | 获取指定时间距离该时间第二天的指定时段的时间差 ( 判断凌晨情况 ) |
+| getZodiac | 获取生肖 |
+| getConstellation | 获取星座 |
+| getConstellationDate | 获取星座日期 |
 
 
 * **开发常用方法工具类 ->** [DevCommonUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/common/DevCommonUtils.java)
@@ -3315,46 +3565,6 @@ DevUtils.openDebug();
 | randomUUIDToHashCode | 获取随机唯一数 HashCode |
 | getRandomUUID | 获取随机规则生成 UUID |
 | getRandomUUIDToString | 获取随机规则生成 UUID 字符串 |
-| isEmpty | 判断对象是否为空 |
-| isNotEmpty | 判断对象是否非空 |
-| length | 获取数组长度 |
-| isLength | 判断数组长度是否等于期望长度 |
-| equals | 判断两个值是否一样 |
-| isEquals | 判断多个字符串是否相等, 只有全相等才返回 true - 对比大小写 |
-| isOrEquals | 判断多个字符串, 只要有一个符合条件则通过 |
-| isContains | 判断一堆值中, 是否存在符合该条件的 ( 包含 ) |
-| isStartsWith | 判断内容, 是否属于特定字符串开头 - 对比大小写 |
-| isEndsWith | 判断内容, 是否属于特定字符串结尾 - 对比大小写 |
-| isSpace | 判断字符串是否为 null 或全为空白字符 |
-| toClearSpace | 清空字符串全部空格 |
-| toClearSpaceTrim | 清空字符串前后所有空格 |
-| appendSpace | 追加空格 |
-| appendTab | 追加 Tab |
-| appendLine | 追加换行 |
-| toCheckValue | 检查字符串 |
-| toCheckValues | 检查字符串 - 多个值 |
-| toCheckValuesSpace | 检查字符串 - 多个值 ( 删除前后空格对比判断 ) |
-| getFormatString | 获取格式化后的字符串 |
-| getAutoFormatString | 获取自动数量格式化后的字符串 ( 可变参数 ) |
-| getAutoFormatString2 | 获取自动数量格式化后的字符串 ( 可变参数 ) |
-| appends | StringBuilder 拼接处理 |
-| appendsIgnoreLast | StringBuilder 拼接处理 ( 最后一个不追加间隔 ) |
-| converHideMobile | 转换手机号 |
-| converSymbolHide | 转换符号处理 |
-| subEllipsize | 裁剪超出的内容, 并且追加符号 ( 如 ...) |
-| subSymbolHide | 裁剪符号处理 |
-| subSetSymbol | 裁剪内容, 设置符号处理 |
-| substring | 裁剪字符串 |
-| toReplaceSEWith | 替换 ( 删除 - 替换成 "") 字符串中符合 特定标记字符的 startsWith - endsWith |
-| toReplaceStartsWith | 替换开头字符串 |
-| toReplaceEndsWith | 替换结尾字符串 |
-| toClearSEWiths | 这个方法功能主要把字符符合标记的 头部和尾部都替换成 "" |
-| toClearStartsWith | 清空属于特定字符串开头的字段 |
-| toClearEndsWith | 清空属于特定字符串结尾的字段 |
-| replaceAll | 替换字符串 |
-| replaceAllToNull | 替换字符串 |
-| replaceAlls | 替换字符串 |
-| split | 拆分字符串 |
 
 
 * **编码工具类 ->** [EncodeUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/common/EncodeUtils.java)
@@ -3398,7 +3608,7 @@ DevUtils.openDebug();
 | getAllDeclaredFields | 获取全部 Field, 包括父类 |
 
 
-* **文件 (IO 流 ) 工具类 ->** [FileIOUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/common/FileIOUtils.java)
+* **文件 ( IO 流 ) 工具类 ->** [FileIOUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/common/FileIOUtils.java)
 
 | 方法 | 注释 |
 | :- | :- |
@@ -3436,12 +3646,14 @@ DevUtils.openDebug();
 | getFileByPath | 获取文件 |
 | getFileCreateFolder | 获取路径, 并且进行创建目录 |
 | getFilePathCreateFolder | 获取路径, 并且进行创建目录 |
-| createFolder | 判断某个文件夹是否创建, 未创建则创建 ( 纯路径 - 无文件名 ) |
-| createFolderByPath | 创建文件夹目录 - 可以传入文件名 |
+| createFolder | 判断某个文件夹是否创建, 未创建则创建 ( 纯路径无文件名 ) |
+| createFolderByPath | 创建文件夹目录 ( 可以传入文件名 ) |
 | createFolderByPaths | 创建多个文件夹, 如果不存在则创建 |
 | createOrExistsDir | 判断目录是否存在, 不存在则判断是否创建成功 |
 | createOrExistsFile | 判断文件是否存在, 不存在则判断是否创建成功 |
 | createFileByDeleteOldFile | 判断文件是否存在, 存在则在创建之前删除 |
+| convertFiles | Path List 转 File List |
+| convertPaths | File List 转 Path List |
 | getPath | 获取文件路径 |
 | getAbsolutePath | 获取文件绝对路径 |
 | getName | 获取文件名 |
@@ -3454,6 +3666,9 @@ DevUtils.openDebug();
 | isFile | 判断是否文件 |
 | isDirectory | 判断是否文件夹 |
 | isHidden | 判断是否隐藏文件 |
+| canRead | 文件是否可读 |
+| canWrite | 文件是否可写 |
+| canReadWrite | 文件是否可读写 |
 | getFileLastModified | 获取文件最后修改的毫秒时间戳 |
 | getFileCharsetSimple | 获取文件编码格式 |
 | getFileLines | 获取文件行数 |
@@ -3461,12 +3676,12 @@ DevUtils.openDebug();
 | getDirSize | 获取目录大小 |
 | getFileLength | 获取文件大小 |
 | getDirLength | 获取目录全部文件大小 |
-| getFileLengthNetwork | 获取文件大小 - 网络资源 |
+| getFileLengthNetwork | 获取文件大小 ( 网络资源 ) |
 | getFileName | 获取路径中的文件名 |
 | getDirName | 获取路径中的最长目录地址 |
-| rename | 重命名文件 - 同个目录下, 修改文件名 |
+| rename | 重命名文件 ( 同个目录下, 修改文件名 ) |
 | formatFileSize | 传入文件路径, 返回对应的文件大小 |
-| formatByteMemorySize | 字节数转合适内存大小 保留 3 位小数 (%.位数f) |
+| formatByteMemorySize | 字节数转合适内存大小 保留 3 位小数 |
 | deleteFile | 删除文件 |
 | deleteFiles | 删除多个文件 |
 | deleteFolder | 删除文件夹 |
@@ -3483,13 +3698,13 @@ DevUtils.openDebug();
 | copyDir | 复制目录 |
 | moveDir | 移动目录 |
 | deleteDir | 删除目录 |
-| deleteAllInDir | 删除目录下所有东西 |
+| deleteAllInDir | 删除目录下所有文件 |
 | deleteFilesInDir | 删除目录下所有文件 |
 | deleteFilesInDirWithFilter | 删除目录下所有过滤的文件 |
-| listFilesInDir | 获取目录下所有文件 - 不递归进子目录 |
-| listFilesInDirWithFilter | 获取目录下所有过滤的文件 - 不递归进子目录 |
-| listFilesInDirBean | 获取目录下所有文件 - 不递归进子目录 |
-| listFilesInDirWithFilterBean | 获取目录下所有过滤的文件 - 不递归进子目录 |
+| listFilesInDir | 获取目录下所有文件 ( 不递归进子目录 ) |
+| listFilesInDirWithFilter | 获取目录下所有过滤的文件 ( 不递归进子目录 ) |
+| listFilesInDirBean | 获取目录下所有文件 ( 不递归进子目录 ) |
+| listFilesInDirWithFilterBean | 获取目录下所有过滤的文件 ( 不递归进子目录 ) |
 | isImageFormats | 根据文件名判断文件是否为图片 |
 | isAudioFormats | 根据文件名判断文件是否为音频 |
 | isVideoFormats | 根据文件名判断文件是否为视频 |
@@ -3526,11 +3741,11 @@ DevUtils.openDebug();
 | 方法 | 注释 |
 | :- | :- |
 | splitParams | 拆分参数 |
-| joinParams | 拼接请求参数 - value(String) |
-| joinParamsObj | 拼接请求参数 - value(Object) |
-| toConvertObjToMS | 进行转换对象处理 ( 请求发送对象 ) |
-| toConvertObjToMO | 进行转换对象处理 ( 请求发送对象 ) |
-| toUrlEncode | 进行 URL 编码, 默认 UTF-8 |
+| joinParams | 拼接请求参数 |
+| joinParamsObj | 拼接请求参数 |
+| convertObjToMS | 进行转换对象处理 ( 请求发送对象 ) |
+| convertObjToMO | 进行转换对象处理 ( 请求发送对象 ) |
+| urlEncode | 进行 URL 编码, 默认 UTF-8 |
 
 
 * **HttpURLConnection 网络工具类 ->** [HttpURLConnectionUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/common/HttpURLConnectionUtils.java)
@@ -3540,7 +3755,7 @@ DevUtils.openDebug();
 | doGetAsyn | 异步的 Get 请求 |
 | doPostAsyn | 异步的 Post 请求 |
 | request | 发送请求 |
-| getNetTime | 获取网络时间 - 默认使用百度链接 |
+| getNetTime | 获取网络时间 ( 默认使用百度链接 ) |
 
 
 * **Map 工具类 ->** [MapUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/common/MapUtils.java)
@@ -3568,7 +3783,7 @@ DevUtils.openDebug();
 | getNext | 根据指定 key 获取 key 所在位置的下一条数据 |
 | getPrevious | 根据指定 key 获取 key 所在位置的上一条数据 |
 | put | 添加一条数据 |
-| putNotNull | 添加一条数据, 不允许 key 为 null |
+| putNotNull | 添加一条数据 ( 不允许 key 为 null ) |
 | putAll | 添加多条数据 |
 | putAllNotNull | 添加多条数据, 不允许 key 为 null |
 | remove | 移除一条数据 |
@@ -3578,18 +3793,19 @@ DevUtils.openDebug();
 | equals | 判断两个值是否一样 |
 | toggle | 切换保存状态 |
 | isNullToValue | 判断指定 key 的 value 是否为 null |
-| containsKey | 判断 Map 是否存储了 key |
-| containsValue | 判断 Map 是否存储了 value |
-| putToList | 添加一条数据 - (Value) List<T> |
-| removeToList | 移除一条数据 - (Value) List<T> |
-| removeToLists | 移除多条数据 - (Value) List<T> |
-| removeToMap | 移除多条数据 - 通过 Map 进行移除 |
+| containsKey | 判断 Map 是否存储 key |
+| containsValue | 判断 Map 是否存储 value |
+| putToList | 添加一条数据 |
+| removeToList | 移除一条数据 |
+| removeToLists | 移除多条数据 |
+| removeToMap | 移除多条数据 ( 通过 Map 进行移除 ) |
 
 
 * **数字 ( 计算 ) 工具类 ->** [NumberUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/common/NumberUtils.java)
 
 | 方法 | 注释 |
 | :- | :- |
+| addZero | 补 0 处理 ( 小于 10, 则自动补充 0x ) |
 | percentI | 计算百分比值 ( 最大 100%) |
 | percentD | 计算百分比值 ( 最大 100%) |
 | percentL | 计算百分比值 ( 最大 100%) |
@@ -3688,11 +3904,14 @@ DevUtils.openDebug();
 
 | 方法 | 注释 |
 | :- | :- |
-| calcScaleToWidth | 计算缩放比例 - 根据宽度比例转换高度 |
-| calcScaleToHeight | 计算缩放比例 - 根据高度比例转换宽度 |
-| calcWidthHeightToScale | 通过宽度、高度根据对应的比例, 转换成对应的比例宽度高度 - 智能转换 |
+| calcScale | 计算比例 ( 商 ) |
+| calcScaleToMath | 计算比例 ( 被除数 ( 最大值 ) / 除数 ( 最小值 ) ) |
+| calcScaleToWidth | 计算缩放比例 ( 根据宽度比例转换高度 ) |
+| calcScaleToHeight | 计算缩放比例 ( 根据高度比例转换宽度 ) |
+| calcWidthHeightToScale | 通过宽度、高度根据对应的比例, 转换成对应的比例宽度高度 ( 智能转换 ) |
 | calcWidthToScale | 以宽度为基准, 转换对应比例的高度 |
 | calcHeightToScale | 以高度为基准, 转换对应比例的宽度 |
+| calcXY | 计算 XY 比 |
 
 
 * **流操作工具类 ->** [StreamUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/common/StreamUtils.java)
@@ -3720,41 +3939,48 @@ DevUtils.openDebug();
 | length | 获取字符串长度 |
 | isLength | 获取字符串长度 是否等于期望长度 |
 | equals | 判断两个值是否一样 |
-| isEquals | 判断多个字符串是否相等, 只有全相等才返回 true - 对比大小写 |
+| isEquals | 判断多个字符串是否相等, 只有全相等才返回 true ( 对比大小写 ) |
 | isOrEquals | 判断多个字符串, 只要有一个符合条件则通过 |
 | isContains | 判断一堆值中, 是否存在符合该条件的 ( 包含 ) |
-| isStartsWith | 判断内容, 是否属于特定字符串开头 - 对比大小写 |
-| isEndsWith | 判断内容, 是否属于特定字符串结尾 - 对比大小写 |
+| isStartsWith | 判断内容, 是否属于特定字符串开头 ( 对比大小写 ) |
+| isEndsWith | 判断内容, 是否属于特定字符串结尾 ( 对比大小写 ) |
 | countMatches | 统计字符串匹配个数 |
 | countMatches2 | 统计字符串匹配个数 |
 | isSpace | 判断字符串是否为 null 或全为空白字符 |
 | getBytes | 字符串 转 byte[] |
-| toClearSpace | 清空字符串全部空格 |
-| toClearSpaceTrim | 清空字符串前后所有空格 |
+| clearSpace | 清空字符串全部空格 |
+| clearTab | 清空字符串全部 Tab |
+| clearLine | 清空字符串全部换行符 |
+| clearSpaceTrim | 清空字符串前后全部空格 |
+| clearTabTrim | 清空字符串前后全部 Tab |
+| clearLineTrim | 清空字符串前后全部换行符 |
+| clearSpaceTabLine | 清空字符串全部空格、Tab、换行符 |
+| clearSpaceTabLineTrim | 清空字符串前后全部空格、Tab、换行符 |
 | appendSpace | 追加空格 |
 | appendTab | 追加 Tab |
 | appendLine | 追加换行 |
-| forString | 循环追加字符串 |
+| forString | 循环指定数量字符串 |
+| forJoint | 循环追加 |
 | colonSplit | 冒号分割处理 |
-| toCheckValue | 检查字符串 |
-| toCheckValues | 检查字符串 - 多个值 |
-| toCheckValuesSpace | 检查字符串 - 多个值 ( 删除前后空格对比判断 ) |
+| checkValue | 检查字符串 |
+| checkValues | 检查字符串 ( 多个值 ) |
+| checkValuesSpace | 检查字符串 ( 多个值, 删除前后空格对比判断 ) |
 | getFormatString | 获取格式化后的字符串 |
 | getAutoFormatString | 获取自动数量格式化后的字符串 ( 可变参数 ) |
 | getAutoFormatString2 | 获取自动数量格式化后的字符串 ( 可变参数 ) |
 | appends | StringBuilder 拼接处理 |
 | appendsIgnoreLast | StringBuilder 拼接处理 ( 最后一个不追加间隔 ) |
-| toGBKEncode | 字符串进行 GBK 编码 |
-| toGBK2312Encode | 字符串进行 GBK2312 编码 |
-| toUTF8Encode | 字符串进行 UTF-8 编码 |
-| toStrEncode | 进行字符串编码 |
-| toUrlEncode | 进行 URL 编码, 默认 UTF-8 |
-| toUrlDecode | 进行 URL 解码, 默认 UTF-8 |
-| toASCII | 将字符串转移为 ASCII 码 |
-| toUnicode | 将字符串转移为 Unicode 码 |
-| toUnicodeString | 将字符数组转移为 Unicode 码 |
-| toDBC | 转化为半角字符 |
-| toSBC | 转化为全角字符 如: a = ａ, A = Ａ |
+| gbkEncode | 字符串进行 GBK 编码 |
+| gbk2312Encode | 字符串进行 GBK2312 编码 |
+| utf8Encode | 字符串进行 UTF-8 编码 |
+| strEncode | 进行字符串编码 |
+| urlEncode | 进行 URL 编码, 默认 UTF-8 |
+| urlDecode | 进行 URL 解码, 默认 UTF-8 |
+| ascii | 将字符串转移为 ASCII 码 |
+| unicode | 将字符串转移为 Unicode 码 |
+| unicodeString | 将字符数组转移为 Unicode 码 |
+| dbc | 转化为半角字符 |
+| sbc | 转化为全角字符 如: a = ａ, A = Ａ |
 | checkChineseToString | 检测字符串是否全是中文 |
 | isChinese | 判定输入汉字 |
 | upperFirstLetter | 首字母大写 |
@@ -3765,18 +3991,18 @@ DevUtils.openDebug();
 | underScoreCaseToCamelCase | 下划线命名转为驼峰命名 |
 | camelCaseToUnderScoreCase | 驼峰命名法转为下划线命名 |
 | sqliteEscape | 字符串数据库字符转义 |
-| converHideMobile | 转换手机号 |
-| converSymbolHide | 转换符号处理 |
+| convertHideMobile | 转换手机号 |
+| convertSymbolHide | 转换符号处理 |
 | subEllipsize | 裁剪超出的内容, 并且追加符号 ( 如 ...) |
 | subSymbolHide | 裁剪符号处理 |
-| subSetSymbol | 裁剪内容, 设置符号处理 |
+| subSetSymbol | 裁剪内容 ( 设置符号处理 ) |
 | substring | 裁剪字符串 |
-| toReplaceSEWith | 替换 ( 删除 - 替换成 "") 字符串中符合 特定标记字符的 startsWith - endsWith |
-| toReplaceStartsWith | 替换开头字符串 |
-| toReplaceEndsWith | 替换结尾字符串 |
-| toClearSEWiths | 这个方法功能主要把字符符合标记的 头部和尾部都替换成 "" |
-| toClearStartsWith | 清空属于特定字符串开头的字段 |
-| toClearEndsWith | 清空属于特定字符串结尾的字段 |
+| replaceSEWith | 替换特定字符串开头、结尾的字符串 |
+| replaceStartsWith | 替换开头字符串 |
+| replaceEndsWith | 替换结尾字符串 |
+| clearSEWiths | 清空特定字符串开头、结尾的字符串 |
+| clearStartsWith | 清空特定字符串开头的字符串 |
+| clearEndsWith | 清空特定字符串结尾的字符串 |
 | replaceAll | 替换字符串 |
 | replaceAllToNull | 替换字符串 |
 | replaceAlls | 替换字符串 |
@@ -4016,7 +4242,7 @@ DevUtils.openDebug();
 | 方法 | 注释 |
 | :- | :- |
 | escape | 编码 |
-| unescape | 解码 - 本方法不论参数 data 是否经过 escape() 编码, 均能获取正确的 ( 解码 ) 结果 |
+| unescape | 解码 |
 
 
 * **MD5 加密工具类 ->** [MD5Utils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/common/encrypt/MD5Utils.java)
@@ -4062,6 +4288,51 @@ DevUtils.openDebug();
 | decrypt | 解密 ( 非固定 Key 方式 ) |
 
 
+## <span id="devutilscommonfile">**`dev.utils.common.file`**</span>
+
+
+* **文件分片辅助类 ->** [FilePartAssist.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/common/file/FilePartAssist.java)
+
+| 方法 | 注释 |
+| :- | :- |
+| getFile | 获取文件 |
+| getFileName | 获取文件名 |
+| getFilePartItems | 获取文件分片信息集合 |
+| getFilePartItem | 获取指定索引文件分片信息 |
+| getPartCount | 获取分片总数 |
+| existsPart | 是否存在分片 |
+| isOnlyOne | 是否只有一个分片 |
+| getPartName | 获取分片文件名 ( 后缀索引拼接 ) |
+
+
+* **文件分片信息 Item ->** [FilePartItem.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/common/file/FilePartItem.java)
+
+| 方法 | 注释 |
+| :- | :- |
+| isFirstItem | 判断是否 First Item |
+| isLastItem | 判断是否 Last Item |
+| existsPart | 是否存在分片 |
+| isOnlyOne | 是否只有一个分片 |
+| getPartName | 获取分片文件名 ( 后缀索引拼接 ) |
+
+
+* **文件分片工具类 ->** [FilePartUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/common/file/FilePartUtils.java)
+
+| 方法 | 注释 |
+| :- | :- |
+| getPartName | 获取分片文件名 ( 后缀索引拼接 ) |
+| getFilePartAssist | 获取文件分片辅助类 |
+| isFilePart | 是否符合文件分片条件 |
+| fileSplit | 文件拆分 |
+| fileSplitSave | 文件拆分并存储 |
+| fileSplitSaves | 文件拆分并存储 |
+| fileSplitDelete | 删除拆分文件 |
+| fileSplitDeletes | 删除拆分文件 |
+| fileSplitMergePaths | 分片合并 |
+| fileSplitMergeFiles | 分片合并 |
+| fileSplitMerge | 分片合并 |
+
+
 ## <span id="devutilscommonrandom">**`dev.utils.common.random`**</span>
 
 
@@ -4094,7 +4365,7 @@ DevUtils.openDebug();
 | execute | 加入到线程池任务队列 |
 | shutdown | shutdown 会等待所有提交的任务执行完成, 不管是正在执行还是保存在任务队列中的已提交任务 |
 | shutdownNow | shutdownNow 会尝试中断正在执行的任务 ( 其主要是中断一些指定方法如 sleep 方法 ), 并且停止执行等待队列中提交的任务 |
-| isShutdown | 判断线程池是否已关闭 - isShutDown 当调用 shutdown() 方法后返回为 true |
+| isShutdown | 判断线程池是否已关闭 ( isShutDown 当调用 shutdown() 方法后返回为 true ) |
 | isTerminated | 若关闭后所有任务都已完成, 则返回 true |
 | awaitTermination | 请求关闭、发生超时或者当前线程中断 |
 | submit | 提交一个 Callable 任务用于执行 |
@@ -4164,7 +4435,7 @@ DevUtils.openDebug();
 | isContainChinese | 判断字符串中包含中文、包括中文字符标点等 |
 
 
-* **检验联系 ( 手机号, 座机 ) 工具类 ->** [ValiToPhoneUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/common/validator/ValiToPhoneUtils.java)
+* **检验联系 ( 手机号、座机 ) 工具类 ->** [ValiToPhoneUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevApp/src/main/java/dev/utils/common/validator/ValiToPhoneUtils.java)
 
 | 方法 | 注释 |
 | :- | :- |

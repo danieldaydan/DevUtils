@@ -71,6 +71,7 @@ public final class IDCardUtils {
         sCityCodeMaps.put("71", "台湾");
         sCityCodeMaps.put("81", "香港");
         sCityCodeMaps.put("82", "澳门");
+        sCityCodeMaps.put("83", "台湾");
         sCityCodeMaps.put("91", "国外");
         sTWFirstCodeMaps.put("A", 10);
         sTWFirstCodeMaps.put("B", 11);
@@ -153,7 +154,7 @@ public final class IDCardUtils {
             // 判断前 17 位是否数字
             if (isNumber(code17)) {
                 try {
-                    int[] cardArys = converCharToInt(code17.toCharArray());
+                    int[] cardArys = convertCharToInt(code17.toCharArray());
                     int sum17 = getPowerSum(cardArys);
                     // 获取校验位
                     String str = getCheckCode18(sum17);
@@ -194,7 +195,7 @@ public final class IDCardUtils {
                 // 保存省市区信息 + 年 + 月日 + 后续信息 ( 顺序位、性别等 )
                 idCard18 = idCard.substring(0, 6) + year + idCard.substring(8);
                 // 转换字符数组
-                int[] cardArys = converCharToInt(idCard18.toCharArray());
+                int[] cardArys = convertCharToInt(idCard18.toCharArray());
                 int sum17 = getPowerSum(cardArys);
                 // 获取校验位
                 String str = getCheckCode18(sum17);
@@ -352,7 +353,7 @@ public final class IDCardUtils {
                 String year = idCardStr.substring(6, 10);
                 // 获取当前年份
                 int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-                // 当前年份 - 出生年份
+                // 当前年份 ( 出生年份 )
                 return currentYear - Integer.valueOf(year);
             }
         } catch (Exception e) {
@@ -575,16 +576,16 @@ public final class IDCardUtils {
         return code;
     }
 
-    // ============
+    // ===========
     // = 私有方法 =
-    // ============
+    // ===========
 
     /**
      * 将字符数组转换成数字数组
      * @param data char[]
      * @return int[]
      */
-    private static int[] converCharToInt(final char[] data) {
+    private static int[] convertCharToInt(final char[] data) {
         if (data == null) return null;
         int len = data.length;
         if (len == 0) return null;
@@ -595,7 +596,7 @@ public final class IDCardUtils {
             }
             return arrays;
         } catch (Exception e) {
-            JCLogUtils.eTag(TAG, e, "converCharToInt");
+            JCLogUtils.eTag(TAG, e, "convertCharToInt");
         }
         return null;
     }

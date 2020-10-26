@@ -152,9 +152,9 @@ public final class ListViewUtils {
         return view;
     }
 
-    // ==============
+    // =============
     // = 滑动到顶部 =
-    // ==============
+    // =============
 
     /**
      * 滑动到顶部 ( 有滚动过程 )
@@ -190,9 +190,9 @@ public final class ListViewUtils {
         return view;
     }
 
-    // ==============
+    // =============
     // = 滑动到底部 =
-    // ==============
+    // =============
 
     /**
      * 滑动到底部 ( 有滚动过程 )
@@ -275,7 +275,7 @@ public final class ListViewUtils {
     // ==============
 
     /**
-     * 滚动到指定位置 ( 有滚动过程 ) - 相对于初始位置移动
+     * 滚动到指定位置 ( 有滚动过程, 相对于初始位置移动 )
      * @param view {@link View}
      * @param x    X 轴开始坐标
      * @param y    Y 轴开始坐标
@@ -296,7 +296,7 @@ public final class ListViewUtils {
     }
 
     /**
-     * 滚动到指定位置 ( 有滚动过程 ) - 相对于上次移动的最后位置移动
+     * 滚动到指定位置 ( 有滚动过程, 相对于上次移动的最后位置移动 )
      * @param view {@link View}
      * @param x    X 轴开始坐标
      * @param y    Y 轴开始坐标
@@ -347,7 +347,7 @@ public final class ListViewUtils {
     // =============
 
     /**
-     * View 内容滚动位置 - 相对于初始位置移动
+     * View 内容滚动位置 ( 相对于初始位置移动 )
      * <pre>
      *     无滚动过程
      * </pre>
@@ -361,7 +361,7 @@ public final class ListViewUtils {
     }
 
     /**
-     * View 内部滚动位置 - 相对于上次移动的最后位置移动
+     * View 内部滚动位置 ( 相对于上次移动的最后位置移动 )
      * <pre>
      *     无滚动过程
      * </pre>
@@ -446,9 +446,9 @@ public final class ListViewUtils {
         return ViewUtils.setOverScrollMode(view, overScrollMode);
     }
 
-    // ============
+    // ===========
     // = 计算高度 =
-    // ============
+    // ===========
 
     // ============
     // = ListView =
@@ -494,9 +494,9 @@ public final class ListViewUtils {
 
             // 是否需要设置高度
             if (setParams) {
-                ViewGroup.LayoutParams params = listView.getLayoutParams();
-                params.height = height;
-                listView.setLayoutParams(params);
+                ViewGroup.LayoutParams layoutParams = listView.getLayoutParams();
+                layoutParams.height = height;
+                listView.setLayoutParams(layoutParams);
             }
             return height;
         } catch (Exception e) {
@@ -544,12 +544,12 @@ public final class ListViewUtils {
             int verticalSpacing = gridView.getVerticalSpacing();
             // 获取倍数 ( 行数 )
             int lineNumber = NumberUtils.getMultiple(itemCount, numColumns);
-            // 计算总共的宽度 - (GridView 宽度 - 列分割间距 ) / numColumns
+            // 计算总共的宽度 (GridView 宽度 - 列分割间距 ) / numColumns
             int childWidth = (gridView.getWidth() - (numColumns - 1) * horizontalSpacing) / numColumns;
 
             // 记录每行最大高度
             int[] rowHeightArrays = new int[lineNumber];
-            // 临时高度 - 保存行中最高的列高度
+            // 临时高度 ( 保存行中最高的列高度 )
             int tempHeight;
             // 循环每一行绘制每个 Item 并保存 Bitmap
             for (int i = 0; i < lineNumber; i++) {
@@ -581,9 +581,9 @@ public final class ListViewUtils {
 
             // 是否需要设置高度
             if (setParams) {
-                ViewGroup.LayoutParams params = gridView.getLayoutParams();
-                params.height = height;
-                gridView.setLayoutParams(params);
+                ViewGroup.LayoutParams layoutParams = gridView.getLayoutParams();
+                layoutParams.height = height;
+                gridView.setLayoutParams(layoutParams);
             }
             return height;
         } catch (Exception e) {

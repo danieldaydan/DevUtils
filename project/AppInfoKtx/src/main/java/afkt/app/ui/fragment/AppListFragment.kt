@@ -26,10 +26,10 @@ import dev.widget.function.StateLayout
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-class AppListFragment : BaseFragment() {
+class AppListFragment : BaseFragment<FragmentAppBinding>() {
 
     companion object {
-        fun get(type: TypeEnum): BaseFragment {
+        fun get(type: TypeEnum): BaseFragment<FragmentAppBinding> {
             val fragment = AppListFragment()
             val bundle = Bundle()
             bundle.putInt(Constants.Key.KEY_VALUE, type.tag)
@@ -40,8 +40,6 @@ class AppListFragment : BaseFragment() {
 
     // = View =
 
-    private lateinit var binding: FragmentAppBinding
-
     private var whorlView: WhorlView? = null
 
     // = Object =
@@ -49,7 +47,7 @@ class AppListFragment : BaseFragment() {
     private var type: TypeEnum? = null
     private var searchContent: String = ""
 
-    override fun layoutId(): Int {
+    override fun baseContentId(): Int {
         return R.layout.fragment_app
     }
 
@@ -62,7 +60,7 @@ class AppListFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentAppBinding.bind(view)
+        binding.vidFaRefresh.setEnableLoadMore(false)
 
         whorlView = ViewUtils.findViewById(
             binding.vidFaState.getView(ViewAssist.TYPE_ING),
@@ -123,9 +121,9 @@ class AppListFragment : BaseFragment() {
         })
     }
 
-    // ============
+    // ===========
     // = 事件相关 =
-    // ============
+    // ===========
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND, sticky = true)
     fun onEvent(event: FragmentEvent) {
@@ -184,15 +182,17 @@ class AppListFragment : BaseFragment() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RefreshEvent) {
         event.type?.let {
-            if (it == type) binding.vidFaRefresh.smartRefreshLayout?.autoRefresh()
+            if (it == type) binding.vidFaRefresh.getRefreshLayout()?.autoRefresh()
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: TopEvent) {
         event.type?.let {
-            if (it == type) ListViewUtils.smoothScrollToTop(binding.vidFaRefresh.recyclerView)
-            //ListViewUtils.scrollToTop(binding.vidFaRefresh.recyclerView)
+            if (it == type) {
+                ListViewUtils.smoothScrollToTop(binding.vidFaRefresh.getRecyclerView())
+                //ListViewUtils.scrollToTop(binding.vidFaRefresh.getRecyclerView())
+            }
         }
     }
 }

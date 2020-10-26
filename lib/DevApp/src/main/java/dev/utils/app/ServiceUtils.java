@@ -26,9 +26,9 @@ public final class ServiceUtils {
     // 日志 TAG
     private static final String TAG = ServiceUtils.class.getSimpleName();
 
-    // ====================
+    // ===================
     // = 判断服务是否运行 =
-    // ====================
+    // ===================
 
     /**
      * 判断服务是否运行
@@ -41,7 +41,7 @@ public final class ServiceUtils {
 
     /**
      * 判断服务是否运行
-     * @param className package.ServiceClassName - class.getName()
+     * @param className package.ServiceClassName ( class.getName() )
      * @return {@code true} yes, {@code false} no
      */
     public static boolean isServiceRunning(final String className) {
@@ -78,13 +78,13 @@ public final class ServiceUtils {
         return Collections.emptySet();
     }
 
-    // ============
+    // ===========
     // = 启动服务 =
-    // ============
+    // ===========
 
     /**
      * 启动服务
-     * @param className package.ServiceClassName - class.getName()
+     * @param className package.ServiceClassName ( class.getName() )
      * @return {@code true} success, {@code false} fail
      */
     public static boolean startService(final String className) {
@@ -110,13 +110,13 @@ public final class ServiceUtils {
         return false;
     }
 
-    // ============
+    // ===========
     // = 停止服务 =
-    // ============
+    // ===========
 
     /**
      * 停止服务
-     * @param className package.ServiceClassName - class.getName()
+     * @param className package.ServiceClassName ( class.getName() )
      * @return {@code true} success, {@code false} fail
      */
     public static boolean stopService(final String className) {
@@ -142,13 +142,13 @@ public final class ServiceUtils {
         }
     }
 
-    // ============
+    // ===========
     // = 绑定服务 =
-    // ============
+    // ===========
 
     /**
      * 绑定服务
-     * @param className package.ServiceClassName - class.getName()
+     * @param className package.ServiceClassName ( class.getName() )
      * @param conn      {@link ServiceConnection}
      * @param flags     绑定选项
      *                  {@link Context#BIND_AUTO_CREATE}
@@ -192,9 +192,9 @@ public final class ServiceUtils {
         return false;
     }
 
-    // ============
+    // ===========
     // = 解绑服务 =
-    // ============
+    // ===========
 
     /**
      * 解绑服务

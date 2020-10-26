@@ -12,9 +12,9 @@ import static afkt.project.model.item.ButtonValue.*;
  */
 public class ButtonList {
 
-    // ================
+    // ===============
     // = 快速获取集合 =
-    // ================
+    // ===============
 
     /**
      * 获取 Main Button Value 集合
@@ -100,6 +100,7 @@ public class ButtonList {
         lists.add(new ButtonValue(BTN_OKGO, "OkGoUtils"));
         lists.add(new ButtonValue(BTN_LUBAN, "LubanUtils"));
         lists.add(new ButtonValue(BTN_GREEN_DAO, "GreenDAO"));
+        lists.add(new ButtonValue(BTN_ROOM, "Room"));
         return lists;
     }
 
@@ -164,9 +165,9 @@ public class ButtonList {
         return lists;
     }
 
-    // ============
+    // ===========
     // = 其他功能 =
-    // ============
+    // ===========
 
     /**
      * 获取 Other Module Button Value 集合
@@ -365,9 +366,9 @@ public class ButtonList {
         return lists;
     }
 
-    // ===================
+    // ==================
     // = DevWidget UI 库 =
-    // ===================
+    // ==================
 
     /**
      * 获取 DevWidget Module Button Value 集合
@@ -400,9 +401,9 @@ public class ButtonList {
         return lists;
     }
 
-    // =================================
+    // ================================
     // = DevEnvironment 环境配置切换库 =
-    // =================================
+    // ================================
 
     /**
      * 获取 DevEnvironment Module Button Value 集合

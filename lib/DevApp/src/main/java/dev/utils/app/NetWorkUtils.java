@@ -241,8 +241,6 @@ public final class NetWorkUtils {
 
     /**
      * 使用 ping ip 方式判断网络是否可用
-     * <pre>
-     * </pre>
      * @return {@code true} yes, {@code false} no
      */
     @RequiresPermission(android.Manifest.permission.INTERNET)
@@ -339,7 +337,7 @@ public final class NetWorkUtils {
     }
 
     /**
-     * 获取网络运营商名称 - 中国移动、如中国联通、中国电信
+     * 获取网络运营商名称 ( 中国移动、如中国联通、中国电信 )
      * @return 运营商名称
      */
     public static String getNetworkOperatorName() {

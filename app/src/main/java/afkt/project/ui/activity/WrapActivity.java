@@ -8,27 +8,23 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import afkt.project.R;
-import afkt.project.base.app.BaseToolbarActivity;
-import afkt.project.ui.widget.BaseTextView;
-import butterknife.BindView;
+import afkt.project.base.app.BaseActivity;
+import afkt.project.databinding.ActivityWrapBinding;
+import dev.base.widget.BaseTextView;
 import dev.utils.app.ResourceUtils;
 import dev.utils.app.ShapeUtils;
 import dev.utils.app.helper.QuickHelper;
 import dev.utils.common.ChineseUtils;
 import dev.utils.common.RandomUtils;
-import dev.widget.ui.WrapView;
 
 /**
  * detail: 自动换行 View
  * @author Ttt
  */
-public class WrapActivity extends BaseToolbarActivity {
-
-    @BindView(R.id.vid_aw_wrapview)
-    WrapView vid_aw_wrapview;
+public class WrapActivity extends BaseActivity<ActivityWrapBinding> {
 
     @Override
-    public int getLayoutId() {
+    public int baseLayoutId() {
         return R.layout.activity_wrap;
     }
 
@@ -49,14 +45,14 @@ public class WrapActivity extends BaseToolbarActivity {
                         initValue();
                     }
                 }).getView();
-        vid_bt_toolbar.addView(view);
+        getToolbar().addView(view);
     }
 
     @Override
     public void initValue() {
         super.initValue();
 
-        vid_aw_wrapview
+        binding.vidAwWrapview
                 // 设置最大行数
 //                .setMaxLine(RandomUtils.getRandom(10, 30))
                 // 设置每一行向上的边距 ( 行间隔 )
@@ -68,7 +64,9 @@ public class WrapActivity extends BaseToolbarActivity {
                 .removeAllViews();
 
         // LayoutParams
-        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
+        );
         // 设置点击效果
         GradientDrawable drawable = ShapeUtils.newShape(30f, ResourceUtils.getColor(R.color.color_88)).getDrawable();
 
@@ -76,7 +74,7 @@ public class WrapActivity extends BaseToolbarActivity {
             // 随机字符串
             String text = ChineseUtils.randomWord(RandomUtils.getRandom(7)) + RandomUtils.getRandomLetters(RandomUtils.getRandom(5));
             String randomText = i + "." + RandomUtils.getRandom(text.toCharArray(), text.length());
-            vid_aw_wrapview.addView(createView(randomText, layoutParams, drawable));
+            binding.vidAwWrapview.addView(createView(randomText, layoutParams, drawable));
         }
     }
 

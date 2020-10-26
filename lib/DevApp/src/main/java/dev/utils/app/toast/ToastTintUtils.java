@@ -50,12 +50,12 @@ public final class ToastTintUtils {
     private static       boolean               sIsHandler   = true;
     // 内部 Handler
     private static final Handler               sHandler     = new Handler(Looper.getMainLooper());
-    // Null 值 - null 提示值
+    // Null 值 ( null 提示值 )
     private static       String                sNullText    = null;
 
-    // ============
+    // ===========
     // = 部分配置 =
-    // ============
+    // ===========
 
     // 判断是否使用配置
     private static boolean sUseConfig = true;
@@ -64,9 +64,9 @@ public final class ToastTintUtils {
     // 水平边距、垂直边距
     private static float sHorizontalMargin, sVerticalMargin;
 
-    // ============
+    // ===========
     // = 样式相关 =
-    // ============
+    // ===========
 
     // 默认样式
     private static ToastTintUtils.Style sDefaultStyle    = new DefaultStyle();
@@ -295,9 +295,9 @@ public final class ToastTintUtils {
         return sSuccessDrawable;
     }
 
-    // =====================
+    // ====================
     // = 显示 normal Toast =
-    // =====================
+    // ====================
 
     /**
      * normal 样式 Toast
@@ -377,9 +377,9 @@ public final class ToastTintUtils {
         custom(isSingle, null, sNormalStyle, text, duration, icon);
     }
 
-    // ===================
+    // ==================
     // = 显示 info Toast =
-    // ===================
+    // ==================
 
     /**
      * info 样式 Toast
@@ -459,9 +459,9 @@ public final class ToastTintUtils {
         custom(isSingle, null, sInfoStyle, text, duration, icon);
     }
 
-    // ======================
+    // =====================
     // = 显示 warning Toast =
-    // ======================
+    // =====================
 
     /**
      * warning 样式 Toast
@@ -541,9 +541,9 @@ public final class ToastTintUtils {
         custom(isSingle, null, sWarningStyle, text, duration, icon);
     }
 
-    // ====================
+    // ===================
     // = 显示 error Toast =
-    // ====================
+    // ===================
 
     /**
      * error 样式 Toast
@@ -623,9 +623,9 @@ public final class ToastTintUtils {
         custom(isSingle, null, sErrorStyle, text, duration, icon);
     }
 
-    // ======================
+    // =====================
     // = 显示 success Toast =
-    // ======================
+    // =====================
 
     /**
      * success 样式 Toast
@@ -705,9 +705,9 @@ public final class ToastTintUtils {
         custom(isSingle, null, sSuccessStyle, text, duration, icon);
     }
 
-    // =====================
+    // ====================
     // = 显示 custom Toast =
-    // =====================
+    // ====================
 
     /**
      * custom Toast
@@ -895,9 +895,9 @@ public final class ToastTintUtils {
         showToastView(isSingle, context, view, duration);
     }
 
-    // ==============
+    // =============
     // = 内部 Toast =
-    // ==============
+    // =============
 
     /**
      * 显示 View Toast 方法
@@ -1042,9 +1042,9 @@ public final class ToastTintUtils {
                 final ImageView toastIcon = toastLayout.findViewById(dev.utils.R.id.vid_dtl_toast_igview);
                 final TextView toastTextView = toastLayout.findViewById(dev.utils.R.id.vid_dtl_toast_tv);
 
-                // =================
+                // ================
                 // = TextView 相关 =
-                // =================
+                // ================
 
                 // 设置文案
                 toastTextView.setText(toastText);
@@ -1069,9 +1069,9 @@ public final class ToastTintUtils {
                     toastTextView.setTypeface(style.getTypeface());
                 }
 
-                // ==================
+                // =================
                 // = ImageView 相关 =
-                // ==================
+                // =================
 
                 // 判断是否使用图标
                 if (icon != null) {
@@ -1086,9 +1086,9 @@ public final class ToastTintUtils {
                     toastIcon.setVisibility(View.GONE);
                 }
 
-                // ==================
+                // =================
                 // = 背景 View 相关 =
-                // ==================
+                // =================
 
                 // 背景图片
                 Drawable drawableFrame = style.getBackground();
@@ -1111,9 +1111,9 @@ public final class ToastTintUtils {
         return null;
     }
 
-    // ===============================
+    // ==============================
     // = 解决 Android 7.1.1 崩溃问题 =
-    // ===============================
+    // ==============================
 
     /**
      * 反射 Hook Toast 设置 Handler
@@ -1164,9 +1164,9 @@ public final class ToastTintUtils {
         }
     }
 
-    // ============
+    // ===========
     // = 样式相关 =
-    // ============
+    // ===========
 
     /**
      * detail: Toast 自定义 View 着色等相关 样式配置
@@ -1223,7 +1223,7 @@ public final class ToastTintUtils {
         int getTintIconColor();
 
         /**
-         * 是否渲染图标 - getTintIconColor() 着色渲染
+         * 是否渲染图标 ( getTintIconColor() 着色渲染 )
          * @return {@code true} yes, {@code false} no
          */
         boolean isTintIcon();
@@ -1311,7 +1311,7 @@ public final class ToastTintUtils {
         }
 
         /**
-         * 是否渲染图标 - getTintIconColor() 着色渲染
+         * 是否渲染图标 ( getTintIconColor() 着色渲染 )
          * @return {@code true} yes, {@code false} no
          */
         @Override
@@ -1321,7 +1321,7 @@ public final class ToastTintUtils {
     }
 
     /**
-     * detail: Normal 样式 - 灰色
+     * detail: Normal 样式 ( 灰色 )
      * @author Ttt
      */
     public static class NormalStyle extends DefaultStyle {
@@ -1336,7 +1336,7 @@ public final class ToastTintUtils {
         }
 
         /**
-         * 是否渲染图标 - getTintIconColor() 着色渲染
+         * 是否渲染图标 ( getTintIconColor() 着色渲染 )
          * @return {@code true} yes, {@code false} no
          */
         @Override
@@ -1346,7 +1346,7 @@ public final class ToastTintUtils {
     }
 
     /**
-     * detail: Info 样式 - 海洋蓝
+     * detail: Info 样式 ( 海洋蓝 )
      * @author Ttt
      */
     public static class InfoStyle extends DefaultStyle {
@@ -1361,7 +1361,7 @@ public final class ToastTintUtils {
         }
 
         /**
-         * 是否渲染图标 - getTintIconColor() 着色渲染
+         * 是否渲染图标 ( getTintIconColor() 着色渲染 )
          * @return {@code true} yes, {@code false} no
          */
         @Override
@@ -1371,7 +1371,7 @@ public final class ToastTintUtils {
     }
 
     /**
-     * detail: Warning 样式 - 橙色
+     * detail: Warning 样式 ( 橙色 )
      * @author Ttt
      */
     public static class WarningStyle extends DefaultStyle {
@@ -1386,7 +1386,7 @@ public final class ToastTintUtils {
         }
 
         /**
-         * 是否渲染图标 - getTintIconColor() 着色渲染
+         * 是否渲染图标 ( getTintIconColor() 着色渲染 )
          * @return {@code true} yes, {@code false} no
          */
         @Override
@@ -1396,7 +1396,7 @@ public final class ToastTintUtils {
     }
 
     /**
-     * detail: Error 样式 - 红色
+     * detail: Error 样式 ( 红色 )
      * @author Ttt
      */
     public static class ErrorStyle extends DefaultStyle {
@@ -1411,7 +1411,7 @@ public final class ToastTintUtils {
         }
 
         /**
-         * 是否渲染图标 - getTintIconColor() 着色渲染
+         * 是否渲染图标 ( getTintIconColor() 着色渲染 )
          * @return {@code true} yes, {@code false} no
          */
         @Override
@@ -1421,7 +1421,7 @@ public final class ToastTintUtils {
     }
 
     /**
-     * detail: Success 样式 - 绿色
+     * detail: Success 样式 ( 绿色 )
      * @author Ttt
      */
     public static class SuccessStyle extends DefaultStyle {
@@ -1436,7 +1436,7 @@ public final class ToastTintUtils {
         }
 
         /**
-         * 是否渲染图标 - getTintIconColor() 着色渲染
+         * 是否渲染图标 ( getTintIconColor() 着色渲染 )
          * @return {@code true} yes, {@code false} no
          */
         @Override
@@ -1445,9 +1445,9 @@ public final class ToastTintUtils {
         }
     }
 
-    // ============
+    // ===========
     // = 其他接口 =
-    // ============
+    // ===========
 
     /**
      * detail: Toast 过滤器
@@ -1470,9 +1470,9 @@ public final class ToastTintUtils {
         String handlerContent(String content);
     }
 
-    // ==================================
+    // =================================
     // = ToastTintUtils.Filter 实现方法 =
-    // ==================================
+    // =================================
 
     /**
      * 内部 Toast Filter 实现对象

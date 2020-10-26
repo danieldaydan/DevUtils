@@ -4,17 +4,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import afkt.project.R;
-import afkt.project.base.app.BaseToolbarActivity;
+import afkt.project.base.app.BaseActivity;
+import afkt.project.databinding.BaseViewRecyclerviewBinding;
 import afkt.project.model.bean.CommodityEvaluateBean;
 import afkt.project.ui.adapter.MultiSelectAdapter;
-import afkt.project.ui.widget.BaseTextView;
-import butterknife.BindView;
+import dev.base.widget.BaseTextView;
 import dev.utils.app.ResourceUtils;
 import dev.utils.app.ViewUtils;
 import dev.utils.app.helper.QuickHelper;
@@ -26,16 +24,13 @@ import dev.utils.app.toast.ToastTintUtils;
  * detail: 多选辅助类 MultiSelectAssist
  * @author Ttt
  */
-public class MultiSelectActivity extends BaseToolbarActivity {
+public class MultiSelectActivity extends BaseActivity<BaseViewRecyclerviewBinding> {
 
-    // = View =
-    @BindView(R.id.vid_bvr_recy)
-    RecyclerView vid_bvr_recy;
     // 适配器
     MultiSelectAdapter multiSelectAdapter;
 
     @Override
-    public int getLayoutId() {
+    public int baseLayoutId() {
         return R.layout.base_view_recyclerview;
     }
 
@@ -46,7 +41,7 @@ public class MultiSelectActivity extends BaseToolbarActivity {
         // 增加 Toolbar 按钮
         addToolbarButton();
 
-        ViewGroup parent = (ViewGroup) vid_bvr_recy.getParent();
+        ViewGroup parent = (ViewGroup) binding.vidBvrRecy.getParent();
         // 根布局处理
         ViewHelper.get().setPadding(parent, 0)
                 .setBackgroundColor(parent, ResourceUtils.getColor(R.color.color_33));
@@ -67,15 +62,15 @@ public class MultiSelectActivity extends BaseToolbarActivity {
                     @Override
                     public void onClickSelect(int pos, boolean now) {
                         CommodityEvaluateBean commodityEvaluateBean = multiSelectAdapter.getData().get(pos);
-                        DevLogger.eTag(mTag, "新状态: " + now + ", 商品名: " + commodityEvaluateBean.commodityName);
+                        DevLogger.eTag(TAG, "新状态: " + now + ", 商品名: " + commodityEvaluateBean.commodityName);
                     }
                 });
-        vid_bvr_recy.setAdapter(multiSelectAdapter);
+        binding.vidBvrRecy.setAdapter(multiSelectAdapter);
     }
 
-    // ================
+    // ===============
     // = 增加按钮处理 =
-    // ================
+    // ===============
 
     // 编辑按钮
     BaseTextView editView;
@@ -94,7 +89,7 @@ public class MultiSelectActivity extends BaseToolbarActivity {
      * 增加 Toolbar 按钮
      */
     private void addToolbarButton() {
-        vid_bt_toolbar.addView(editView = createTextView("编辑", new View.OnClickListener() {
+        getToolbar().addView(editView = createTextView("编辑", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 multiSelectAdapter.setEditState(true);
@@ -102,7 +97,7 @@ public class MultiSelectActivity extends BaseToolbarActivity {
                 ViewUtils.toggleVisibilitys(new View[]{cancelView, confirmView, allSelectView, unAllSelectView, inverseSelectView}, editView);
             }
         }));
-        vid_bt_toolbar.addView(cancelView = createTextView("取消", new View.OnClickListener() {
+        getToolbar().addView(cancelView = createTextView("取消", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 multiSelectAdapter.setEditState(false).clearSelectAll();
@@ -110,7 +105,7 @@ public class MultiSelectActivity extends BaseToolbarActivity {
                 ViewUtils.toggleVisibilitys(editView, cancelView, confirmView, allSelectView, unAllSelectView, inverseSelectView);
             }
         }));
-        vid_bt_toolbar.addView(confirmView = createTextView("确定", new View.OnClickListener() {
+        getToolbar().addView(confirmView = createTextView("确定", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 StringBuilder builder = new StringBuilder();
@@ -121,19 +116,19 @@ public class MultiSelectActivity extends BaseToolbarActivity {
                 ToastTintUtils.normal(builder.toString());
             }
         }));
-        vid_bt_toolbar.addView(allSelectView = createTextView("全选", new View.OnClickListener() {
+        getToolbar().addView(allSelectView = createTextView("全选", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 multiSelectAdapter.selectAll();
             }
         }));
-        vid_bt_toolbar.addView(unAllSelectView = createTextView("非全选", new View.OnClickListener() {
+        getToolbar().addView(unAllSelectView = createTextView("非全选", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 multiSelectAdapter.clearSelectAll();
             }
         }));
-        vid_bt_toolbar.addView(inverseSelectView = createTextView("反选", new View.OnClickListener() {
+        getToolbar().addView(inverseSelectView = createTextView("反选", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 multiSelectAdapter.inverseSelect();

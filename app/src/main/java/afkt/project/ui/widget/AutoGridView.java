@@ -10,7 +10,7 @@ import android.widget.ListAdapter;
 
 public class AutoGridView extends GridView {
 
-    private static final String TAG        = "AutoGridView";
+    private static final String TAG        = AutoGridView.class.getSimpleName();
     private              int    numColumnsID;
     private              int    previousFirstVisible;
     private              int    numColumns = 1;
@@ -48,7 +48,6 @@ public class AutoGridView extends GridView {
         }
         Log.d(TAG, "numColumns set to: " + numColumns);
     }
-
 
     /**
      * Reads the amount of columns from the resource file and

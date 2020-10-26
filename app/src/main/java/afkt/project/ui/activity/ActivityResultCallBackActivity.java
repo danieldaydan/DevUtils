@@ -9,8 +9,8 @@ import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 
 import afkt.project.R;
-import afkt.project.base.app.BaseToolbarActivity;
-import butterknife.OnClick;
+import afkt.project.base.app.BaseActivity;
+import afkt.project.databinding.ActivityActivityResultCallbackBinding;
 import dev.other.picture.PictureSelectorUtils;
 import dev.utils.app.ActivityUtils;
 import dev.utils.app.AppUtils;
@@ -20,19 +20,19 @@ import dev.utils.app.toast.ToastTintUtils;
  * detail: 跳转 Activity 回传 CallBack
  * @author Ttt
  */
-public class ActivityResultCallBackActivity extends BaseToolbarActivity {
+public class ActivityResultCallBackActivity extends BaseActivity<ActivityActivityResultCallbackBinding> {
 
     @Override
-    public int getLayoutId() {
+    public int baseLayoutId() {
         return R.layout.activity_activity_result_callback;
     }
 
-    @OnClick({R.id.vid_aarc_select_btn})
     @Override
-    public void onClick(View v) {
-        super.onClick(v);
-        switch (v.getId()) {
-            case R.id.vid_aarc_select_btn:
+    public void initListener() {
+        super.initListener();
+        binding.vidAarcSelectBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 AppUtils.startActivityForResult(new ActivityUtils.ResultCallback() {
                     @Override
                     public boolean onStartActivityForResult(Activity activity) {
@@ -58,7 +58,7 @@ public class ActivityResultCallBackActivity extends BaseToolbarActivity {
                         }
                     }
                 });
-                break;
-        }
+            }
+        });
     }
 }

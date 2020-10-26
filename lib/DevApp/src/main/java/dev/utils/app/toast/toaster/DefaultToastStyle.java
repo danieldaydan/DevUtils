@@ -95,9 +95,9 @@ public class DefaultToastStyle implements IToast.Style {
         return null;
     }
 
-    // =================
+    // ================
     // = TextView 相关 =
-    // =================
+    // ================
 
     /**
      * 获取文本颜色
@@ -147,7 +147,7 @@ public class DefaultToastStyle implements IToast.Style {
     }
 
     /**
-     * 获取 TextView padding 边距 - new int[] { left, top, right, bottom }
+     * 获取 TextView padding 边距 ( new int[] { left, top, right, bottom } )
      * @return TextView padding 边距
      */
     @Override

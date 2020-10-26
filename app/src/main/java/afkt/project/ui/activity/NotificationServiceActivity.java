@@ -7,17 +7,15 @@ import android.os.Bundle;
 import android.service.notification.StatusBarNotification;
 import android.view.View;
 
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 
 import afkt.project.R;
-import afkt.project.base.app.BaseToolbarActivity;
+import afkt.project.base.app.BaseActivity;
+import afkt.project.databinding.BaseViewRecyclerviewBinding;
 import afkt.project.model.item.ButtonList;
 import afkt.project.model.item.ButtonValue;
 import afkt.project.ui.adapter.ButtonAdapter;
-import butterknife.BindView;
 import dev.service.NotificationService;
 import dev.utils.app.logger.DevLogger;
 import dev.utils.app.toast.ToastTintUtils;
@@ -31,14 +29,10 @@ import dev.utils.app.toast.ToastTintUtils;
  *     <uses-permission android:name="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE" />
  * </pre>
  */
-public class NotificationServiceActivity extends BaseToolbarActivity {
-
-    // = View =
-    @BindView(R.id.vid_bvr_recy)
-    RecyclerView vid_bvr_recy;
+public class NotificationServiceActivity extends BaseActivity<BaseViewRecyclerviewBinding> {
 
     @Override
-    public int getLayoutId() {
+    public int baseLayoutId() {
         return R.layout.base_view_recyclerview;
     }
 
@@ -56,7 +50,7 @@ public class NotificationServiceActivity extends BaseToolbarActivity {
 
         // 初始化布局管理器、适配器
         final ButtonAdapter buttonAdapter = new ButtonAdapter(ButtonList.getNotificationServiceButtonValues());
-        vid_bvr_recy.setAdapter(buttonAdapter);
+        binding.vidBvrRecy.setAdapter(buttonAdapter);
         buttonAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
@@ -96,12 +90,12 @@ public class NotificationServiceActivity extends BaseToolbarActivity {
         NotificationService.setNotificationListener(new NotificationService.NotificationListener() {
             @Override
             public void onServiceCreated(NotificationService service) {
-                DevLogger.dTag(mTag, "服务创建通知");
+                DevLogger.dTag(TAG, "服务创建通知");
             }
 
             @Override
             public void onServiceDestroy() {
-                DevLogger.dTag(mTag, "服务销毁通知");
+                DevLogger.dTag(TAG, "服务销毁通知");
             }
 
             @Override
@@ -111,7 +105,7 @@ public class NotificationServiceActivity extends BaseToolbarActivity {
                 builder.append("\nintent: " + intent.toString());
                 builder.append("\nflags: " + flags);
                 builder.append("\nstartId: " + startId);
-                DevLogger.dTag(mTag, builder.toString());
+                DevLogger.dTag(TAG, builder.toString());
                 return 0;
             }
 
@@ -130,7 +124,7 @@ public class NotificationServiceActivity extends BaseToolbarActivity {
                     }
                 }
                 // 打印日志
-                DevLogger.dTag(mTag, builder.toString());
+                DevLogger.dTag(TAG, builder.toString());
             }
 
             @Override
@@ -139,7 +133,7 @@ public class NotificationServiceActivity extends BaseToolbarActivity {
                 builder.append("onNotificationRemoved");
                 builder.append("\nstatusBarNotification: " + sbn.toString());
                 // 打印日志
-                DevLogger.dTag(mTag, builder.toString());
+                DevLogger.dTag(TAG, builder.toString());
             }
         });
     }

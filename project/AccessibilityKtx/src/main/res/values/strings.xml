@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">AccessibilityKtx</string>
     <string name="accessibility_description">AccessibilityKtx ( DevUtils 无障碍工具 ) 演示</string>

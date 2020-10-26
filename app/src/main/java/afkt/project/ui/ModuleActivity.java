@@ -2,13 +2,12 @@ package afkt.project.ui;
 
 import android.view.View;
 
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 
 import afkt.project.R;
-import afkt.project.base.app.BaseToolbarActivity;
+import afkt.project.base.app.BaseActivity;
+import afkt.project.databinding.BaseViewRecyclerviewBinding;
 import afkt.project.framework.mvp.ArticleMVPActivity;
 import afkt.project.framework.mvvm.ArticleMVVMActivity;
 import afkt.project.model.item.ButtonList;
@@ -45,6 +44,7 @@ import afkt.project.ui.activity.QRCodeCreateActivity;
 import afkt.project.ui.activity.QRCodeImageActivity;
 import afkt.project.ui.activity.QRCodeScanActivity;
 import afkt.project.ui.activity.RecyItemSlideActivity;
+import afkt.project.ui.activity.RoomActivity;
 import afkt.project.ui.activity.ScanShapeActivity;
 import afkt.project.ui.activity.SignActivity;
 import afkt.project.ui.activity.StatusBarActivity;
@@ -59,20 +59,16 @@ import afkt.project.ui.activity.WifiActivity;
 import afkt.project.ui.activity.WrapActivity;
 import afkt.project.ui.adapter.ButtonAdapter;
 import afkt.project.util.SkipUtils;
-import butterknife.BindView;
 import dev.utils.app.toast.ToastTintUtils;
 
 /**
  * detail: Module 列表 Activity
  * @author Ttt
  */
-public class ModuleActivity extends BaseToolbarActivity {
-
-    @BindView(R.id.vid_bvr_recy)
-    RecyclerView vid_bvr_recy;
+public class ModuleActivity extends BaseActivity<BaseViewRecyclerviewBinding> {
 
     @Override
-    public int getLayoutId() {
+    public int baseLayoutId() {
         return R.layout.base_view_recyclerview;
     }
 
@@ -81,7 +77,7 @@ public class ModuleActivity extends BaseToolbarActivity {
         super.initValue();
         // 初始化布局管理器、适配器
         final ButtonAdapter buttonAdapter = new ButtonAdapter(ButtonList.getModuleButtonValues(getModuleType()));
-        vid_bvr_recy.setAdapter(buttonAdapter);
+        binding.vidBvrRecy.setAdapter(buttonAdapter);
         buttonAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
@@ -91,14 +87,6 @@ public class ModuleActivity extends BaseToolbarActivity {
                     // =============
                     // = Framework =
                     // =============
-
-                    /**
-                     * MVC、MVP、MVVM 介绍对比
-                     * @see afkt.project.base.app.BaseMVVMActivity
-                     */
-
-                    // 架构只是一种思维方式, 不管是MVC、MVP, 还是MVVM, 都只是一种思考问题解决问题的思维
-                    // 其目的是要解决编程过程中, 模块内部高内聚、模块与模块之间低耦合、可维护性、易测试等问题
 
                     case ButtonValue.BTN_MVP: // MVP
                         SkipUtils.startActivity(ArticleMVPActivity.class, buttonValue);
@@ -126,6 +114,9 @@ public class ModuleActivity extends BaseToolbarActivity {
                         break;
                     case ButtonValue.BTN_GREEN_DAO: // GreenDAO
                         SkipUtils.startActivity(GreenDaoActivity.class, buttonValue);
+                        break;
+                    case ButtonValue.BTN_ROOM: // Room
+                        SkipUtils.startActivity(RoomActivity.class, buttonValue);
                         break;
 
                     // ======
@@ -190,9 +181,9 @@ public class ModuleActivity extends BaseToolbarActivity {
                         SkipUtils.startActivity(PagerSnapMAXActivity.class, buttonValue);
                         break;
 
-                    // ============
+                    // ===========
                     // = 其他功能 =
-                    // ============
+                    // ===========
 
                     case ButtonValue.BTN_LISTENER: // 事件 / 广播监听 ( 网络状态、屏幕旋转等 )
                         SkipUtils.startActivity(ListenerActivity.class, buttonValue);
@@ -278,6 +269,6 @@ public class ModuleActivity extends BaseToolbarActivity {
             }
         });
         // 注册观察者
-        registerAdapterDataObserver(vid_bvr_recy, true);
+        registerAdapterDataObserver(binding.vidBvrRecy, true);
     }
 }

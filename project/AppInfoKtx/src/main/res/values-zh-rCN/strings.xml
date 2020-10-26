@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">APP 信息提取</string>
 
@@ -40,6 +41,7 @@
     <string name="str_scan_apk">扫描安装包</string>
     <string name="str_scan_apk_tips">设置扫描安装包文件, 后缀字段</string>
     <string name="str_setting_scan_suffix_suc">设置成功, 如需重新扫描, 请点击刷新</string>
+    <string name="str_search">搜索</string>
     <string name="str_set_query_apk_suffix">设置搜索后缀</string>
     <string name="str_set_query_apk_suffix_hint">设置搜索后缀(无需添加 .)</string>
 
@@ -52,6 +54,7 @@
     <string name="str_operate_fail">操作失败</string>
     <string name="str_export_app_msg">导出应用信息</string>
     <string name="str_export_apk_msg">导出安装包信息</string>
+    <string name="str_export">导出</string>
     <string name="str_export_app">导出应用</string>
     <string name="str_export_apk">导出 APK</string>
     <string name="str_share">分享</string>

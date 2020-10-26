@@ -3,8 +3,6 @@ package afkt.project;
 import android.Manifest;
 import android.view.View;
 
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.tencent.mmkv.MMKV;
@@ -14,14 +12,13 @@ import java.util.List;
 
 import afkt.project.base.app.BaseActivity;
 import afkt.project.base.constants.KeyConstants;
+import afkt.project.databinding.ActivityMainBinding;
 import afkt.project.model.item.ButtonList;
 import afkt.project.model.item.ButtonValue;
 import afkt.project.ui.ModuleActivity;
 import afkt.project.ui.activity.DevEnvironmentLibActivity;
 import afkt.project.ui.adapter.ButtonAdapter;
-import afkt.project.ui.widget.BaseTextView;
 import afkt.project.util.SkipUtils;
-import butterknife.BindView;
 import dev.utils.app.AppCommonUtils;
 import dev.utils.app.logger.DevLogger;
 import dev.utils.app.permission.PermissionUtils;
@@ -30,15 +27,15 @@ import dev.utils.app.toast.ToastUtils;
 import dev.utils.common.HttpURLConnectionUtils;
 import dev.utils.common.StringUtils;
 
-public class MainActivity extends BaseActivity {
-
-    @BindView(R.id.vid_am_android_tv)
-    BaseTextView vid_am_android_tv;
-    @BindView(R.id.vid_bvr_recy)
-    RecyclerView vid_bvr_recy;
+public class MainActivity extends BaseActivity<ActivityMainBinding> {
 
     @Override
-    public int getLayoutId() {
+    public boolean isToolBar() {
+        return false;
+    }
+
+    @Override
+    public int baseLayoutId() {
         return R.layout.activity_main;
     }
 
@@ -49,18 +46,18 @@ public class MainActivity extends BaseActivity {
         // MMKV 简单使用
         mmkvSimple();
 
-        // ============
+        // ===========
         // = 时间校验 =
-        // ============
+        // ===========
 
         HttpURLConnectionUtils.getNetTime(new HttpURLConnectionUtils.TimeCallBack() {
             @Override
             public void onResponse(long time) {
                 // 获取当前时间
-                long cTime = System.currentTimeMillis();
+                long curTime = System.currentTimeMillis();
                 if (time >= 1) {
                     // 获取误差时间
-                    final long diffTime = Math.abs(cTime - time);
+                    final long diffTime = Math.abs(curTime - time);
                     // 判断是否误差超过 10 秒
                     if (diffTime >= 10000l) {
                         ToastUtils.showShort("当前时间与网络时间不一致, 误差: " + (diffTime / 1000) + "秒");
@@ -70,13 +67,13 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onFail(Exception e) {
-                DevLogger.eTag(mTag, e, "getNetTime");
+                DevLogger.eTag(TAG, e, "getNetTime");
             }
         });
 
-        // ============
+        // ===========
         // = 申请权限 =
-        // ============
+        // ===========
 
         PermissionUtils.permission(Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE).callBack(new PermissionUtils.PermissionCallBack() {
@@ -105,7 +102,7 @@ public class MainActivity extends BaseActivity {
                 // 拒绝了则再次请求处理
                 PermissionUtils.againRequest(MainActivity.this, this, deniedList);
                 // Toast
-                ToastUtils.showLong("请开启读写手机存储权限.");
+                ToastUtils.showShort("请开启读写手机存储权限.");
             }
         }).request(this);
     }
@@ -114,10 +111,10 @@ public class MainActivity extends BaseActivity {
     public void initValue() {
         super.initValue();
         // 设置 Android 版本信息
-        vid_am_android_tv.setText(AppCommonUtils.convertSDKVersion());
+        binding.vidAmAndroidTv.setText(AppCommonUtils.convertSDKVersion());
         // 初始化布局管理器、适配器
         final ButtonAdapter buttonAdapter = new ButtonAdapter(ButtonList.getMainButtonValues());
-        vid_bvr_recy.setAdapter(buttonAdapter);
+        binding.vidBaseRecy.vidBvrRecy.setAdapter(buttonAdapter);
         buttonAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
@@ -183,6 +180,6 @@ public class MainActivity extends BaseActivity {
                 .append(StringUtils.NEW_LINE_STR)
                 .append("\t\tdata: " + mmapIdData);
 
-        DevLogger.dTag(mTag, builder.toString());
+        DevLogger.dTag(TAG, builder.toString());
     }
 }

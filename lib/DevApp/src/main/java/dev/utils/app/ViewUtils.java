@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -27,13 +28,14 @@ import androidx.annotation.FloatRange;
 import androidx.annotation.IdRes;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.RequiresApi;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.viewpager.widget.ViewPager;
+
+import java.lang.reflect.Field;
 
 import dev.DevUtils;
 import dev.utils.LogPrintUtils;
+import dev.utils.app.anim.AnimationUtils;
 import dev.utils.app.image.ImageUtils;
+import dev.utils.common.FieldUtils;
 
 /**
  * detail: View 操作相关工具类
@@ -79,7 +81,11 @@ public final class ViewUtils {
     }
 
     // 日志 TAG
-    private static final String TAG = ViewUtils.class.getSimpleName();
+    private static final String TAG          = ViewUtils.class.getSimpleName();
+    // MATCH_PARENT
+    public static final  int    MATCH_PARENT = ViewGroup.LayoutParams.MATCH_PARENT;
+    // WRAP_CONTENT
+    public static final  int    WRAP_CONTENT = ViewGroup.LayoutParams.WRAP_CONTENT;
 
     /**
      * 获取 Context
@@ -402,9 +408,9 @@ public final class ViewUtils {
         return false;
     }
 
-    // ======================
+    // =====================
     // = 初始化 View 操作等 =
-    // ======================
+    // =====================
 
     /**
      * 初始化 View
@@ -573,11 +579,10 @@ public final class ViewUtils {
                 if (layoutParams != null) {
                     layoutParams.width = width;
                     layoutParams.height = height;
-                } else {
-                    if (nullNewLP) {
-                        layoutParams = new ViewGroup.LayoutParams(width, height);
-                        view.setLayoutParams(layoutParams);
-                    }
+                    view.setLayoutParams(layoutParams);
+                } else if (nullNewLP) {
+                    layoutParams = new ViewGroup.LayoutParams(width, height);
+                    view.setLayoutParams(layoutParams);
                 }
             } catch (Exception e) {
                 LogPrintUtils.eTag(TAG, e, "setWidthHeight");
@@ -623,11 +628,10 @@ public final class ViewUtils {
                 ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
                 if (layoutParams != null) {
                     layoutParams.width = width;
-                } else {
-                    if (nullNewLP) {
-                        layoutParams = new ViewGroup.LayoutParams(width, ViewGroup.LayoutParams.WRAP_CONTENT);
-                        view.setLayoutParams(layoutParams);
-                    }
+                    view.setLayoutParams(layoutParams);
+                } else if (nullNewLP) {
+                    layoutParams = new ViewGroup.LayoutParams(width, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    view.setLayoutParams(layoutParams);
                 }
             } catch (Exception e) {
                 LogPrintUtils.eTag(TAG, e, "setWidth");
@@ -673,11 +677,10 @@ public final class ViewUtils {
                 ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
                 if (layoutParams != null) {
                     layoutParams.height = height;
-                } else {
-                    if (nullNewLP) {
-                        layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, height);
-                        view.setLayoutParams(layoutParams);
-                    }
+                    view.setLayoutParams(layoutParams);
+                } else if (nullNewLP) {
+                    layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, height);
+                    view.setLayoutParams(layoutParams);
                 }
             } catch (Exception e) {
                 LogPrintUtils.eTag(TAG, e, "setHeight");
@@ -795,7 +798,7 @@ public final class ViewUtils {
     // =
 
     /**
-     * View 内容滚动位置 - 相对于初始位置移动
+     * View 内容滚动位置 ( 相对于初始位置移动 )
      * <pre>
      *     无滚动过程
      * </pre>
@@ -810,7 +813,7 @@ public final class ViewUtils {
     }
 
     /**
-     * View 内部滚动位置 - 相对于上次移动的最后位置移动
+     * View 内部滚动位置 ( 相对于上次移动的最后位置移动 )
      * <pre>
      *     无滚动过程
      * </pre>
@@ -1810,9 +1813,9 @@ public final class ViewUtils {
         return false;
     }
 
-    // =================
+    // ================
     // = View 显示状态 =
-    // =================
+    // ================
 
     /**
      * 判断 View 是否显示 ( 如果存在父级则判断父级 )
@@ -2297,22 +2300,36 @@ public final class ViewUtils {
      * @return Layout Gravity
      */
     public static int getLayoutGravity(final View view) {
-        if (view != null) {
+        return getLayoutGravity(view, true);
+    }
+
+    /**
+     * 获取 View Layout Gravity
+     * @param view         {@link View}
+     * @param isReflection 是否使用反射
+     * @return Layout Gravity
+     */
+    public static int getLayoutGravity(final View view, final boolean isReflection) {
+        if (view != null && view.getLayoutParams() != null) {
             try {
-                if (view.getLayoutParams() instanceof LinearLayout.LayoutParams) {
-                    return ((LinearLayout.LayoutParams) view.getLayoutParams()).gravity;
-                } else if (view.getLayoutParams() instanceof FrameLayout.LayoutParams) {
-                    return ((FrameLayout.LayoutParams) view.getLayoutParams()).gravity;
-                } else if (view.getLayoutParams() instanceof ViewPager.LayoutParams) {
-                    return ((ViewPager.LayoutParams) view.getLayoutParams()).gravity;
-                } else if (view.getLayoutParams() instanceof CoordinatorLayout.LayoutParams) {
-                    return ((CoordinatorLayout.LayoutParams) view.getLayoutParams()).gravity;
-                } else if (view.getLayoutParams() instanceof DrawerLayout.LayoutParams) {
-                    return ((DrawerLayout.LayoutParams) view.getLayoutParams()).gravity;
-                } else {
-                    // 抛出不支持的类型
-                    throw new Exception("layoutParams:" + view.getLayoutParams().toString());
+                ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+                if (layoutParams instanceof LinearLayout.LayoutParams) {
+                    return ((LinearLayout.LayoutParams) layoutParams).gravity;
+                } else if (layoutParams instanceof FrameLayout.LayoutParams) {
+                    return ((FrameLayout.LayoutParams) layoutParams).gravity;
+                } else if (layoutParams instanceof WindowManager.LayoutParams) {
+                    return ((WindowManager.LayoutParams) layoutParams).gravity;
                 }
+                if (isReflection) {
+                    Field[] fields = FieldUtils.getFields(layoutParams);
+                    for (Field field : fields) {
+                        if (field.getName().equals("gravity")) {
+                            return (int) field.get(layoutParams);
+                        }
+                    }
+                }
+                // 抛出不支持的类型
+                throw new Exception("layoutParams:" + layoutParams.toString());
             } catch (Exception e) {
                 LogPrintUtils.eTag(TAG, e, "getLayoutGravity");
             }
@@ -2327,23 +2344,45 @@ public final class ViewUtils {
      * @return {@code true} success, {@code false} fail
      */
     public static boolean setLayoutGravity(final View view, final int gravity) {
-        if (view != null) {
+        return setLayoutGravity(view, gravity, true);
+    }
+
+    /**
+     * 设置 View Layout Gravity
+     * @param view         {@link View}
+     * @param gravity      Gravity
+     * @param isReflection 是否使用反射
+     * @return {@code true} success, {@code false} fail
+     */
+    public static boolean setLayoutGravity(final View view, final int gravity, final boolean isReflection) {
+        if (view != null && view.getLayoutParams() != null) {
             try {
-                if (view.getLayoutParams() instanceof LinearLayout.LayoutParams) {
-                    ((LinearLayout.LayoutParams) view.getLayoutParams()).gravity = gravity;
-                } else if (view.getLayoutParams() instanceof FrameLayout.LayoutParams) {
-                    ((FrameLayout.LayoutParams) view.getLayoutParams()).gravity = gravity;
-                } else if (view.getLayoutParams() instanceof ViewPager.LayoutParams) {
-                    ((ViewPager.LayoutParams) view.getLayoutParams()).gravity = gravity;
-                } else if (view.getLayoutParams() instanceof CoordinatorLayout.LayoutParams) {
-                    ((CoordinatorLayout.LayoutParams) view.getLayoutParams()).gravity = gravity;
-                } else if (view.getLayoutParams() instanceof DrawerLayout.LayoutParams) {
-                    ((DrawerLayout.LayoutParams) view.getLayoutParams()).gravity = gravity;
-                } else {
-                    // 抛出不支持的类型
-                    throw new Exception("layoutParams:" + view.getLayoutParams().toString());
+                ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+                if (layoutParams instanceof LinearLayout.LayoutParams) {
+                    ((LinearLayout.LayoutParams) layoutParams).gravity = gravity;
+                    view.setLayoutParams(layoutParams);
+                    return true;
+                } else if (layoutParams instanceof FrameLayout.LayoutParams) {
+                    ((FrameLayout.LayoutParams) layoutParams).gravity = gravity;
+                    view.setLayoutParams(layoutParams);
+                    return true;
+                } else if (layoutParams instanceof WindowManager.LayoutParams) {
+                    ((WindowManager.LayoutParams) layoutParams).gravity = gravity;
+                    view.setLayoutParams(layoutParams);
+                    return true;
                 }
-                return true;
+                if (isReflection) {
+                    Field[] fields = FieldUtils.getFields(layoutParams);
+                    for (Field field : fields) {
+                        if (field.getName().equals("gravity")) {
+                            field.set(layoutParams, gravity);
+                            view.setLayoutParams(layoutParams);
+                            return true;
+                        }
+                    }
+                }
+                // 抛出不支持的类型
+                throw new Exception("layoutParams:" + layoutParams.toString());
             } catch (Exception e) {
                 LogPrintUtils.eTag(TAG, e, "setLayoutGravity");
             }
@@ -2391,30 +2430,23 @@ public final class ViewUtils {
         return getMargin(view)[3];
     }
 
-    // =
-
     /**
      * 获取 View Margin
      * @param view {@link View}
      * @return new int[] {left, top, right, bottom}
      */
     public static int[] getMargin(final View view) {
-        int[] margins = new int[]{0, 0, 0, 0};
-        if (view != null) {
-            // 判断是否属于 ViewGroup.MarginLayoutParams
+        int[] margin = new int[]{0, 0, 0, 0};
+        if (view != null && view.getLayoutParams() != null) {
             if (view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
-                try {
-                    ViewGroup.MarginLayoutParams layoutParams = ((ViewGroup.MarginLayoutParams) view.getLayoutParams());
-                    margins[0] = layoutParams.leftMargin;
-                    margins[1] = layoutParams.topMargin;
-                    margins[2] = layoutParams.rightMargin;
-                    margins[3] = layoutParams.bottomMargin;
-                } catch (Exception e) {
-                    LogPrintUtils.eTag(TAG, e, "getMargin");
-                }
+                ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+                margin[0] = layoutParams.leftMargin;
+                margin[1] = layoutParams.topMargin;
+                margin[2] = layoutParams.rightMargin;
+                margin[3] = layoutParams.bottomMargin;
             }
         }
-        return margins;
+        return margin;
     }
 
     // =
@@ -2437,31 +2469,9 @@ public final class ViewUtils {
      * @return {@code true} success, {@code false} fail
      */
     public static boolean setMarginLeft(final View view, final int leftMargin, final boolean reset) {
-        if (view != null) {
-            // 判断是否属于 ViewGroup.MarginLayoutParams
-            if (view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
-                if (reset) {
-                    try {
-                        ((ViewGroup.MarginLayoutParams) view.getLayoutParams()).setMargins(leftMargin, 0, 0, 0);
-                        return true;
-                    } catch (Exception e) {
-                        LogPrintUtils.eTag(TAG, e, "setMarginLeft");
-                    }
-                } else {
-                    try {
-                        ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
-                        // 设置边距
-                        ((ViewGroup.MarginLayoutParams) view.getLayoutParams())
-                                .setMargins(leftMargin, layoutParams.topMargin,
-                                        layoutParams.rightMargin, layoutParams.bottomMargin);
-                        return true;
-                    } catch (Exception e) {
-                        LogPrintUtils.eTag(TAG, e, "setMarginLeft");
-                    }
-                }
-            }
-        }
-        return false;
+        if (reset) return setMargin(view, leftMargin, 0, 0, 0);
+        int[] margin = getMargin(view);
+        return setMargin(view, leftMargin, margin[1], margin[2], margin[3]);
     }
 
     /**
@@ -2482,31 +2492,9 @@ public final class ViewUtils {
      * @return {@code true} success, {@code false} fail
      */
     public static boolean setMarginTop(final View view, final int topMargin, final boolean reset) {
-        if (view != null) {
-            // 判断是否属于 ViewGroup.MarginLayoutParams
-            if (view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
-                if (reset) {
-                    try {
-                        ((ViewGroup.MarginLayoutParams) view.getLayoutParams()).setMargins(0, topMargin, 0, 0);
-                        return true;
-                    } catch (Exception e) {
-                        LogPrintUtils.eTag(TAG, e, "setMarginTop");
-                    }
-                } else {
-                    try {
-                        ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
-                        // 设置边距
-                        ((ViewGroup.MarginLayoutParams) view.getLayoutParams())
-                                .setMargins(layoutParams.leftMargin, topMargin,
-                                        layoutParams.rightMargin, layoutParams.bottomMargin);
-                        return true;
-                    } catch (Exception e) {
-                        LogPrintUtils.eTag(TAG, e, "setMarginTop");
-                    }
-                }
-            }
-        }
-        return false;
+        if (reset) return setMargin(view, 0, topMargin, 0, 0);
+        int[] margin = getMargin(view);
+        return setMargin(view, margin[0], topMargin, margin[2], margin[3]);
     }
 
     /**
@@ -2527,31 +2515,9 @@ public final class ViewUtils {
      * @return {@code true} success, {@code false} fail
      */
     public static boolean setMarginRight(final View view, final int rightMargin, final boolean reset) {
-        if (view != null) {
-            // 判断是否属于 ViewGroup.MarginLayoutParams
-            if (view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
-                if (reset) {
-                    try {
-                        ((ViewGroup.MarginLayoutParams) view.getLayoutParams()).setMargins(0, 0, rightMargin, 0);
-                        return true;
-                    } catch (Exception e) {
-                        LogPrintUtils.eTag(TAG, e, "setMarginRight");
-                    }
-                } else {
-                    try {
-                        ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
-                        // 设置边距
-                        ((ViewGroup.MarginLayoutParams) view.getLayoutParams())
-                                .setMargins(layoutParams.leftMargin, layoutParams.topMargin,
-                                        rightMargin, layoutParams.bottomMargin);
-                        return true;
-                    } catch (Exception e) {
-                        LogPrintUtils.eTag(TAG, e, "setMarginRight");
-                    }
-                }
-            }
-        }
-        return false;
+        if (reset) return setMargin(view, 0, 0, rightMargin, 0);
+        int[] margin = getMargin(view);
+        return setMargin(view, margin[0], margin[1], rightMargin, margin[3]);
     }
 
     /**
@@ -2572,31 +2538,9 @@ public final class ViewUtils {
      * @return {@code true} success, {@code false} fail
      */
     public static boolean setMarginBottom(final View view, final int bottomMargin, final boolean reset) {
-        if (view != null) {
-            // 判断是否属于 ViewGroup.MarginLayoutParams
-            if (view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
-                if (reset) {
-                    try {
-                        ((ViewGroup.MarginLayoutParams) view.getLayoutParams()).setMargins(0, 0, 0, bottomMargin);
-                        return true;
-                    } catch (Exception e) {
-                        LogPrintUtils.eTag(TAG, e, "setMarginBottom");
-                    }
-                } else {
-                    try {
-                        ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
-                        // 设置边距
-                        ((ViewGroup.MarginLayoutParams) view.getLayoutParams())
-                                .setMargins(layoutParams.leftMargin, layoutParams.topMargin,
-                                        layoutParams.rightMargin, bottomMargin);
-                        return true;
-                    } catch (Exception e) {
-                        LogPrintUtils.eTag(TAG, e, "setMarginBottom");
-                    }
-                }
-            }
-        }
-        return false;
+        if (reset) return setMargin(view, 0, 0, 0, bottomMargin);
+        int[] margin = getMargin(view);
+        return setMargin(view, margin[0], margin[1], margin[2], bottomMargin);
     }
 
     /**
@@ -2630,16 +2574,12 @@ public final class ViewUtils {
      * @return {@code true} success, {@code false} fail
      */
     public static boolean setMargin(final View view, final int left, final int top, final int right, final int bottom) {
-        if (view != null) {
-            // 判断是否属于 ViewGroup.MarginLayoutParams
+        if (view != null && view.getLayoutParams() != null) {
             if (view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
-                try {
-                    // 设置边距
-                    ((ViewGroup.MarginLayoutParams) view.getLayoutParams()).setMargins(left, top, right, bottom);
-                    return true;
-                } catch (Exception e) {
-                    LogPrintUtils.eTag(TAG, e, "setMargin");
-                }
+                ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+                layoutParams.setMargins(left, top, right, bottom);
+                view.setLayoutParams(layoutParams);
+                return true;
             }
         }
         return false;
@@ -2733,14 +2673,14 @@ public final class ViewUtils {
      * @return new int[] {left, top, right, bottom}
      */
     public static int[] getPadding(final View view) {
-        int[] paddings = new int[]{0, 0, 0, 0};
+        int[] padding = new int[]{0, 0, 0, 0};
         if (view != null) {
-            paddings[0] = view.getPaddingLeft();
-            paddings[1] = view.getPaddingTop();
-            paddings[2] = view.getPaddingRight();
-            paddings[3] = view.getPaddingBottom();
+            padding[0] = view.getPaddingLeft();
+            padding[1] = view.getPaddingTop();
+            padding[2] = view.getPaddingRight();
+            padding[3] = view.getPaddingBottom();
         }
-        return paddings;
+        return padding;
     }
 
     // =
@@ -2763,24 +2703,9 @@ public final class ViewUtils {
      * @return {@code true} success, {@code false} fail
      */
     public static boolean setPaddingLeft(final View view, final int leftPadding, final boolean reset) {
-        if (view != null) {
-            if (reset) {
-                try {
-                    view.setPadding(leftPadding, 0, 0, 0);
-                    return true;
-                } catch (Exception e) {
-                    LogPrintUtils.eTag(TAG, e, "setPaddingLeft");
-                }
-            } else {
-                try {
-                    view.setPadding(leftPadding, view.getPaddingTop(), view.getPaddingRight(), view.getPaddingBottom());
-                    return true;
-                } catch (Exception e) {
-                    LogPrintUtils.eTag(TAG, e, "setPaddingLeft");
-                }
-            }
-        }
-        return false;
+        if (reset) return setPadding(view, leftPadding, 0, 0, 0);
+        int[] padding = getPadding(view);
+        return setPadding(view, leftPadding, padding[1], padding[2], padding[3]);
     }
 
     /**
@@ -2801,24 +2726,9 @@ public final class ViewUtils {
      * @return {@code true} success, {@code false} fail
      */
     public static boolean setPaddingTop(final View view, final int topPadding, final boolean reset) {
-        if (view != null) {
-            if (reset) {
-                try {
-                    view.setPadding(0, topPadding, 0, 0);
-                    return true;
-                } catch (Exception e) {
-                    LogPrintUtils.eTag(TAG, e, "setPaddingTop");
-                }
-            } else {
-                try {
-                    view.setPadding(view.getPaddingLeft(), topPadding, view.getPaddingRight(), view.getPaddingBottom());
-                    return true;
-                } catch (Exception e) {
-                    LogPrintUtils.eTag(TAG, e, "setPaddingTop");
-                }
-            }
-        }
-        return false;
+        if (reset) return setPadding(view, 0, topPadding, 0, 0);
+        int[] padding = getPadding(view);
+        return setPadding(view, padding[0], topPadding, padding[2], padding[3]);
     }
 
     /**
@@ -2839,24 +2749,9 @@ public final class ViewUtils {
      * @return {@code true} success, {@code false} fail
      */
     public static boolean setPaddingRight(final View view, final int rightPadding, final boolean reset) {
-        if (view != null) {
-            if (reset) {
-                try {
-                    view.setPadding(0, 0, rightPadding, 0);
-                    return true;
-                } catch (Exception e) {
-                    LogPrintUtils.eTag(TAG, e, "setPaddingRight");
-                }
-            } else {
-                try {
-                    view.setPadding(view.getPaddingLeft(), view.getPaddingTop(), rightPadding, view.getPaddingBottom());
-                    return true;
-                } catch (Exception e) {
-                    LogPrintUtils.eTag(TAG, e, "setPaddingRight");
-                }
-            }
-        }
-        return false;
+        if (reset) return setPadding(view, 0, 0, rightPadding, 0);
+        int[] padding = getPadding(view);
+        return setPadding(view, padding[0], padding[1], rightPadding, padding[3]);
     }
 
     /**
@@ -2877,24 +2772,9 @@ public final class ViewUtils {
      * @return {@code true} success, {@code false} fail
      */
     public static boolean setPaddingBottom(final View view, final int bottomPadding, final boolean reset) {
-        if (view != null) {
-            if (reset) {
-                try {
-                    view.setPadding(0, 0, 0, bottomPadding);
-                    return true;
-                } catch (Exception e) {
-                    LogPrintUtils.eTag(TAG, e, "setPaddingBottom");
-                }
-            } else {
-                try {
-                    view.setPadding(view.getPaddingLeft(), view.getPaddingTop(), view.getPaddingRight(), bottomPadding);
-                    return true;
-                } catch (Exception e) {
-                    LogPrintUtils.eTag(TAG, e, "setPaddingBottom");
-                }
-            }
-        }
-        return false;
+        if (reset) return setPadding(view, 0, 0, 0, bottomPadding);
+        int[] padding = getPadding(view);
+        return setPadding(view, padding[0], padding[1], padding[2], bottomPadding);
     }
 
     /**
@@ -2929,12 +2809,8 @@ public final class ViewUtils {
      */
     public static boolean setPadding(final View view, final int left, final int top, final int right, final int bottom) {
         if (view != null) {
-            try {
-                view.setPadding(left, top, right, bottom);
-                return true;
-            } catch (Exception e) {
-                LogPrintUtils.eTag(TAG, e, "setPadding");
-            }
+            view.setPadding(left, top, right, bottom);
+            return true;
         }
         return false;
     }
@@ -3007,6 +2883,7 @@ public final class ViewUtils {
             try {
                 RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
                 layoutParams.addRule(verb, subject);
+                view.setLayoutParams(layoutParams);
             } catch (Exception e) {
                 LogPrintUtils.eTag(TAG, e, "addRule");
             }
@@ -3029,6 +2906,7 @@ public final class ViewUtils {
                 } else {
                     layoutParams.addRule(verb, 0);
                 }
+                view.setLayoutParams(layoutParams);
             } catch (Exception e) {
                 LogPrintUtils.eTag(TAG, e, "removeRule");
             }
@@ -3114,8 +2992,7 @@ public final class ViewUtils {
      * @return {@link View}
      */
     public static View setAnimation(final View view, final Animation animation) {
-        if (view != null) view.setAnimation(animation);
-        return view;
+        return AnimationUtils.setAnimation(view, animation);
     }
 
     /**
@@ -3124,7 +3001,7 @@ public final class ViewUtils {
      * @return {@link Animation}
      */
     public static Animation getAnimation(final View view) {
-        return (view != null) ? view.getAnimation() : null;
+        return AnimationUtils.getAnimation(view);
     }
 
     /**
@@ -3133,14 +3010,7 @@ public final class ViewUtils {
      * @return {@link View}
      */
     public static View clearAnimation(final View view) {
-        if (view != null) {
-            try {
-                view.clearAnimation();
-            } catch (Exception e) {
-                LogPrintUtils.eTag(TAG, e, "clearAnimation");
-            }
-        }
-        return view;
+        return AnimationUtils.clearAnimation(view);
     }
 
     /**
@@ -3150,14 +3020,7 @@ public final class ViewUtils {
      * @return {@link View}
      */
     public static View startAnimation(final View view, final Animation animation) {
-        if (view != null && animation != null) {
-            try {
-                view.startAnimation(animation);
-            } catch (Exception e) {
-                LogPrintUtils.eTag(TAG, e, "startAnimation");
-            }
-        }
-        return view;
+        return AnimationUtils.startAnimation(view, animation);
     }
 
     /**
@@ -3167,14 +3030,16 @@ public final class ViewUtils {
      * @return {@link Animation}
      */
     public static <T extends Animation> T startAnimation(final T animation) {
-        if (animation != null) {
-            try {
-                animation.start();
-            } catch (Exception e) {
-                LogPrintUtils.eTag(TAG, e, "startAnimation");
-            }
-        }
-        return animation;
+        return AnimationUtils.startAnimation(animation);
+    }
+
+    /**
+     * 取消动画
+     * @param view {@link View}
+     * @return {@link Animation}
+     */
+    public static Animation cancelAnimation(final View view) {
+        return AnimationUtils.cancelAnimation(view);
     }
 
     /**
@@ -3183,15 +3048,8 @@ public final class ViewUtils {
      * @param <T>       泛型
      * @return {@link Animation}
      */
-    public static <T extends Animation> T cancel(final T animation) {
-        if (animation != null) {
-            try {
-                animation.cancel();
-            } catch (Exception e) {
-                LogPrintUtils.eTag(TAG, e, "cancel");
-            }
-        }
-        return animation;
+    public static <T extends Animation> T cancelAnimation(final T animation) {
+        return AnimationUtils.cancelAnimation(animation);
     }
 
     // ========
@@ -3447,9 +3305,9 @@ public final class ViewUtils {
         return null;
     }
 
-    // ============
+    // ===========
     // = 着色处理 =
-    // ============
+    // ===========
 
     /**
      * View 着色处理

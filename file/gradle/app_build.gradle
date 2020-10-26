@@ -7,7 +7,6 @@ apply plugin: 'org.greenrobot.greendao'
 android {
 
     compileSdkVersion versions.compileSdkVersion
-//    buildToolsVersion versions.buildToolsVersion
 
     defaultConfig {
         minSdkVersion versions.app_minSdkVersion
@@ -25,15 +24,11 @@ android {
 //        }
     }
 
-    // data binding
     buildFeatures {
+        // Data Binding
         dataBinding = true
-    }
-
-    // View Binding
-    viewBinding {
-        // https://developer.android.com/topic/libraries/view-binding
-        enabled = true
+        // View Binding
+        viewBinding = true
     }
 
     lintOptions {
@@ -81,16 +76,24 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation deps.kotlin.stdlib
-    implementation deps.androidx.core_ktx
-    implementation deps.androidx.appcompat
-    implementation deps.androidx.support_v4
+    implementation deps.kotlin.core
+    implementation deps.kotlin.lifecycle_runtime
+    implementation deps.kotlin.lifecycle_viewmodel
+    implementation deps.kotlin.lifecycle_livedata
+    implementation deps.kotlin.lifecycle_viewmodel_savedstate
+    implementation deps.kotlin.room_runtime
+    kapt deps.kotlin.room_compiler
+    implementation deps.kotlin.room_ktx
+    implementation deps.androidx.lifecycle_common_java8
     implementation deps.androidx.design
+    implementation deps.androidx.appcompat
+    implementation deps.androidx.appcompat_resources
+    implementation deps.androidx.support_v4
     implementation deps.androidx.cardview
     implementation deps.androidx.recyclerview
     implementation deps.androidx.multidex
     implementation deps.androidx.constraint_layout
     implementation deps.androidx.viewpager2
-    implementation deps.androidx.sqlite
 }
 
 // 编码设置

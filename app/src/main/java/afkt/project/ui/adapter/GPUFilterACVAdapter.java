@@ -11,7 +11,7 @@ import java.util.List;
 
 import afkt.project.R;
 import afkt.project.model.bean.ACVFileBean;
-import afkt.project.ui.widget.BaseTextView;
+import dev.base.widget.BaseTextView;
 import dev.utils.app.ResourceUtils;
 import dev.utils.app.SizeUtils;
 import dev.utils.app.helper.QuickHelper;
@@ -73,7 +73,9 @@ public class GPUFilterACVAdapter extends BaseAdapter {
 
         boolean isSelect = (selectPosition == position);
         int width = SizeUtils.dipConvertPx(100f);
-        Gallery.LayoutParams layoutParams = new Gallery.LayoutParams(width, Gallery.LayoutParams.MATCH_PARENT);
+        Gallery.LayoutParams layoutParams = new Gallery.LayoutParams(
+                width, Gallery.LayoutParams.MATCH_PARENT
+        );
         // 初始化 View
         return QuickHelper.get(new BaseTextView(context))
                 .setText(acvFileBean.acvName)

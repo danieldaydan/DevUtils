@@ -18,7 +18,7 @@ import android.os.Build;
  */
 public final class InactivityTimerAssist {
 
-    // 无操作时间 ( 到时间自动关闭 ) - 默认五分钟
+    // 无操作时间 ( 到时间自动关闭, 默认五分钟 )
     private long                              mInactivityTime;
     // 对应的页面
     private Activity                          mActivity;
@@ -27,9 +27,9 @@ public final class InactivityTimerAssist {
     // 检查任务
     private AsyncTask<Object, Object, Object> mInactivityTask;
 
-    // ============
+    // ===========
     // = 构造函数 =
-    // ============
+    // ===========
 
     /**
      * 构造函数
@@ -53,9 +53,9 @@ public final class InactivityTimerAssist {
         cancel();
     }
 
-    // ================
+    // ===============
     // = 对外公开方法 =
-    // ================
+    // ===============
 
     /**
      * 暂停检测
@@ -99,9 +99,9 @@ public final class InactivityTimerAssist {
         cancel();
     }
 
-    // ============
+    // ===========
     // = 内部方法 =
-    // ============
+    // ===========
 
     /**
      * 开始计时任务

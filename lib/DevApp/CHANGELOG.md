@@ -1,6 +1,120 @@
 Change Log
 ==========
 
+Version 2.0.7 *(2020-10-20)*
+----------------------------
+
+* `[Update]` StringUtils#convertHideMobile、convertSymbolHide Method Name
+
+* `[Fix]` StringUtils#replaceSEWith、clearSEWiths、clearEndsWith 索引判断问题
+
+Version 2.0.6 *(2020-10-12)*
+----------------------------
+
+* `[Add]` ScreenshotUtils 截图监听工具类
+
+* `[Add]` FilePartUtils 文件分片工具类
+
+* `[Add]` BitmapUtils#getVideoThumbnail
+
+* `[Add]` DevHelper#flush、flushQuietly、flushCloseIO、flushCloseIOQuietly
+
+* `[Add]` CloseUtils#flush、flushQuietly、flushCloseIO、flushCloseIOQuietly
+
+* `[Add]` FileUtils#convertFiles、convertPaths
+
+* `[Refactor]` 修改整个库 Closeable Close 代码内部调用 CloseUtils
+
+* `[Update]` SpannableStringUtils 修改为 SpanUtils
+
+Version 2.0.5 *(2020-09-30)*
+----------------------------
+
+* `[Add]` 新增 ResourceAssist ( Resources 辅助类 )
+
+* `[Add]` 新增 ResourcePluginUtils ( 从 APK 中读取 Resources 可实现换肤等功能 )
+
+* `[Update]` 修改部分方法 obtain 为 get、newCache ( DevCache )
+
+* `[Refactor]` 整合 DevApp Utils 代码, 统一通过 ResourceAssist 辅助类进行 Resources 获取、适配控制等
+
+Version 2.0.4 *(2020-09-27)*
+----------------------------
+
+* `[Add]` DateUtils#getZodiac、getConstellation、getConstellationDate 获取生肖、星座方法
+
+* `[Add]` CalendarUtils 日历 ( 公历、农历 ) 工具类
+
+Version 2.0.3 *(2020-09-20)*
+----------------------------
+
+* `[Fix]` NotificationUtils#createNotification 方法新增适配处理
+
+* `[Fix]` PermissionUtils 内存泄露问题
+
+* `[Delete]` 删除 DevCommonUtils 中其他工具类快捷方法
+
+* `[Update]` 更新部分代码注释
+
+Version 2.0.2 *(2020-09-15)*
+----------------------------
+
+* `[Add]` AnimationUtils#cancelAnimation
+
+* `[Add]` KeyBoardUtils#setSoftInputMode
+
+* `[Add]` HandlerUtils#isMainThread
+
+* `[Add]` HandlerUtils 新增 Key Runnable Map 方便通过 Key 快捷控制 Runnable, 进行 postDelayed、removeCallbacks
+
+* `[Add]` StringUtils#clearTab、clearTabTrim、clearLine、clearLineTrim、clearSpaceTabLine、clearSpaceTabLineTrim
+
+* `[Add]` ScaleUtils#XY type 拓展字段
+
+* `[Add]` NumberUtils#addZero
+
+* `[Update]` DateUtils#convertTime 为 timeAddZero
+
+* `[Update]` 去除部分方法名 to 前缀
+
+Version 2.0.1 *(2020-09-07)*
+----------------------------
+
+* `[Add]` ScaleUtils#calcScale、calcScaleToMath、calcXY
+
+* `[Add]` StringUtils#forJoint
+
+* `[Add]` AppCommonUtils#isR
+
+* `[Add]` SnackbarUtils#getSnackbarLayout、getSnackbarContentLayout
+
+* `[Add]` ClickUtils#setCheckViewId 方法, OnDebouncingClickListener、OnCountClickListener 事件
+
+* `[Fix]` 修复部分 LayoutParams 操作, 未 setLayoutParams 处理
+
+Version 2.0.0 *(2020-08-29)*
+----------------------------
+
+* `[Add]` FileUtils#canRead、canWrite、canReadWrite
+
+Version 1.9.9 *(2020-08-27)*
+----------------------------
+
+* `[Fix]` UriUtils#getFilePathByUri 方法新增 Android Q 适配操作
+
+* `[Add]` ContentResolverUtils#getDisplayNameColumn
+
+* `[Add]` UriUtils#copyByUri
+
+Version 1.9.8 *(2020-08-23)*
+----------------------------
+
+* `[Update]` ShapeUtils
+
+* `[Add]` ViewHelper#quickHelper、QuickHelper#quickHelper、DevHelper#quickHelper
+
+* `[Add]` IntentUtils#getCategoryLauncherIntent
+
 Version 1.9.7 *(2020-08-04)*
 ----------------------------
 

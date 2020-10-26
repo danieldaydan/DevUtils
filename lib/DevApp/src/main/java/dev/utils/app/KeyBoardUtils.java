@@ -9,6 +9,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
@@ -20,7 +22,7 @@ import dev.utils.LogPrintUtils;
  * detail: 软键盘相关工具类
  * @author Ttt
  * <pre>
- *     避免输入法面板遮挡 manifest.xml 中 activity 中设置
+ *     避免软键盘面板遮挡 manifest.xml 中 activity 中设置
  *     android:windowSoftInputMode="adjustPan"
  *     android:windowSoftInputMode="adjustUnspecified|stateHidden"
  * </pre>
@@ -48,9 +50,71 @@ public final class KeyBoardUtils {
         DELAY_MILLIS = delayMillis;
     }
 
-    // ==============
+    // =
+
+    /**
+     * 设置 Window 软键盘是否显示
+     * @param activity     {@link Activity}
+     * @param inputVisible 是否显示软键盘
+     * @return {@code true} success, {@code false} fail
+     */
+    public static boolean setSoftInputMode(final Activity activity, final boolean inputVisible) {
+        return setSoftInputMode(activity != null ? activity.getWindow() : null, inputVisible, true);
+    }
+
+    /**
+     * 设置 Window 软键盘是否显示
+     * @param window       {@link Window}
+     * @param inputVisible 是否显示软键盘
+     * @return {@code true} success, {@code false} fail
+     */
+    public static boolean setSoftInputMode(final Window window, final boolean inputVisible) {
+        return setSoftInputMode(window, inputVisible, true);
+    }
+
+    /**
+     * 设置 Window 软键盘是否显示
+     * @param activity     {@link Activity}
+     * @param inputVisible 是否显示软键盘
+     * @param clearFlag    是否清空 Flag ( FLAG_ALT_FOCUSABLE_IM | FLAG_NOT_FOCUSABLE )
+     * @return {@code true} success, {@code false} fail
+     */
+    public static boolean setSoftInputMode(final Activity activity, final boolean inputVisible, final boolean clearFlag) {
+        return setSoftInputMode(activity != null ? activity.getWindow() : null, inputVisible, clearFlag);
+    }
+
+    /**
+     * 设置 Window 软键盘是否显示
+     * @param window       {@link Window}
+     * @param inputVisible 是否显示软键盘
+     * @param clearFlag    是否清空 Flag ( FLAG_ALT_FOCUSABLE_IM | FLAG_NOT_FOCUSABLE )
+     * @return {@code true} success, {@code false} fail
+     */
+    public static boolean setSoftInputMode(final Window window, final boolean inputVisible, final boolean clearFlag) {
+        if (window != null) {
+            try {
+                if (inputVisible) {
+                    if (clearFlag) {
+                        window.clearFlags(
+                                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+                                        | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM
+                        );
+                    }
+                    window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+                } else {
+                    window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+                }
+            } catch (Exception e) {
+                LogPrintUtils.eTag(TAG, e, "setSoftInputMode");
+            }
+            return true;
+        }
+        return false;
+    }
+
+    // =============
     // = 打开软键盘 =
-    // ==============
+    // =============
 
     /**
      * 打开软键盘
@@ -151,9 +215,9 @@ public final class KeyBoardUtils {
         return false;
     }
 
-    // ==============
+    // =============
     // = 关闭软键盘 =
-    // ==============
+    // =============
 
     /**
      * 关闭软键盘
@@ -227,18 +291,15 @@ public final class KeyBoardUtils {
     // =
 
     /**
-     * 关闭软键盘 - 特殊处理
+     * 关闭软键盘
      * @param editText {@link EditText}
      * @param dialog   {@link Dialog}
      * @return {@code true} success, {@code false} fail
      */
     public static boolean closeKeyBoardSpecial(final EditText editText, final Dialog dialog) {
         try {
-            // 关闭输入法
             closeKeyboard();
-            // 关闭输入法
             closeKeyboard(editText);
-            // 关闭输入法
             closeKeyboard(dialog);
             return true;
         } catch (Exception e) {
@@ -248,7 +309,7 @@ public final class KeyBoardUtils {
     }
 
     /**
-     * 关闭软键盘 - 特殊处理
+     * 关闭软键盘
      * @param editText {@link EditText}
      * @param dialog   {@link Dialog}
      * @param handler  {@link Handler}
@@ -259,7 +320,7 @@ public final class KeyBoardUtils {
     }
 
     /**
-     * 关闭软键盘 - 特殊处理 ( 两个都关闭 )
+     * 关闭软键盘
      * @param editText    {@link EditText}
      * @param dialog      {@link Dialog}
      * @param handler     {@link Handler}
@@ -420,9 +481,9 @@ public final class KeyBoardUtils {
         return false;
     }
 
-    // ================================
-    // = 点击非 EditText 则隐藏输入法 =
-    // ================================
+    // ==============================
+    // = 点击非 EditText 则隐藏软键盘 =
+    // ==============================
 
     /**
      * 设置某个 View 内所有非 EditText 的子 View OnTouchListener 事件
@@ -451,9 +512,9 @@ public final class KeyBoardUtils {
         }
     }
 
-    // ==================
-    // = 输入法隐藏显示 =
-    // ==================
+    // =================
+    // = 软键盘隐藏显示 =
+    // =================
 
     /**
      * 判断软键盘是否可见
@@ -560,15 +621,15 @@ public final class KeyBoardUtils {
     }
 
     /**
-     * detail: 输入法弹出、隐藏改变事件
+     * detail: 软键盘弹出、隐藏改变事件
      * @author Ttt
      */
     public interface OnSoftInputChangedListener {
 
         /**
-         * 输入法弹出、隐藏改变通知
-         * @param visible 是否显示了输入法
-         * @param height  输入法高度
+         * 软键盘弹出、隐藏改变通知
+         * @param visible 是否显示了软键盘
+         * @param height  软键盘高度
          */
         void onSoftInputChanged(boolean visible, int height);
     }

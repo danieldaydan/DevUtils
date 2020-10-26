@@ -48,7 +48,7 @@ class QuerySuffixEditDialog(
         setCanceledOnTouchOutside(false)
         // 关闭处理
         setOnDismissListener {
-            HandlerUtils.postRunnable({ // 关闭输入法
+            HandlerUtils.postRunnable({ // 关闭软键盘
                 KeyBoardUtils.closeKeyboard(binding.vidDqseEditText)
             }, 100)
         }

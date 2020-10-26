@@ -4,8 +4,7 @@ package dev.assist;
  * detail: 数量控制辅助类
  * @author Ttt
  * <pre>
- *      主要用于数量加减限制
- *      如: 购物车数量加减
+ *     主要用于数量加减限制, 如: 购物车数量加减
  * </pre>
  */
 public class NumberControlAssist {
@@ -18,7 +17,7 @@ public class NumberControlAssist {
     private int     mMaxNumber       = Integer.MAX_VALUE;
     // 当前数量
     private int     mCurrentNumber   = 1;
-    // 重置数量 - 出现异常情况, 则使用该变量赋值
+    // 重置数量 ( 出现异常情况, 则使用该变量赋值 )
     private int     mResetNumber     = 1;
     // 是否允许设置为负数
     private boolean mIsAllowNegative = false;
@@ -35,9 +34,9 @@ public class NumberControlAssist {
         this.mMaxNumber = maxNumber;
     }
 
-    // ================
+    // ===============
     // = 对外提供方法 =
-    // ================
+    // ===============
 
     /**
      * 判断当前数量, 是否等于最小值
@@ -151,7 +150,7 @@ public class NumberControlAssist {
     /**
      * 设置最小值
      * <pre>
-     *      内部判断了, 是否大于 mMaxNumber, 属于的话则自动赋值 mMaxNumber
+     *     内部判断了, 是否大于 mMaxNumber, 属于的话则自动赋值 mMaxNumber
      * </pre>
      * @param minNumber 最小值
      * @return {@link NumberControlAssist}
@@ -182,8 +181,8 @@ public class NumberControlAssist {
     /**
      * 设置最大值
      * <pre>
-     *      内部判断了, 是否小于 mMinNumber, 属于的话则自动赋值 mMinNumber
-     *      特殊情况 ( 修改为负数 ), 最好先调用 setMinNumber, 在调用 setMaxNumber
+     *     内部判断了, 是否小于 mMinNumber, 属于的话则自动赋值 mMinNumber
+     *     特殊情况 ( 修改为负数 ), 最好先调用 setMinNumber, 在调用 setMaxNumber
      * </pre>
      * @param maxNumber 最大值
      * @return {@link NumberControlAssist}
@@ -291,9 +290,9 @@ public class NumberControlAssist {
         return this;
     }
 
-    // ================
+    // ===============
     // = 数量变化方法 =
-    // ================
+    // ===============
 
     /**
      * 数量改变通知
@@ -316,7 +315,7 @@ public class NumberControlAssist {
     }
 
     /**
-     * 添加数量 ( 默认累加 1)
+     * 添加数量 ( 默认累加 1 )
      * @return {@link NumberControlAssist}
      */
     public NumberControlAssist addNumber() {
@@ -324,16 +323,16 @@ public class NumberControlAssist {
     }
 
     /**
-     * 减少数量 ( 默认累减 1)
+     * 减少数量 ( 默认累减 1 )
      * @return {@link NumberControlAssist}
      */
     public NumberControlAssist subtractionNumber() {
         return numberChange(-1);
     }
 
-    // ================
+    // ===============
     // = 内部判断方法 =
-    // ================
+    // ===============
 
     /**
      * 检查更新处理
@@ -352,9 +351,9 @@ public class NumberControlAssist {
         setMaxNumber(mMaxNumber);
     }
 
-    // ============
+    // ===========
     // = 接口相关 =
-    // ============
+    // ===========
 
     /**
      * detail: 数量操作接口
@@ -451,7 +450,7 @@ public class NumberControlAssist {
         /**
          * 设置最小值
          * <pre>
-         *      内部判断了, 是否大于 mMaxNumber, 属于的话则自动赋值 mMaxNumber
+         *     内部判断了, 是否大于 mMaxNumber, 属于的话则自动赋值 mMaxNumber
          * </pre>
          * @param minNumber 最小值
          * @return R 泛型返回对象
@@ -469,8 +468,8 @@ public class NumberControlAssist {
         /**
          * 设置最大值
          * <pre>
-         *      内部判断了, 是否小于 mMinNumber, 属于的话则自动赋值 mMinNumber
-         *      特殊情况 ( 修改为负数 ), 最好先调用 setMinNumber, 在调用 setMaxNumber
+         *     内部判断了, 是否小于 mMinNumber, 属于的话则自动赋值 mMinNumber
+         *     特殊情况 ( 修改为负数 ), 最好先调用 setMinNumber, 在调用 setMaxNumber
          * </pre>
          * @param maxNumber 最大值
          * @return R 泛型返回对象
@@ -548,13 +547,13 @@ public class NumberControlAssist {
         R numberChange(int number);
 
         /**
-         * 添加数量 ( 默认累加 1)
+         * 添加数量 ( 默认累加 1 )
          * @return R 泛型返回对象
          */
         R addNumber();
 
         /**
-         * 减少数量 ( 默认累减 1)
+         * 减少数量 ( 默认累减 1 )
          * @return R 泛型返回对象
          */
         R subtractionNumber();

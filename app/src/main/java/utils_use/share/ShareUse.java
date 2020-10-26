@@ -20,10 +20,7 @@ public final class ShareUse {
 
         // 存在可调用的方法 IPreference
 
-        // SharedUtils 二次分装 SPUtils, 直接调用
-
-        // 在 DevUtils.init 中初始化了, 实际可以不调用
-        SharedUtils.init(DevUtils.getContext());
+        // SharedUtils 二次分装 SPUtils, 快捷调用
 
         SharedUtils.put("aa", "aa");
         SharedUtils.put("ac", 123);
@@ -36,7 +33,6 @@ public final class ShareUse {
         SPUtils.getPreference(DevUtils.getContext()).put("aa", 1);
         SPUtils.getPreference(DevUtils.getContext(), "xxx").put("aa", 1);
         SPUtils.getPreference(DevUtils.getContext(), "xxxxx", Context.MODE_PRIVATE).put("aa", 1);
-
 
 //        // 默认值如下
 //        switch (type) {

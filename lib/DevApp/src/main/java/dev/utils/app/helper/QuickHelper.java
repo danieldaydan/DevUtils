@@ -328,7 +328,7 @@ public final class QuickHelper {
     }
 
     /**
-     * 设置字体大小 - px 像素
+     * 设置字体大小 ( px 像素 )
      * @param size 字体大小
      * @return {@link QuickHelper}
      */
@@ -338,7 +338,7 @@ public final class QuickHelper {
     }
 
     /**
-     * 设置字体大小 - sp 缩放像素
+     * 设置字体大小 ( sp 缩放像素 )
      * @param size 字体大小
      * @return {@link QuickHelper}
      */
@@ -348,7 +348,7 @@ public final class QuickHelper {
     }
 
     /**
-     * 设置字体大小 - dp 与设备无关的像素
+     * 设置字体大小 ( dp 与设备无关的像素 )
      * @param size 字体大小
      * @return {@link QuickHelper}
      */
@@ -358,7 +358,7 @@ public final class QuickHelper {
     }
 
     /**
-     * 设置字体大小 - inches 英寸
+     * 设置字体大小 ( inches 英寸 )
      * @param size 字体大小
      * @return {@link QuickHelper}
      */
@@ -1320,7 +1320,7 @@ public final class QuickHelper {
     // =
 
     /**
-     * View 内容滚动位置 - 相对于初始位置移动
+     * View 内容滚动位置 ( 相对于初始位置移动 )
      * <pre>
      *     无滚动过程
      * </pre>
@@ -1334,7 +1334,7 @@ public final class QuickHelper {
     }
 
     /**
-     * View 内部滚动位置 - 相对于上次移动的最后位置移动
+     * View 内部滚动位置 ( 相对于上次移动的最后位置移动 )
      * <pre>
      *     无滚动过程
      * </pre>
@@ -1826,6 +1826,17 @@ public final class QuickHelper {
     }
 
     /**
+     * 设置 View Layout Gravity
+     * @param gravity      Gravity
+     * @param isReflection 是否使用反射
+     * @return {@link QuickHelper}
+     */
+    public QuickHelper setLayoutGravity(final int gravity, final boolean isReflection) {
+        ViewUtils.setLayoutGravity(targetView(), gravity, isReflection);
+        return this;
+    }
+
+    /**
      * 设置 View Left Margin
      * @param leftMargin Left Margin
      * @return {@link QuickHelper}
@@ -2131,7 +2142,7 @@ public final class QuickHelper {
     }
 
     /**
-     * 设置 Left CompoundDrawables - 按照原有比例大小显示图片
+     * 设置 Left CompoundDrawables ( 按照原有比例大小显示图片 )
      * @param left left Drawable
      * @return {@link QuickHelper}
      */
@@ -2141,7 +2152,7 @@ public final class QuickHelper {
     }
 
     /**
-     * 设置 Top CompoundDrawables - 按照原有比例大小显示图片
+     * 设置 Top CompoundDrawables ( 按照原有比例大小显示图片 )
      * @param top top Drawable
      * @return {@link QuickHelper}
      */
@@ -2151,7 +2162,7 @@ public final class QuickHelper {
     }
 
     /**
-     * 设置 Right CompoundDrawables - 按照原有比例大小显示图片
+     * 设置 Right CompoundDrawables ( 按照原有比例大小显示图片 )
      * @param right right Drawable
      * @return {@link QuickHelper}
      */
@@ -2161,7 +2172,7 @@ public final class QuickHelper {
     }
 
     /**
-     * 设置 Bottom CompoundDrawables - 按照原有比例大小显示图片
+     * 设置 Bottom CompoundDrawables ( 按照原有比例大小显示图片 )
      * @param bottom bottom Drawable
      * @return {@link QuickHelper}
      */
@@ -2171,7 +2182,7 @@ public final class QuickHelper {
     }
 
     /**
-     * 设置 CompoundDrawables - 按照原有比例大小显示图片
+     * 设置 CompoundDrawables ( 按照原有比例大小显示图片 )
      * @param left   left Drawable
      * @param top    top Drawable
      * @param right  right Drawable
@@ -2249,6 +2260,15 @@ public final class QuickHelper {
      */
     public QuickHelper startAnimation(final Animation animation) {
         ViewUtils.startAnimation(targetView(), animation);
+        return this;
+    }
+
+    /**
+     * 取消动画
+     * @return {@link QuickHelper}
+     */
+    public QuickHelper cancelAnimation() {
+        ViewUtils.cancelAnimation(targetView());
         return this;
     }
 
@@ -2333,9 +2353,9 @@ public final class QuickHelper {
         return this;
     }
 
-    // ==============
+    // =============
     // = 滑动到顶部 =
-    // ==============
+    // =============
 
     /**
      * 滑动到顶部 ( 有滚动过程 )
@@ -2355,9 +2375,9 @@ public final class QuickHelper {
         return this;
     }
 
-    // ==============
+    // =============
     // = 滑动到底部 =
-    // ==============
+    // =============
 
     /**
      * 滑动到底部 ( 有滚动过程 )
@@ -2392,7 +2412,7 @@ public final class QuickHelper {
     // ==============
 
     /**
-     * 滚动到指定位置 ( 有滚动过程 ) - 相对于初始位置移动
+     * 滚动到指定位置 ( 有滚动过程, 相对于初始位置移动 )
      * @param x X 轴开始坐标
      * @param y Y 轴开始坐标
      * @return {@link QuickHelper}
@@ -2403,7 +2423,7 @@ public final class QuickHelper {
     }
 
     /**
-     * 滚动到指定位置 ( 有滚动过程 ) - 相对于上次移动的最后位置移动
+     * 滚动到指定位置 ( 有滚动过程, 相对于上次移动的最后位置移动 )
      * @param x X 轴开始坐标
      * @param y Y 轴开始坐标
      * @return {@link QuickHelper}
@@ -2431,9 +2451,9 @@ public final class QuickHelper {
     // = KeyBoardUtils =
     // =================
 
-    // ==============
+    // =============
     // = 打开软键盘 =
-    // ==============
+    // =============
 
     /**
      * 打开软键盘
@@ -2465,9 +2485,9 @@ public final class QuickHelper {
         return this;
     }
 
-    // ==============
+    // =============
     // = 关闭软键盘 =
-    // ==============
+    // =============
 
     /**
      * 关闭软键盘
@@ -2479,7 +2499,7 @@ public final class QuickHelper {
     }
 
     /**
-     * 关闭软键盘 - 特殊处理
+     * 关闭软键盘
      * @param dialog {@link Dialog}
      * @return {@link QuickHelper}
      */
@@ -2489,7 +2509,7 @@ public final class QuickHelper {
     }
 
     /**
-     * 关闭软键盘 - 特殊处理
+     * 关闭软键盘
      * @param dialog  {@link Dialog}
      * @param handler {@link Handler}
      * @return {@link QuickHelper}
@@ -2500,7 +2520,7 @@ public final class QuickHelper {
     }
 
     /**
-     * 关闭软键盘 - 特殊处理 ( 两个都关闭 )
+     * 关闭软键盘
      * @param dialog      {@link Dialog}
      * @param handler     {@link Handler}
      * @param delayMillis 延迟时间 ( 毫秒 )
@@ -2516,7 +2536,7 @@ public final class QuickHelper {
     // =============
 
     /**
-     * 在 onCreate 中获取视图的尺寸 - 需回调 onGetSizeListener 接口, 在 onGetSize 中获取 View 宽高
+     * 在 onCreate 中获取视图的尺寸 ( 需回调 onGetSizeListener 接口, 在 onGetSize 中获取 View 宽高 )
      * @param listener {@link SizeUtils.onGetSizeListener}
      * @return {@link QuickHelper}
      */

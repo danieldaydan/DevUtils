@@ -5,7 +5,7 @@ import afkt.app.module.item.FileApkItem
 import dev.utils.app.PathUtils
 import dev.utils.app.info.AppInfoUtils
 import dev.utils.app.logger.DevLogger
-import dev.utils.common.DevCommonUtils
+import dev.utils.common.StringUtils
 import dev.utils.common.assist.search.FileBreadthFirstSearchUtils
 import dev.utils.common.thread.DevThreadManager
 import java.io.File
@@ -44,7 +44,7 @@ class ScanSDCardUtils private constructor() {
 
             override fun isAddToList(file: File): Boolean {
                 if (querySuffixArray != null && file.exists()) {
-                    if (DevCommonUtils.isEndsWith(true, file.name, *querySuffixArray)) {
+                    if (StringUtils.isEndsWith(true, file.name, *querySuffixArray)) {
                         files.add(file)
                         return true
                     }
@@ -90,9 +90,9 @@ class ScanSDCardUtils private constructor() {
         utils.query(PathUtils.getSDCard().sdCardPath)
     }
 
-    // ============
+    // ===========
     // = 内部方法 =
-    // ============
+    // ===========
 
     /**
      * 转换处理

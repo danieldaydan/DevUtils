@@ -5,9 +5,9 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import afkt.project.R;
-import afkt.project.base.app.BaseToolbarActivity;
-import butterknife.BindView;
-import butterknife.OnClick;
+import afkt.project.base.app.BaseActivity;
+import afkt.project.databinding.ActivityCornerLabelBinding;
+import dev.utils.app.ListenerUtils;
 import dev.utils.app.SizeUtils;
 import dev.utils.common.RandomUtils;
 import dev.widget.ui.CornerLabelView;
@@ -16,22 +16,32 @@ import dev.widget.ui.CornerLabelView;
  * detail: 自定义角标 View
  * @author Ttt
  */
-public class CornerLabelActivity extends BaseToolbarActivity {
-
-    @BindView(R.id.vid_acl_labelview)
-    CornerLabelView labelView;
+public class CornerLabelActivity extends BaseActivity<ActivityCornerLabelBinding> {
 
     @Override
-    public int getLayoutId() {
+    public int baseLayoutId() {
         return R.layout.activity_corner_label;
     }
 
-    @OnClick({R.id.btn_color, R.id.btn_left, R.id.btn_top, R.id.btn_triangle,
-            R.id.btn_text1_minus, R.id.btn_text1_plus, R.id.btn_height1_minus, R.id.btn_height1_plus,
-            R.id.btn_text2_minus, R.id.btn_text2_plus, R.id.btn_height2_minus, R.id.btn_height2_plus})
+    @Override
+    public void initListener() {
+        super.initListener();
+
+        ListenerUtils.setOnClicks(this,
+                binding.btnColor, binding.btnLeft, binding.btnTop, binding.btnTriangle,
+                binding.btnText1Minus, binding.btnText1Plus,
+                binding.btnHeight1Minus, binding.btnHeight1Plus,
+                binding.btnText2Minus, binding.btnText2Plus,
+                binding.btnHeight2Minus, binding.btnHeight2Plus);
+    }
+
     @Override
     public void onClick(View v) {
         super.onClick(v);
+
+        CornerLabelView labelView = binding.vidAclLabelview;
+
+        FrameLayout.LayoutParams layoutParams;
         switch (v.getId()) {
             case R.id.btn_color:
                 labelView.setFillColor(0xff000000 | RandomUtils.getRandom(0, 0xffffff));
@@ -43,9 +53,9 @@ public class CornerLabelActivity extends BaseToolbarActivity {
                     labelView.left();
                 }
                 mIsLeft = !mIsLeft;
-                FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) labelView.getLayoutParams();
-                lp.gravity = (mIsLeft ? Gravity.LEFT : Gravity.RIGHT) | (mIsTop ? Gravity.TOP : Gravity.BOTTOM);
-                labelView.setLayoutParams(lp);
+                layoutParams = (FrameLayout.LayoutParams) labelView.getLayoutParams();
+                layoutParams.gravity = (mIsLeft ? Gravity.LEFT : Gravity.RIGHT) | (mIsTop ? Gravity.TOP : Gravity.BOTTOM);
+                labelView.setLayoutParams(layoutParams);
                 break;
             case R.id.btn_top:
                 if (mIsTop) {
@@ -54,9 +64,9 @@ public class CornerLabelActivity extends BaseToolbarActivity {
                     labelView.top();
                 }
                 mIsTop = !mIsTop;
-                FrameLayout.LayoutParams lp2 = (FrameLayout.LayoutParams) labelView.getLayoutParams();
-                lp2.gravity = (mIsLeft ? Gravity.LEFT : Gravity.RIGHT) | (mIsTop ? Gravity.TOP : Gravity.BOTTOM);
-                labelView.setLayoutParams(lp2);
+                layoutParams = (FrameLayout.LayoutParams) labelView.getLayoutParams();
+                layoutParams.gravity = (mIsLeft ? Gravity.LEFT : Gravity.RIGHT) | (mIsTop ? Gravity.TOP : Gravity.BOTTOM);
+                labelView.setLayoutParams(layoutParams);
                 break;
             case R.id.btn_triangle:
                 mIsTriangle = !mIsTriangle;

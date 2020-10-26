@@ -14,13 +14,13 @@ import java.util.List;
 import afkt.project.R;
 import afkt.project.model.bean.CommodityEvaluateBean;
 import afkt.project.model.item.EvaluateItem;
-import afkt.project.ui.widget.BaseEditText;
 import afkt.project.util.ProjectUtils;
 import dev.assist.EditTextWatcherAssist;
+import dev.base.widget.BaseEditText;
 import dev.other.GlideUtils;
 import dev.utils.app.ViewUtils;
 import dev.utils.common.BigDecimalUtils;
-import dev.utils.common.DevCommonUtils;
+import dev.utils.common.StringUtils;
 
 /**
  * detail: Item EditText 输入监听 Adapter
@@ -44,9 +44,9 @@ public class EditsAdapter extends BaseQuickAdapter<EvaluateItem, BaseViewHolder>
 
         CommodityEvaluateBean commodityEvaluateBean = item.commodityEvaluateBean;
 
-        // ============
+        // ===========
         // = 商品信息 =
-        // ============
+        // ===========
 
         // 商品名
         helper.setText(R.id.vid_aie_name_tv, commodityEvaluateBean.commodityName);
@@ -68,16 +68,16 @@ public class EditsAdapter extends BaseQuickAdapter<EvaluateItem, BaseViewHolder>
         // 设置评星等级
         vid_aie_ratingbar.setStar(item.evaluateLevel);
 
-        // ============
+        // ===========
         // = 输入监听 =
-        // ============
+        // ===========
 
         // 评价内容
         BaseEditText vid_aie_content_edit = helper.getView(R.id.vid_aie_content_edit);
         // 评价内容字数
         TextView vid_aie_number_tv = helper.getView(R.id.vid_aie_number_tv);
         // 计算已经输入的内容长度
-        vid_aie_number_tv.setText(120 - DevCommonUtils.length(item.evaluateContent) + "");
+        vid_aie_number_tv.setText(120 - StringUtils.length(item.evaluateContent) + "");
         // 绑定监听事件
         editTextWatcherAssist.bindListener(item.evaluateContent, position, vid_aie_content_edit, new EditTextWatcherAssist.InputListener<EvaluateItem>() {
             @Override
@@ -89,7 +89,7 @@ public class EditsAdapter extends BaseQuickAdapter<EvaluateItem, BaseViewHolder>
                 }
                 try {
                     // 计算已经输入的内容长度
-                    vid_aie_number_tv.setText(120 - DevCommonUtils.length(item.evaluateContent) + "");
+                    vid_aie_number_tv.setText(120 - StringUtils.length(item.evaluateContent) + "");
                 } catch (Exception e) {
                 }
             }

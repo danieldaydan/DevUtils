@@ -67,7 +67,7 @@ class FloatingView : LinearLayout {
         packageNameTv = findViewById(R.id.vid_lf_package_name_tv)
         classNameTv = findViewById(R.id.vid_lf_class_name_tv)
         findViewById<View>(R.id.vid_lf_icon_igview).setOnClickListener(OnClickListener {
-            ToastUtils.showLong(R.string.str_close_floating)
+            ToastUtils.showShort(R.string.str_close_floating)
 
             context.startService(
                 Intent(context, AccessibilityListenerService::class.java)
@@ -110,7 +110,7 @@ class FloatingView : LinearLayout {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onEvent(event: ActivityChangedEvent) {
+    fun onEvent(event: ActivityChangedEvent?) {
         event?.let {
             val packageName = it.packageName
             val className = it.className

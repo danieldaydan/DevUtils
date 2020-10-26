@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import dev.utils.JCLogUtils;
 
@@ -30,27 +31,27 @@ public final class ColorUtils {
     public static final int TRANSPARENT       = 0x00000000;
     // 白色
     public static final int WHITE             = 0xffffffff;
-    // 白色 - 半透明
+    // 白色 ( 半透明 )
     public static final int WHITE_TRANSLUCENT = 0x80ffffff;
     // 黑色
     public static final int BLACK             = 0xff000000;
-    // 黑色 - 半透明
+    // 黑色 ( 半透明 )
     public static final int BLACK_TRANSLUCENT = 0x80000000;
     // 红色
     public static final int RED               = 0xffff0000;
-    // 红色 - 半透明
+    // 红色 ( 半透明 )
     public static final int RED_TRANSLUCENT   = 0x80ff0000;
     // 绿色
     public static final int GREEN             = 0xff00ff00;
-    // 绿色 - 半透明
+    // 绿色 ( 半透明 )
     public static final int GREEN_TRANSLUCENT = 0x8000ff00;
     // 蓝色
     public static final int BLUE              = 0xff0000ff;
-    // 蓝色 - 半透明
+    // 蓝色 ( 半透明 )
     public static final int BLUE_TRANSLUCENT  = 0x800000ff;
     // 灰色
     public static final int GRAY              = 0xff969696;
-    // 灰色 - 半透明
+    // 灰色 ( 半透明 )
     public static final int GRAY_TRANSLUCENT  = 0x80969696;
     // 天蓝
     public static final int SKYBLUE           = 0xff87ceeb;
@@ -109,13 +110,13 @@ public final class ColorUtils {
      * @param alpha 0-255
      * @return 透明度 ( 十六进制 ) 值
      */
-    public static String toHexAlpha(final int alpha) {
+    public static String hexAlpha(final int alpha) {
         try {
             if (alpha >= 0 && alpha <= 255) {
                 return Integer.toHexString(alpha);
             }
         } catch (Exception e) {
-            JCLogUtils.eTag(TAG, e, "toHexAlpha");
+            JCLogUtils.eTag(TAG, e, "hexAlpha");
         }
         return null;
     }
@@ -669,7 +670,7 @@ public final class ColorUtils {
     // =
 
     // 颜色字典集合
-    private static final HashMap<String, Integer> sColorNameMaps;
+    private static final Map<String, Integer> sColorNameMaps;
 
     static {
         sColorNameMaps = new HashMap<>();
@@ -708,9 +709,9 @@ public final class ColorUtils {
         sColorNameMaps.put("teal", 0xFF008080);
     }
 
-    // ============
+    // ===========
     // = 颜色信息 =
-    // ============
+    // ===========
 
     // 内部解析器
     private static ColorInfo.Parser sParser;
@@ -876,9 +877,9 @@ public final class ColorUtils {
             return builder.toString();
         }
 
-        // ============
+        // ===========
         // = 内部处理 =
-        // ============
+        // ===========
 
         /**
          * 内部转换处理
@@ -911,9 +912,9 @@ public final class ColorUtils {
             brightness = hsbvals[2]; // 亮度
         }
 
-        // ==============
+        // =============
         // = 解析器相关 =
-        // ==============
+        // =============
 
         /**
          * detail: Color 解析器
@@ -937,7 +938,7 @@ public final class ColorUtils {
             @Override
             public String handleColor(String value) {
                 if (value == null) return null;
-                String color = StringUtils.toClearSpace(value);
+                String color = StringUtils.clearSpace(value);
                 char[] chars = color.toCharArray();
                 int length = chars.length;
                 if (length != 0 && chars[0] == '#') {
@@ -955,9 +956,9 @@ public final class ColorUtils {
             }
         }
 
-        // ============
+        // ===========
         // = 转换处理 =
-        // ============
+        // ===========
 
         /**
          * RGB 转换 HSB
@@ -1010,9 +1011,9 @@ public final class ColorUtils {
         }
     }
 
-    // ============
+    // ===========
     // = 颜色排序 =
-    // ============
+    // ===========
 
     /**
      * 灰度值排序

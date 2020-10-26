@@ -64,7 +64,7 @@ import dev.widget.R;
  *              .setNumberTextColor(ResourceUtils.getColor(R.color.deeppink)); // 字体颜色
  *     <dev.widget.ui.LoadProgressBar
  *        app:dev_numberTextColor="@color/deeppink"
- *        app:dev_numberTextSize="40sp"
+ *        app:dev_numberTextSize="40.0sp"
  *        app:dev_progressStyle="number" />
  *     <p></p>
  *     app:dev_canvasNumber=""
@@ -166,7 +166,7 @@ public class LoadProgressBar extends View {
     }
 
     // ===============
-    //  内部处理方法 =
+    // = 内部处理方法 =
     // ===============
 
     /**
@@ -215,7 +215,7 @@ public class LoadProgressBar extends View {
             mPaint.setAntiAlias(true); // 消除锯齿
             // 用于定义的圆弧的形状和大小的界限
             RectF oval = new RectF(centre - radius, centre - radius, centre + radius, centre + radius);
-            // 根据进度画圆弧 - 0 从右边开始 , 270 从上边开始
+            // 根据进度画圆弧 ( 0 从右边开始 , 270 从上边开始 )
             canvas.drawArc(oval, 270, 360 * mProgress / mMax, false, mPaint);
         } else if (mProgressStyle == ProgressStyle.FAN_SHAPED) { // 绘制扇形
             int centre = getWidth() / 2; // 获取圆心的 x 坐标
@@ -351,9 +351,9 @@ public class LoadProgressBar extends View {
         canvas.drawText(progressText, x, y, mPaint);
     }
 
-    // ================
+    // ===============
     // = 对外公开方法 =
-    // ================
+    // ===============
 
     /**
      * 重置参数
@@ -551,9 +551,9 @@ public class LoadProgressBar extends View {
         return this;
     }
 
-    // ==============
+    // =============
     // = 进度条样式 =
-    // ==============
+    // =============
 
     /**
      * detail: 进度条样式

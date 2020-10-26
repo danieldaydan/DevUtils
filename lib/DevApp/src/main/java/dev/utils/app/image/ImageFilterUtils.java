@@ -30,13 +30,13 @@ public final class ImageFilterUtils {
     // 日志 TAG
     private static final String TAG = ImageFilterUtils.class.getSimpleName();
 
-    // ========
+    // =======
     // = 效果 =
-    // ========
+    // =======
 
-    // ========
+    // =======
     // = 模糊 =
-    // ========
+    // =======
 
     /**
      * 图片模糊处理 ( Android RenderScript 实现, 效率最高 )
@@ -293,9 +293,9 @@ public final class ImageFilterUtils {
         return null;
     }
 
-    // ============
+    // ===========
     // = 滤镜效果 =
-    // ============
+    // ===========
 
     /**
      * 怀旧效果处理
@@ -663,7 +663,7 @@ public final class ImageFilterUtils {
 //     * @param bitmap 待操作源图片
 //     * @return 灰度图
 //     */
-//    public static Bitmap toGray(final Bitmap bitmap) {
+//    public static Bitmap gray(final Bitmap bitmap) {
 //        if (bitmap == null) return null;
 //        try {
 //            int width = bitmap.getWidth(); // 获取位图的宽
@@ -689,7 +689,7 @@ public final class ImageFilterUtils {
 //            newBitmap.setPixels(pixels, 0, width, 0, 0, width, height);
 //            return newBitmap;
 //        } catch (Exception e) {
-//            LogPrintUtils.eTag(TAG, e, "toGray");
+//            LogPrintUtils.eTag(TAG, e, "gray");
 //        }
 //        return null;
 //    }
@@ -699,7 +699,7 @@ public final class ImageFilterUtils {
      * @param bitmap 待操作源图片
      * @return 灰度图
      */
-    public static Bitmap toGray(final Bitmap bitmap) {
+    public static Bitmap gray(final Bitmap bitmap) {
         if (bitmap == null) return null;
         try {
             Bitmap newBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), bitmap.getConfig());
@@ -712,14 +712,14 @@ public final class ImageFilterUtils {
             canvas.drawBitmap(bitmap, 0, 0, paint);
             return newBitmap;
         } catch (Exception e) {
-            LogPrintUtils.eTag(TAG, e, "toGray");
+            LogPrintUtils.eTag(TAG, e, "gray");
         }
         return null;
     }
 
-    // ========
+    // =======
     // = 色彩 =
-    // ========
+    // =======
 
     /**
      * 饱和度处理

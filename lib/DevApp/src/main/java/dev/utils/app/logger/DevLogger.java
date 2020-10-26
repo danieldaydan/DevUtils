@@ -14,9 +14,9 @@ public final class DevLogger {
     // 包下 LoggerPrinter 类持有对象
     private static final IPrinter sPrinter = new LoggerPrinter();
 
-    // ============
+    // ===========
     // = 配置方法 =
-    // ============
+    // ===========
 
     /**
      * 使用单次其他日志配置
@@ -52,7 +52,7 @@ public final class DevLogger {
     }
 
     // ===============================
-    // = 使用默认 TAG - 日志打印方法 =
+    // = 使用默认 TAG ( 日志打印方法 ) =
     // ===============================
 
     /**
@@ -146,7 +146,7 @@ public final class DevLogger {
     }
 
     // =================================
-    // = 使用自定义 TAG - 日志打印方法 =
+    // = 使用自定义 TAG ( 日志打印方法 ) =
     // =================================
 
     /**
@@ -249,9 +249,9 @@ public final class DevLogger {
         sPrinter.xmlTag(tag, xml);
     }
 
-    // ============
+    // ===========
     // = 通知输出 =
-    // ============
+    // ===========
 
     // 默认日志输出接口
     static Print sPrint = new Print() {

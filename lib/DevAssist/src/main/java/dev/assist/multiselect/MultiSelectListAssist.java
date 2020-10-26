@@ -87,7 +87,7 @@ public class MultiSelectListAssist<V> implements IMultiSelectToList<List<V>, V> 
     }
 
     /**
-     * 判断是否选中 - 通过 value 判断
+     * 判断是否选中 ( 通过 value 判断 )
      * @param value Value
      * @return {@code true} yes, {@code false} no
      */
@@ -106,7 +106,7 @@ public class MultiSelectListAssist<V> implements IMultiSelectToList<List<V>, V> 
     }
 
     /**
-     * 设置非选中 - 符合条件的全部 value
+     * 设置非选中 ( 符合条件的全部 value )
      * @param value Value
      */
     @Override
@@ -125,7 +125,7 @@ public class MultiSelectListAssist<V> implements IMultiSelectToList<List<V>, V> 
     // ======================
 
     /**
-     * 判断是否选中 - 通过 value 判断
+     * 判断是否选中 ( 通过 value 判断 )
      * @param value Value
      * @return {@code true} yes, {@code false} no
      */
@@ -208,9 +208,9 @@ public class MultiSelectListAssist<V> implements IMultiSelectToList<List<V>, V> 
         }
     }
 
-    // ==================
+    // =================
     // = 获取选中的数据 =
-    // ==================
+    // =================
 
     /**
      * 获取选中的数据集合

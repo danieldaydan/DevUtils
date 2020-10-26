@@ -3,7 +3,7 @@ package dev.callback;
 import java.util.UUID;
 
 /**
- * detail: 抽象回调 - 基类
+ * detail: 抽象回调 ( 基类 )
  * @author Ttt
  */
 public abstract class AbstractCallBack<T> {
@@ -35,9 +35,9 @@ public abstract class AbstractCallBack<T> {
         this.mTag = tag;
     }
 
-    // ================
+    // ===============
     // = 对外公开方法 =
-    // ================
+    // ===============
 
     /**
      * 获取 UUID

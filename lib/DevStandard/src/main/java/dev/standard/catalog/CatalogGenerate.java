@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import dev.utils.common.CollectionUtils;
-import dev.utils.common.DevCommonUtils;
 import dev.utils.common.FileUtils;
 import dev.utils.common.StringUtils;
 
@@ -19,9 +18,9 @@ final class CatalogGenerate {
     private CatalogGenerate() {
     }
 
-    // ====================
+    // ===================
     // = 目录层级计算回调 =
-    // ====================
+    // ===================
 
     /**
      * detail: 文件目录层级回调
@@ -38,9 +37,9 @@ final class CatalogGenerate {
         void callback(String name, int lineNumber, String classTag);
     }
 
-    // ======================
+    // ====================
     // = 文件目录遍历实体类 =
-    // ======================
+    // ====================
 
     /**
      * 获取文件夹目录列表
@@ -80,7 +79,7 @@ final class CatalogGenerate {
                 continue;
             }
             // 判断根目录是否需要忽略
-            if (curLayer != 0 && DevCommonUtils.isContains(baseFile.getName(), ignoreCatelog)) {
+            if (curLayer != 0 && StringUtils.isContains(baseFile.getName(), ignoreCatelog)) {
                 return lists;
             }
             // 属于文件夹才处理
@@ -98,9 +97,9 @@ final class CatalogGenerate {
         return lists;
     }
 
-    // ============
+    // ===========
     // = 内部方法 =
-    // ============
+    // ===========
 
     // 目录信息最大长度
     private static int sMaxLength = 0;
@@ -179,9 +178,9 @@ final class CatalogGenerate {
         }
     }
 
-    // ================
+    // ===============
     // = 对外公开方法 =
-    // ================
+    // ===============
 
     /**
      * 生成目录信息

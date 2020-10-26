@@ -4,17 +4,15 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 
 import afkt.project.R;
-import afkt.project.base.app.BaseToolbarActivity;
+import afkt.project.base.app.BaseActivity;
+import afkt.project.databinding.BaseViewRecyclerviewBinding;
 import afkt.project.model.item.ButtonList;
 import afkt.project.model.item.ButtonValue;
 import afkt.project.ui.adapter.ButtonAdapter;
-import butterknife.BindView;
 import dev.utils.app.assist.manager.TimerManager;
 import dev.utils.app.logger.DevLogger;
 import dev.utils.app.toast.ToastTintUtils;
@@ -27,18 +25,15 @@ import utils_use.timer.TimerUse;
  *     {@link TimerUse}
  * </pre>
  */
-public class TimerActivity extends BaseToolbarActivity {
+public class TimerActivity extends BaseActivity<BaseViewRecyclerviewBinding> {
 
-    // = View =
-    @BindView(R.id.vid_bvr_recy)
-    RecyclerView vid_bvr_recy;
     // 创建定时器
     TimerManager.AbsTimer absTimer;
     // 通知常量
     final int NOTIFY = 100;
 
     @Override
-    public int getLayoutId() {
+    public int baseLayoutId() {
         return R.layout.base_view_recyclerview;
     }
 
@@ -48,7 +43,7 @@ public class TimerActivity extends BaseToolbarActivity {
 
         // 初始化布局管理器、适配器
         final ButtonAdapter buttonAdapter = new ButtonAdapter(ButtonList.getTimerButtonValues());
-        vid_bvr_recy.setAdapter(buttonAdapter);
+        binding.vidBvrRecy.setAdapter(buttonAdapter);
         buttonAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
@@ -69,9 +64,9 @@ public class TimerActivity extends BaseToolbarActivity {
                                     int number = absTimer.getTriggerNumber();
                                     // 触发次数
                                     if (number == 1) {
-                                        DevLogger.dTag(mTag, "第一次触发, 0.5 秒延迟");
+                                        DevLogger.dTag(TAG, "第一次触发, 0.5 秒延迟");
                                     } else {
-                                        DevLogger.dTag(mTag, "每隔 2 秒触发一次, 触发次数: " + number);
+                                        DevLogger.dTag(TAG, "每隔 2 秒触发一次, 触发次数: " + number);
                                     }
                                 }
                             }, NOTIFY, 500l, 2000l, -1);
@@ -160,9 +155,9 @@ public class TimerActivity extends BaseToolbarActivity {
 //         * 创建定时器
 //         * @param handler 通知的 Handler
 //         * @param what 通知的 what
-//         * @param delay 延迟时间 - 多少毫秒后开始执行
-//         * @param period 循环时间 - 每隔多少秒执行一次
-//         * @param triggerLimit 触发次数上限 (-1 表示无限循环 )
+//         * @param delay 延迟时间 ( 多少毫秒后开始执行 )
+//         * @param period 循环时间 ( 每隔多少秒执行一次 )
+//         * @param triggerLimit 触发次数上限 ( -1 表示无限循环 )
 //         * @return
 //         */
 //        public static TimerManager.AbsTimer createTimer(Handler handler, int what, long delay, long period, int triggerLimit) {
@@ -177,11 +172,11 @@ public class TimerActivity extends BaseToolbarActivity {
 //                switch (msg.what) {
 //                    case NOTIFY:
 //                        // 获取触发次数
-//                        DevLogger.dTag(mTag, "已经触发次数: " + absTimer.getTriggerNumber());
-//                        DevLogger.dTag(mTag, "触发上限次数: " + absTimer.getTriggerLimit());
+//                        DevLogger.dTag(TAG, "已经触发次数: " + absTimer.getTriggerNumber());
+//                        DevLogger.dTag(TAG, "触发上限次数: " + absTimer.getTriggerLimit());
 //                        // 判断是否触发结束
 //                        if (absTimer.isTriggerEnd()) {
-//                            DevLogger.dTag(mTag, "触发结束");
+//                            DevLogger.dTag(TAG, "触发结束");
 //                        }
 //                        break;
 //                }

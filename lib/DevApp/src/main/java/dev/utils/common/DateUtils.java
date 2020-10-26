@@ -20,9 +20,9 @@ public final class DateUtils {
     // 日志 TAG
     private static final String TAG = DateUtils.class.getSimpleName();
 
-    // ================
+    // ===============
     // = 日期格式类型 =
-    // ================
+    // ===============
 
     public static final String yyyy             = "yyyy";
     public static final String yyyyMMdd         = "yyyy-MM-dd";
@@ -63,7 +63,7 @@ public final class DateUtils {
     public static final long YEAR     = DAY * 365;
 
     /**
-     * 获取当前日期的字符串 - yyyy-MM-dd HH:mm:ss
+     * 获取当前日期的字符串 ( yyyy-MM-dd HH:mm:ss )
      * @return 当前日期 yyyy-MM-dd HH:mm:ss 格式字符串
      */
     public static String getDateNow() {
@@ -136,7 +136,7 @@ public final class DateUtils {
     }
 
     /**
-     * 将日期字符串转换为 Date - 默认表示 time 属于 yyyy-MM-dd HH:mm:ss 格式
+     * 将日期字符串转换为 Date ( 默认表示 time 属于 yyyy-MM-dd HH:mm:ss 格式 )
      * @param time 时间
      * @return {@link Date}
      */
@@ -163,7 +163,7 @@ public final class DateUtils {
     // =
 
     /**
-     * 解析时间字符串转换为 long 毫秒 - 默认表示 time 属于 yyyy-MM-dd HH:mm:ss 格式
+     * 解析时间字符串转换为 long 毫秒 ( 默认表示 time 属于 yyyy-MM-dd HH:mm:ss 格式 )
      * @param time 时间
      * @return 毫秒时间
      */
@@ -211,7 +211,7 @@ public final class DateUtils {
     // =
 
     /**
-     * 获取时间差 - 分钟
+     * 获取时间差 ( 分钟 )
      * @param time 毫秒
      * @return 分钟
      */
@@ -220,7 +220,7 @@ public final class DateUtils {
     }
 
     /**
-     * 获取时间差 - 小时
+     * 获取时间差 ( 小时 )
      * @param time 毫秒
      * @return 小时
      */
@@ -229,7 +229,7 @@ public final class DateUtils {
     }
 
     /**
-     * 获取时间差 - 天
+     * 获取时间差 ( 天 )
      * @param time 毫秒
      * @return 天
      */
@@ -238,7 +238,7 @@ public final class DateUtils {
     }
 
     /**
-     * 获取时间差 - ( 传入时间 - 当前时间 )
+     * 获取时间差 ( 传入时间 - 当前时间 )
      * @param time 毫秒
      * @return 与当前时间的时间差 ( 毫秒 )
      */
@@ -278,9 +278,9 @@ public final class DateUtils {
         return -2L;
     }
 
-    // ============
+    // ===========
     // = 获取时间 =
-    // ============
+    // ===========
 
     /**
      * 获取年
@@ -300,7 +300,7 @@ public final class DateUtils {
     }
 
     /**
-     * 获取月 (0 - 11) + 1
+     * 获取月 ( 0 - 11 ) + 1
      * @param date 日期
      * @return 月
      */
@@ -351,7 +351,7 @@ public final class DateUtils {
     }
 
     /**
-     * 获取时 - 24
+     * 获取时 ( 24 )
      * @param date 日期
      * @return 时
      */
@@ -368,7 +368,7 @@ public final class DateUtils {
     }
 
     /**
-     * 获取时 - 12
+     * 获取时 ( 12 )
      * @param date 日期
      * @return 时
      */
@@ -419,28 +419,22 @@ public final class DateUtils {
     }
 
     /**
-     * 转换时间处理, 小于 10, 则自动补充 0x
+     * 时间补 0 处理 ( 小于 10, 则自动补充 0x )
      * @param time 待处理时间
      * @return 自动补 0 时间字符串
      */
-    public static String convertTime(final int time) {
-        return convertTime(time, true);
+    public static String timeAddZero(final int time) {
+        return timeAddZero(time, true);
     }
 
     /**
-     * 转换时间处理, 小于 10, 则自动补充 0x
+     * 时间补 0 处理 ( 小于 10, 则自动补充 0x )
      * @param time   待处理时间
      * @param append 判断是否需要自动补 0
      * @return 自动补 0 时间字符串
      */
-    public static String convertTime(final int time, final boolean append) {
-        if (append) {
-            int timeTmpe = time;
-            // 防止出现负数
-            timeTmpe = Math.max(0, timeTmpe);
-            return timeTmpe >= 10 ? timeTmpe + "" : "0" + timeTmpe;
-        }
-        return time + "";
+    public static String timeAddZero(final int time, final boolean append) {
+        return NumberUtils.addZero(time, append);
     }
 
     // =
@@ -478,7 +472,7 @@ public final class DateUtils {
     }
 
     /**
-     * 获取时 - 24
+     * 获取时 ( 24 )
      * @return 24 小时制小时
      */
     public static int get24Hour() {
@@ -486,7 +480,7 @@ public final class DateUtils {
     }
 
     /**
-     * 获取时 - 12
+     * 获取时 ( 12 )
      * @return 12 小时制小时
      */
     public static int get12Hour() {
@@ -513,7 +507,7 @@ public final class DateUtils {
 
     /**
      * 判断是否闰年
-     * @param year 年数
+     * @param year 年份
      * @return {@code true} yes, {@code false} no
      */
     public static boolean isLeapYear(final int year) {
@@ -522,7 +516,7 @@ public final class DateUtils {
 
     /**
      * 根据年份、月份, 获取对应的天数 ( 完整天数, 无判断是否属于未来日期 )
-     * @param year  年数
+     * @param year  年份
      * @param month 月份
      * @return 指定年份所属的月份的天数
      */
@@ -605,7 +599,7 @@ public final class DateUtils {
     public static List<String> getListToHH() {
         List<String> lists = new ArrayList<>();
         for (int i = 0; i < 24; i++) {
-            lists.add(convertTime(i, true));
+            lists.add(timeAddZero(i, true));
         }
         return lists;
     }
@@ -626,7 +620,7 @@ public final class DateUtils {
     public static List<String> getListToMM() {
         List<String> lists = new ArrayList<>();
         for (int i = 0; i < 60; i++) {
-            lists.add(convertTime(i, true));
+            lists.add(timeAddZero(i, true));
         }
         return lists;
     }
@@ -655,21 +649,21 @@ public final class DateUtils {
         switch (type) {
             case 0:
                 for (int i = 0; i < 24; i++) {
-                    lists.add(convertTime(i, true) + ":00");
+                    lists.add(timeAddZero(i, true) + ":00");
                 }
                 break;
             case 1:
                 for (int i = 0; i < 96; i++) { // 00 15 30 45 = 4 (24 * 4)
                     if (i % 2 == 0) { // 判断是否偶数 00、30
                         // 小时数
-                        String hour = convertTime(i / 4, true);
+                        String hour = timeAddZero(i / 4, true);
                         // 分钟数
                         String minute = i % 4 == 0 ? "00" : "30";
                         // 累加时间
                         lists.add(hour + ":" + minute);
                     } else { // 15、45
                         // 小时数
-                        String hour = convertTime(i / 4, true);
+                        String hour = timeAddZero(i / 4, true);
                         // 分钟数
                         String minute = (i - 1) % 4 == 0 ? "15" : "45";
                         // 累加时间
@@ -683,9 +677,9 @@ public final class DateUtils {
                     int hour = i / 2;
                     // 属于偶数
                     if (i % 2 == 0) {
-                        lists.add(convertTime(hour, true) + ":00");
+                        lists.add(timeAddZero(hour, true) + ":00");
                     } else {
-                        lists.add(convertTime(hour, true) + ":30");
+                        lists.add(timeAddZero(hour, true) + ":30");
                     }
                 }
                 break;
@@ -758,7 +752,7 @@ public final class DateUtils {
     // =
 
     /**
-     * 传入时间, 获取时间 (00:00:00 格式 ) - 不处理大于一天
+     * 传入时间, 获取时间 ( 00:00:00 格式, 不处理大于一天 )
      * @param time 时间 ( 秒为单位 )
      * @return 转换 (00:00:00 格式 ) 时间字符串
      */
@@ -767,7 +761,7 @@ public final class DateUtils {
     }
 
     /**
-     * 传入时间, 获取时间 (00:00:00 格式 )
+     * 传入时间, 获取时间 ( 00:00:00 格式 )
      * @param time          时间 ( 秒为单位 )
      * @param isHandlerMDay 是否处理大于一天的时间
      * @return 转换 (00:00:00 格式 ) 时间字符串
@@ -914,9 +908,9 @@ public final class DateUtils {
         return timeArys;
     }
 
-    // ======================
+    // ====================
     // = 判断是否在区间范围 =
-    // ======================
+    // ====================
 
     /**
      * 判断时间是否在 [startTime, endTime] 区间, 注意时间格式要一致
@@ -1104,5 +1098,55 @@ public final class DateUtils {
             JCLogUtils.eTag(TAG, e, "getEndTimeDiff");
         }
         return -1;
+    }
+
+    // =============
+    // = 生肖、星座 =
+    // =============
+
+    // 生肖数组
+    private static final String[] ZODIAC             = {"猴", "鸡", "狗", "猪", "鼠", "牛", "虎", "兔", "龙", "蛇", "马", "羊"};
+    // 星座截止天数
+    private static final int[]    CONSTELLATION_DAY  = {20, 19, 21, 21, 21, 22, 23, 23, 23, 24, 23, 22};
+    // 星座对应日期
+    private static final String[] CONSTELLATION_DATE = {
+            "01.20-02.18", "02.19-03.20", "03.21-04.19", "04.20-05.20", "05.21-06.21", "06.22-07.22",
+            "07.23-08.22", "08.23-09.22", "09.23-10.23", "10.24-11.22", "11.23-12.21", "12.22-01.19"
+    };
+    // 星座数组
+    private static final String[] CONSTELLATION      = {
+            "水瓶座", "双鱼座", "白羊座", "金牛座", "双子座", "巨蟹座",
+            "狮子座", "处女座", "天秤座", "天蝎座", "射手座", "摩羯座"
+    };
+
+    /**
+     * 获取生肖
+     * @param year 年份
+     * @return 生肖
+     */
+    public static String getZodiac(final int year) {
+        return ZODIAC[Math.abs(year) % 12];
+    }
+
+    /**
+     * 获取星座
+     * @param month 月份
+     * @param day   天数
+     * @return 星座
+     */
+    public static String getConstellation(final int month, final int day) {
+        if (month > 12 || month < 1) return null;
+        return CONSTELLATION[day >= CONSTELLATION_DAY[month - 1] ? month - 1 : (month + 10) % 12];
+    }
+
+    /**
+     * 获取星座日期
+     * @param month 月份
+     * @param day   天数
+     * @return 星座日期
+     */
+    public static String getConstellationDate(final int month, final int day) {
+        if (month > 12 || month < 1) return null;
+        return CONSTELLATION_DATE[day >= CONSTELLATION_DAY[month - 1] ? month - 1 : (month + 10) % 12];
     }
 }

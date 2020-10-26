@@ -34,11 +34,9 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.util.*
 
-class ScanSDCardFragment : BaseFragment() {
+class ScanSDCardFragment : BaseFragment<FragmentAppBinding>() {
 
     // = View =
-
-    private lateinit var binding: FragmentAppBinding
 
     private var whorlView: WhorlView? = null
 
@@ -47,13 +45,13 @@ class ScanSDCardFragment : BaseFragment() {
     private var type = TypeEnum.QUERY_APK
     private var searchContent: String = ""
 
-    override fun layoutId(): Int {
+    override fun baseContentId(): Int {
         return R.layout.fragment_app
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentAppBinding.bind(view)
+        binding.vidFaRefresh.setEnableLoadMore(false)
 
         whorlView = ViewUtils.findViewById(
             binding.vidFaState.getView(ViewAssist.TYPE_ING),
@@ -131,7 +129,7 @@ class ScanSDCardFragment : BaseFragment() {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 if (direction == ItemTouchHelper.LEFT || direction == ItemTouchHelper.RIGHT) {
-                    var adapter: ApkListAdapter? = binding.vidFaRefresh.getAdapterT()
+                    var adapter: ApkListAdapter? = binding.vidFaRefresh.getAdapter()
                     try {
                         val position = viewHolder.adapterPosition
                         FileUtils.deleteFile(adapter?.getItem(position)?.uri)
@@ -147,12 +145,12 @@ class ScanSDCardFragment : BaseFragment() {
                 }
             }
         })
-        itemTouchHelper.attachToRecyclerView(binding.vidFaRefresh.recyclerView)
+        itemTouchHelper.attachToRecyclerView(binding.vidFaRefresh.getRecyclerView())
     }
 
-    // ============
+    // ===========
     // = 事件相关 =
-    // ============
+    // ===========
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND, sticky = true)
     fun onEvent(event: FragmentEvent) {
@@ -207,21 +205,21 @@ class ScanSDCardFragment : BaseFragment() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: RefreshEvent) {
         event.type?.let {
-            if (it == type) binding.vidFaRefresh.smartRefreshLayout?.autoRefresh()
+            if (it == type) binding.vidFaRefresh.getRefreshLayout()?.autoRefresh()
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: TopEvent) {
         event.type?.let {
-            if (it == type) ListViewUtils.smoothScrollToTop(binding.vidFaRefresh.recyclerView)
+            if (it == type) ListViewUtils.smoothScrollToTop(binding.vidFaRefresh.getRecyclerView())
             //ListViewUtils.scrollToTop(binding.vidFaRefresh.recyclerView)
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: FileDeleteEvent) {
-        binding.vidFaRefresh.recyclerView?.adapter?.notifyDataSetChanged()
+        binding.vidFaRefresh.getRecyclerView()?.adapter?.notifyDataSetChanged()
     }
 
     // =

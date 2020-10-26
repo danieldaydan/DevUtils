@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">AppInfoKtx</string>
 
@@ -40,6 +41,7 @@
     <string name="str_scan_apk">scanning apk</string>
     <string name="str_scan_apk_tips">set scan apk file, the suffix field</string>
     <string name="str_setting_scan_suffix_suc">set suc, If need to be re scanned, Please click refresh</string>
+    <string name="str_search">search</string>
     <string name="str_set_query_apk_suffix">set query suffix</string>
     <string name="str_set_query_apk_suffix_hint">set query suffix(No need to add .)</string>
 
@@ -52,6 +54,7 @@
     <string name="str_operate_fail">operate fail</string>
     <string name="str_export_app_msg">export app info</string>
     <string name="str_export_apk_msg">export apk info</string>
+    <string name="str_export">export</string>
     <string name="str_export_app">export app</string>
     <string name="str_export_apk">export apk</string>
     <string name="str_share">share</string>

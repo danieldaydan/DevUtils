@@ -2,7 +2,7 @@ package afkt.app.utils
 
 import afkt.app.module.item.FileApkItem
 import dev.utils.app.info.AppInfoBean
-import dev.utils.common.DevCommonUtils
+import dev.utils.common.StringUtils
 import java.util.*
 
 /**
@@ -19,7 +19,7 @@ object AppSearchUtils {
     fun filterAppList(lists: List<AppInfoBean>, searchContent: String): ArrayList<AppInfoBean> {
         var filter = ArrayList<AppInfoBean>()
         for (item in lists) {
-            if (DevCommonUtils.isContains(
+            if (StringUtils.isContains(
                     true,
                     searchContent, item.appName, item.appPackName
                 )
@@ -38,7 +38,7 @@ object AppSearchUtils {
     fun filterApkList(lists: List<FileApkItem>, searchContent: String): ArrayList<FileApkItem> {
         var filter = ArrayList<FileApkItem>()
         for (item in lists) {
-            if (DevCommonUtils.isContains(
+            if (StringUtils.isContains(
                     true,
                     searchContent, item.appInfoBean.appName, item.appInfoBean.appPackName
                 )

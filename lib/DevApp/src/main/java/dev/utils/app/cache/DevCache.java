@@ -63,49 +63,49 @@ public final class DevCache {
     private static      String                sCachePath    = null;
 
     /**
-     * 获取 DevCache - 默认缓存文件名
+     * 获取 DevCache ( 默认缓存文件名 )
      * @return {@link DevCache}
      */
-    public static DevCache obtain() {
-        return obtain(DEF_FILE_NAME);
+    public static DevCache newCache() {
+        return newCache(DEF_FILE_NAME);
     }
 
     /**
-     * 获取 DevCache -  - 自定义缓存文件名
+     * 获取 DevCache ( 自定义缓存文件名 )
      * @param cacheName 缓存文件名
      * @return {@link DevCache}
      */
-    public static DevCache obtain(final String cacheName) {
-        return obtain(FileUtils.getFile(getCachePath(), cacheName), MAX_SIZE, MAX_COUNT);
+    public static DevCache newCache(final String cacheName) {
+        return newCache(FileUtils.getFile(getCachePath(), cacheName), MAX_SIZE, MAX_COUNT);
     }
 
     /**
-     * 获取 DevCache - 自定义缓存文件地址
+     * 获取 DevCache ( 自定义缓存文件地址 )
      * @param cacheDir 缓存文件地址
      * @return {@link DevCache}
      */
-    public static DevCache obtain(final File cacheDir) {
-        return obtain(cacheDir, MAX_SIZE, MAX_COUNT);
+    public static DevCache newCache(final File cacheDir) {
+        return newCache(cacheDir, MAX_SIZE, MAX_COUNT);
     }
 
     /**
-     * 获取 DevCache - 自定义缓存大小
+     * 获取 DevCache ( 自定义缓存大小 )
      * @param maxSize  文件最大大小
      * @param maxCount 最大存储数量
      * @return {@link DevCache}
      */
-    public static DevCache obtain(final long maxSize, final int maxCount) {
-        return obtain(FileUtils.getFile(getCachePath(), DEF_FILE_NAME), maxSize, maxCount);
+    public static DevCache newCache(final long maxSize, final int maxCount) {
+        return newCache(FileUtils.getFile(getCachePath(), DEF_FILE_NAME), maxSize, maxCount);
     }
 
     /**
-     * 获取 DevCache - 自定义缓存文件地址、大小等
+     * 获取 DevCache ( 自定义缓存文件地址、大小等 )
      * @param cacheDir 缓存文件地址
      * @param maxSize  文件最大大小
      * @param maxCount 最大存储数量
      * @return {@link DevCache}
      */
-    public static DevCache obtain(final File cacheDir, final long maxSize, final int maxCount) {
+    public static DevCache newCache(final File cacheDir, final long maxSize, final int maxCount) {
         if (cacheDir == null) return null;
         // 判断是否存在缓存信息
         DevCache manager = sInstanceMaps.get(cacheDir.getAbsoluteFile() + myPid());
@@ -120,7 +120,7 @@ public final class DevCache {
     // =
 
     /**
-     * 获取进程 id - android.os.Process.myPid()
+     * 获取进程 id ( android.os.Process.myPid() )
      * @return 进程 id
      */
     private static String myPid() {
@@ -167,9 +167,9 @@ public final class DevCache {
         }
     }
 
-    // ====================
+    // ===================
     // = string 数据 读写 =
-    // ====================
+    // ===================
 
     /**
      * 保存 String 数据到缓存中
@@ -188,13 +188,7 @@ public final class DevCache {
         } catch (Exception e) {
             LogPrintUtils.eTag(TAG, e, "put");
         } finally {
-            if (bw != null) {
-                try {
-                    bw.flush();
-                } catch (Exception e) {
-                }
-            }
-            CloseUtils.closeIOQuietly(bw);
+            CloseUtils.flushCloseIOQuietly(bw);
             mCache.put(file);
         }
         return false;
@@ -254,9 +248,9 @@ public final class DevCache {
         }
     }
 
-    // ========================
+    // =======================
     // = JSONObject 数据 读写 =
-    // ========================
+    // =======================
 
     /**
      * 保存 JSONObject 数据到缓存中
@@ -310,9 +304,9 @@ public final class DevCache {
         return null;
     }
 
-    // =======================
+    // ======================
     // = JSONArray 数据 读写 =
-    // =======================
+    // ======================
 
     /**
      * 保存 JSONArray 数据到缓存中
@@ -366,9 +360,9 @@ public final class DevCache {
         return null;
     }
 
-    // ==================
+    // =================
     // = byte 数据 读写 =
-    // ==================
+    // =================
 
     /**
      * 保存 byte 数据到缓存中
@@ -387,13 +381,7 @@ public final class DevCache {
         } catch (Exception e) {
             LogPrintUtils.eTag(TAG, e, "put byte[]");
         } finally {
-            if (fos != null) {
-                try {
-                    fos.flush();
-                } catch (Exception e) {
-                }
-            }
-            CloseUtils.closeIOQuietly(fos);
+            CloseUtils.flushCloseIOQuietly(fos);
             mCache.put(file);
         }
         return false;
@@ -470,9 +458,9 @@ public final class DevCache {
         }
     }
 
-    // ====================
+    // ===================
     // = 序列化 数据 读写 =
-    // ====================
+    // ===================
 
     /**
      * 保存 Serializable 数据到缓存中
@@ -534,9 +522,9 @@ public final class DevCache {
         return null;
     }
 
-    // ====================
+    // ===================
     // = bitmap 数据 读写 =
-    // ====================
+    // ===================
 
     /**
      * 保存 Bitmap 到缓存中
@@ -570,9 +558,9 @@ public final class DevCache {
         return DevCacheUtils.byteToBitmap(data);
     }
 
-    // ======================
+    // =====================
     // = drawable 数据 读写 =
-    // ======================
+    // =====================
 
     /**
      * 保存 Drawable 到缓存中
@@ -635,9 +623,9 @@ public final class DevCache {
         mCache.clear();
     }
 
-    // ============
+    // ===========
     // = 内部方法 =
-    // ============
+    // ===========
 
     /**
      * 获取应用内部存储缓存路径

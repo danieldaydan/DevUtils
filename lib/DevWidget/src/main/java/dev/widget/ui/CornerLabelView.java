@@ -177,9 +177,9 @@ public class CornerLabelView extends View {
         return path;
     }
 
-    // ================
+    // ===============
     // = 对外公开方法 =
-    // ================
+    // ===============
 
     /**
      * 获取 Text1 Painter
@@ -438,7 +438,7 @@ public class CornerLabelView extends View {
      * detail: 画笔
      * @author Ttt
      */
-    public final static class Painter {
+    public static final class Painter {
 
         private Painter() {
         }

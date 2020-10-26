@@ -2,8 +2,6 @@ package afkt.project.ui.activity;
 
 import android.view.ViewGroup;
 
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.gavin.com.library.StickyDecoration;
 import com.gavin.com.library.listener.GroupListener;
 
@@ -11,10 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import afkt.project.R;
-import afkt.project.base.app.BaseToolbarActivity;
+import afkt.project.base.app.BaseActivity;
+import afkt.project.databinding.BaseViewRecyclerviewBinding;
 import afkt.project.model.bean.ItemStickyBean;
 import afkt.project.ui.adapter.ItemStickyAdapter;
-import butterknife.BindView;
 import dev.utils.app.ResourceUtils;
 import dev.utils.app.SizeUtils;
 import dev.utils.app.helper.ViewHelper;
@@ -30,16 +28,13 @@ import dev.utils.common.RandomUtils;
  *     @see <a href="https://github.com/Gavin-ZYX/StickyDecoration"/>
  * </pre>
  */
-public class ItemStickyActivity extends BaseToolbarActivity {
+public class ItemStickyActivity extends BaseActivity<BaseViewRecyclerviewBinding> {
 
-    // = View =
-    @BindView(R.id.vid_bvr_recy)
-    RecyclerView vid_bvr_recy;
     // 适配器
     ItemStickyAdapter itemStickyAdapter;
 
     @Override
-    public int getLayoutId() {
+    public int baseLayoutId() {
         return R.layout.base_view_recyclerview;
     }
 
@@ -47,7 +42,7 @@ public class ItemStickyActivity extends BaseToolbarActivity {
     public void initValue() {
         super.initValue();
 
-        ViewGroup parent = (ViewGroup) vid_bvr_recy.getParent();
+        ViewGroup parent = (ViewGroup) binding.vidBvrRecy.getParent();
         // 根布局处理
         ViewHelper.get().setPadding(parent, 0);
 
@@ -63,7 +58,7 @@ public class ItemStickyActivity extends BaseToolbarActivity {
 //
 //            @Override
 //            public View getGroupView(int position) {
-//                DevLogger.dTag(mTag, position + "");
+//                DevLogger.dTag(TAG, position + "");
 //                View view = getLayoutInflater().inflate(R.layout.adapter_sticky_view, null, false);
 //                TextViewUtils.setText(view.findViewById(R.id.vid_asv_title_tv), getGroupName(position));
 //                return view;
@@ -75,9 +70,9 @@ public class ItemStickyActivity extends BaseToolbarActivity {
 //                //.resetSpan(mRecyclerView, (GridLayoutManager) manager)
 //                .build();
 
-        // =================
+        // ================
         // = 默认悬浮 View =
-        // =================
+        // ================
 
         GroupListener groupListener = new GroupListener() {
             @Override
@@ -100,8 +95,8 @@ public class ItemStickyActivity extends BaseToolbarActivity {
 
         // 初始化布局管理器、适配器
         itemStickyAdapter = new ItemStickyAdapter(getList());
-        vid_bvr_recy.setAdapter(itemStickyAdapter);
-        vid_bvr_recy.addItemDecoration(decoration);
+        binding.vidBvrRecy.setAdapter(itemStickyAdapter);
+        binding.vidBvrRecy.addItemDecoration(decoration);
     }
 
     private List<ItemStickyBean> getList() {

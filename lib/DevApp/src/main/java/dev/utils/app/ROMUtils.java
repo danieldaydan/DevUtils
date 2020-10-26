@@ -12,6 +12,8 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 import java.util.Properties;
 
+import dev.utils.common.CloseUtils;
+
 /**
  * detail: ROM 相关工具类
  * @author Ttt
@@ -21,9 +23,9 @@ public final class ROMUtils {
     private ROMUtils() {
     }
 
-    // ================
+    // ===============
     // = ROM 标识信息 =
-    // ================
+    // ===============
 
     private static final String[] ROM_HUAWEI    = {"huawei"};
     private static final String[] ROM_VIVO      = {"vivo"};
@@ -226,11 +228,11 @@ public final class ROMUtils {
         return sBean;
     }
 
-    // ============
+    // ===========
     // = 内部方法 =
-    // ============
+    // ===========
 
-    private final static String UNKNOWN = "unknown";
+    private static final String UNKNOWN = "unknown";
 
     /**
      * 是否匹配正确 ROM
@@ -335,12 +337,7 @@ public final class ROMUtils {
             }
         } catch (Throwable ignore) {
         } finally {
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (Exception ignore) {
-                }
-            }
+            CloseUtils.closeIOQuietly(input);
         }
         return "";
     }
@@ -379,9 +376,9 @@ public final class ROMUtils {
         return "";
     }
 
-    // ==========
+    // =========
     // = 实体类 =
-    // ==========
+    // =========
 
     private static RomInfo sBean = null;
 

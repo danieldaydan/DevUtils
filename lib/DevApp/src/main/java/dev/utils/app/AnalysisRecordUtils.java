@@ -40,9 +40,9 @@ public final class AnalysisRecordUtils {
     // 文件记录回调
     private static CallBack RECORD_CALLBACK = null;
 
-    // ============
+    // ===========
     // = 配置信息 =
-    // ============
+    // ===========
 
     // APP 版本 ( 如 1.0.01) 显示给用户看的
     private static       String              APP_VERSION_NAME = "";
@@ -103,9 +103,9 @@ public final class AnalysisRecordUtils {
         RECORD_CALLBACK = callBack;
     }
 
-    // ============
+    // ===========
     // = 记录方法 =
-    // ============
+    // ===========
 
     /**
      * 日志记录
@@ -132,9 +132,9 @@ public final class AnalysisRecordUtils {
         return "fileInfo is null";
     }
 
-    // ==================
+    // =================
     // = 判断、获取方法 =
-    // ==================
+    // =================
 
     /**
      * 判断是否处理日志记录
@@ -200,9 +200,9 @@ public final class AnalysisRecordUtils {
         AnalysisRecordUtils.sLogStoragePath = logStoragePath;
     }
 
-    // ============
+    // ===========
     // = 内部方法 =
-    // ============
+    // ===========
 
     /**
      * 最终保存方法
@@ -327,11 +327,11 @@ public final class AnalysisRecordUtils {
         return builder.toString();
     }
 
-    // ================
+    // ===============
     // = 日志保存时间 =
-    // ================
+    // ===============
 
-    // DEFAULT - 默认天, 在根目录下
+    // DEFAULT ( 默认天, 在根目录下 )
     public static final int DEFAULT = 0;
     // 小时
     public static final int HH      = 1;
@@ -369,9 +369,9 @@ public final class AnalysisRecordUtils {
         // 是否处理日志记录
         private boolean handler;
 
-        // ============
+        // ===========
         // = 构造函数 =
-        // ============
+        // ===========
 
         /**
          * 构造函数
@@ -400,7 +400,7 @@ public final class AnalysisRecordUtils {
          * @param fileFunction 日志文件记录功能
          * @return {@link FileInfo}
          */
-        public static FileInfo obtain(final String fileName, final String fileFunction) {
+        public static FileInfo get(final String fileName, final String fileFunction) {
             return new FileInfo(null, null, fileName, fileFunction, DEFAULT, true);
         }
 
@@ -411,7 +411,7 @@ public final class AnalysisRecordUtils {
          * @param fileFunction 日志文件记录功能
          * @return {@link FileInfo}
          */
-        public static FileInfo obtain(final String folderName, final String fileName, final String fileFunction) {
+        public static FileInfo get(final String folderName, final String fileName, final String fileFunction) {
             return new FileInfo(null, folderName, fileName, fileFunction, DEFAULT, true);
         }
 
@@ -423,7 +423,7 @@ public final class AnalysisRecordUtils {
          * @param fileFunction 日志文件记录功能
          * @return {@link FileInfo}
          */
-        public static FileInfo obtain(final String storagePath, final String folderName, final String fileName, final String fileFunction) {
+        public static FileInfo get(final String storagePath, final String folderName, final String fileName, final String fileFunction) {
             return new FileInfo(storagePath, folderName, fileName, fileFunction, DEFAULT, true);
         }
 
@@ -436,7 +436,7 @@ public final class AnalysisRecordUtils {
          * @param fileIntervalTime 日志文件记录间隔时间
          * @return {@link FileInfo}
          */
-        public static FileInfo obtain(final String fileName, final String fileFunction, @TIME final int fileIntervalTime) {
+        public static FileInfo get(final String fileName, final String fileFunction, @TIME final int fileIntervalTime) {
             return new FileInfo(null, null, fileName, fileFunction, fileIntervalTime, true);
         }
 
@@ -448,7 +448,7 @@ public final class AnalysisRecordUtils {
          * @param fileIntervalTime 日志文件记录间隔时间
          * @return {@link FileInfo}
          */
-        public static FileInfo obtain(final String folderName, final String fileName, final String fileFunction, @TIME final int fileIntervalTime) {
+        public static FileInfo get(final String folderName, final String fileName, final String fileFunction, @TIME final int fileIntervalTime) {
             return new FileInfo(null, folderName, fileName, fileFunction, fileIntervalTime, true);
         }
 
@@ -461,8 +461,8 @@ public final class AnalysisRecordUtils {
          * @param fileIntervalTime 日志文件记录间隔时间
          * @return {@link FileInfo}
          */
-        public static FileInfo obtain(final String storagePath, final String folderName, final String fileName, final String fileFunction,
-                                      @TIME final int fileIntervalTime) {
+        public static FileInfo get(final String storagePath, final String folderName, final String fileName, final String fileFunction,
+                                   @TIME final int fileIntervalTime) {
             return new FileInfo(storagePath, folderName, fileName, fileFunction, fileIntervalTime, true);
         }
 
@@ -476,8 +476,8 @@ public final class AnalysisRecordUtils {
          * @param isHandler        是否处理日志记录
          * @return {@link FileInfo}
          */
-        public static FileInfo obtain(final String storagePath, final String folderName, final String fileName, final String fileFunction,
-                                      @TIME final int fileIntervalTime, final boolean isHandler) {
+        public static FileInfo get(final String storagePath, final String folderName, final String fileName, final String fileFunction,
+                                   @TIME final int fileIntervalTime, final boolean isHandler) {
             return new FileInfo(storagePath, folderName, fileName, fileFunction, fileIntervalTime, isHandler);
         }
 
@@ -549,9 +549,9 @@ public final class AnalysisRecordUtils {
             return this;
         }
 
-        // ================
+        // ===============
         // = 内部处理方法 =
-        // ================
+        // ===============
 
         /**
          * 获取日志文件地址
@@ -608,9 +608,9 @@ public final class AnalysisRecordUtils {
         }
     }
 
-    // ================
+    // ===============
     // = 设备信息处理 =
-    // ================
+    // ===============
 
     /**
      * 处理设备信息
@@ -634,9 +634,9 @@ public final class AnalysisRecordUtils {
         return DEVICE_INFO_STR;
     }
 
-    // ============
+    // ===========
     // = 接口回调 =
-    // ============
+    // ===========
 
     /**
      * detail: 文件记录回调

@@ -1,6 +1,6 @@
 package dev.utils.app.toast.toaster;
 
-import android.app.Application;
+import android.content.Context;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
@@ -52,14 +52,14 @@ public final class IToast {
         // =
 
         /**
-         * Application 初始化调用
-         * @param application {@link Application}
+         * 初始化调用
+         * @param context {@link Context}
          */
-        void init(Application application);
+        void init(Context context);
 
-        // ============
+        // ===========
         // = 配置方法 =
-        // ============
+        // ===========
 
         /**
          * 使用单次 Toast 样式配置
@@ -104,9 +104,9 @@ public final class IToast {
          */
         void setView(@LayoutRes int layoutId);
 
-        // ============
+        // ===========
         // = 操作方法 =
-        // ============
+        // ===========
 
         /**
          * 显示 Toast
@@ -145,9 +145,9 @@ public final class IToast {
         void cancel();
     }
 
-    // ============
+    // ===========
     // = 其他接口 =
-    // ============
+    // ===========
 
     /**
      * detail: Toast 样式配置
@@ -210,9 +210,9 @@ public final class IToast {
          */
         Drawable getBackground();
 
-        // =================
+        // ================
         // = TextView 相关 =
-        // =================
+        // ================
 
         /**
          * 获取文本颜色
@@ -246,7 +246,7 @@ public final class IToast {
         Typeface getTypeface();
 
         /**
-         * 获取 TextView padding 边距 - new int[] { left, top, right, bottom }
+         * 获取 TextView padding 边距 ( new int[] { left, top, right, bottom } )
          * @return TextView padding 边距
          */
         int[] getPadding();

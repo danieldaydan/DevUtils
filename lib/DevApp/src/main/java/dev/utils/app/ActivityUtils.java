@@ -47,9 +47,9 @@ public final class ActivityUtils {
     // 日志 TAG
     private static final String TAG = ActivityUtils.class.getSimpleName();
 
-    // =====================
+    // ====================
     // = Activity 判断处理 =
-    // =====================
+    // ====================
 
     /**
      * 获取 Window
@@ -178,9 +178,9 @@ public final class ActivityUtils {
         return result;
     }
 
-    // =====================
+    // ====================
     // = Activity 获取操作 =
-    // =====================
+    // ====================
 
     /**
      * 回到桌面 ( 同点击 Home 键效果 )
@@ -350,7 +350,7 @@ public final class ActivityUtils {
     }
 
     /**
-     * 获取系统桌面信息 - packageName
+     * 获取系统桌面信息 ( packageName )
      * <pre>
      *     注: 存在多个桌面时且未指定默认桌面时, 该方法返回 Null, 使用时需处理这个情况
      * </pre>
@@ -370,7 +370,7 @@ public final class ActivityUtils {
     }
 
     /**
-     * 获取系统桌面信息 - activityName
+     * 获取系统桌面信息 ( activityName )
      * @return activityName
      */
     public static String getLauncherCategoryHomeToActivityName() {
@@ -387,7 +387,7 @@ public final class ActivityUtils {
     }
 
     /**
-     * 获取系统桌面信息 - package/activityName
+     * 获取系统桌面信息 ( package/activityName )
      * @return package/activityName
      */
     public static String getLauncherCategoryHomeToPackageAndName() {
@@ -411,9 +411,9 @@ public final class ActivityUtils {
         return null;
     }
 
-    // ============
+    // ===========
     // = 转场动画 =
-    // ============
+    // ===========
 
     /**
      * 设置跳转动画
@@ -456,9 +456,9 @@ public final class ActivityUtils {
         return null;
     }
 
-    // =====================
+    // ====================
     // = Activity 管理控制 =
-    // =====================
+    // ====================
 
     // ActivityUtils 实例
     private volatile static ActivityUtils sInstance;
@@ -478,9 +478,9 @@ public final class ActivityUtils {
         return sInstance;
     }
 
-    // ===================
+    // ==================
     // = Activity 栈处理 =
-    // ===================
+    // ==================
 
     // Activity 栈 ( 后进先出 )
     private final Stack<Activity> mActivityStacks = new Stack<>();
@@ -883,9 +883,9 @@ public final class ActivityUtils {
         return this;
     }
 
-    // ============
+    // ===========
     // = 跳转回传 =
-    // ============
+    // ===========
 
     // 跳转回传回调 Map
     private static final Map<Integer, ResultCallback> sResultCallbackMaps = new HashMap<>();

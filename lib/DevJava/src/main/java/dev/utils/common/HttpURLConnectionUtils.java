@@ -162,21 +162,10 @@ public final class HttpURLConnectionUtils {
                 callBack.onFail(e);
             }
         } finally {
-            if (baos != null) {
-                try {
-                    baos.close();
-                } catch (Exception ignore) {
-                }
-            }
-            if (is != null) {
-                try {
-                    is.close();
-                } catch (Exception ignore) {
-                }
-            }
+            CloseUtils.closeIOQuietly(baos, is);
+
             if (connection != null) {
-                try {
-                    // 关闭底层连接 Socket
+                try { // 关闭底层连接 Socket
                     connection.disconnect();
                 } catch (Exception ignore) {
                 }
@@ -184,9 +173,9 @@ public final class HttpURLConnectionUtils {
         }
     }
 
-    // ====================
+    // ===================
     // = 获取网络时间处理 =
-    // ====================
+    // ===================
 
     public static final String BAIDU_URL = "https://www.baidu.com";
 
@@ -210,7 +199,7 @@ public final class HttpURLConnectionUtils {
     }
 
     /**
-     * 获取网络时间 - 默认使用百度链接
+     * 获取网络时间 ( 默认使用百度链接 )
      * @param timeCallBack 请求时间回调接口
      */
     public static void getNetTime(final TimeCallBack timeCallBack) {
@@ -262,8 +251,7 @@ public final class HttpURLConnectionUtils {
             }
         } finally {
             if (connection != null) {
-                try {
-                    // 关闭底层连接 Socket
+                try { // 关闭底层连接 Socket
                     connection.disconnect();
                 } catch (Exception ignore) {
                 }

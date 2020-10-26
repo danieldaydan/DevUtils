@@ -85,9 +85,9 @@ public final class AppInfoUtils {
         return null;
     }
 
-    // ================
+    // ===============
     // = 获取基本信息 =
-    // ================
+    // ===============
 
     /**
      * 通过 APK 路径 获取 AppInfoBean
@@ -95,7 +95,7 @@ public final class AppInfoUtils {
      * @return {@link AppInfoBean}
      */
     public static AppInfoBean getAppInfoBeanToFile(final File file) {
-        return AppInfoBean.obtain(getPackageInfoToFile(file));
+        return AppInfoBean.get(getPackageInfoToFile(file));
     }
 
     /**
@@ -104,7 +104,7 @@ public final class AppInfoUtils {
      * @return {@link AppInfoBean}
      */
     public static AppInfoBean getAppInfoBeanToPath(final String apkUri) {
-        return AppInfoBean.obtain(getPackageInfoToPath(apkUri));
+        return AppInfoBean.get(getPackageInfoToPath(apkUri));
     }
 
     /**
@@ -112,7 +112,7 @@ public final class AppInfoUtils {
      * @return {@link AppInfoBean}
      */
     public static AppInfoBean getAppInfoBean() {
-        return AppInfoBean.obtain(getPackageInfo());
+        return AppInfoBean.get(getPackageInfo());
     }
 
     /**
@@ -121,12 +121,12 @@ public final class AppInfoUtils {
      * @return {@link AppInfoBean}
      */
     public static AppInfoBean getAppInfoBean(final String packageName) {
-        return AppInfoBean.obtain(getPackageInfo(packageName));
+        return AppInfoBean.get(getPackageInfo(packageName));
     }
 
-    // ================
+    // ===============
     // = 获取详细信息 =
-    // ================
+    // ===============
 
     /**
      * 获取 APK 详细信息
@@ -145,7 +145,7 @@ public final class AppInfoUtils {
      */
     public static ApkInfoItem getApkInfoItem(final String apkUri) {
         try {
-            return ApkInfoItem.obtain(getPackageInfoToPath(apkUri));
+            return ApkInfoItem.get(getPackageInfoToPath(apkUri));
         } catch (Exception e) {
             LogPrintUtils.eTag(TAG, e, "getApkInfoItem");
             return null;
@@ -160,7 +160,7 @@ public final class AppInfoUtils {
      */
     public static AppInfoItem getAppInfoItem() {
         try {
-            return AppInfoItem.obtain(getPackageInfo());
+            return AppInfoItem.get(getPackageInfo());
         } catch (Exception e) {
             LogPrintUtils.eTag(TAG, e, "getAppInfoItem");
             return null;
@@ -174,7 +174,7 @@ public final class AppInfoUtils {
      */
     public static AppInfoItem getAppInfoItem(final String packageName) {
         try {
-            return AppInfoItem.obtain(getPackageInfo(packageName));
+            return AppInfoItem.get(getPackageInfo(packageName));
         } catch (Exception e) {
             LogPrintUtils.eTag(TAG, e, "getAppInfoItem");
             return null;
@@ -198,7 +198,7 @@ public final class AppInfoUtils {
      */
     public static List<AppInfoBean> getAppLists(final AppInfoBean.AppType appType) {
         // APP 信息
-        ArrayList<AppInfoBean> listApps = new ArrayList<>();
+        List<AppInfoBean> listApps = new ArrayList<>();
         // 防止为 null
         if (appType != null) {
             // 管理应用程序包

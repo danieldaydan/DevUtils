@@ -133,7 +133,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             // 设置标题
             binding.vidAmToolbar.setTitle(type.titleId)
             binding.vidAmNavView.setCheckedItem(getNavItemId())
-            // 失去焦点 ( 解决存在键盘, 点击侧边导航栏切换, 输入法键盘还存在 )
+            // 失去焦点 ( 解决存在键盘, 点击侧边导航栏切换, 软键盘还存在 )
             searchView?.let { it.clearFocus() }
             // 发送粘性事件 - 只会发送一次, 刚进入为 NONE, 解决 Fragment show 之前消息已经发送无法接收
             if (noneType) EventBusUtils.postSticky(FragmentEvent(type))
@@ -287,9 +287,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    // ============
+    // ===========
     // = 事件相关 =
-    // ============
+    // ===========
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: StartSearchEvent) {

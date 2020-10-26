@@ -50,9 +50,9 @@ public final class DevMediaManager implements OnBufferingUpdateListener,
         return sInstance;
     }
 
-    // ================
+    // ===============
     // = 内部处理方法 =
-    // ================
+    // ===============
 
     /**
      * 创建 MediaPlayer
@@ -132,9 +132,9 @@ public final class DevMediaManager implements OnBufferingUpdateListener,
         return this;
     }
 
-    // ============
+    // ===========
     // = 播放操作 =
-    // ============
+    // ===========
 
     /**
      * 播放 Raw 资源
@@ -236,12 +236,12 @@ public final class DevMediaManager implements OnBufferingUpdateListener,
         return false;
     }
 
-    // ============
+    // ===========
     // = 播放路径 =
-    // ============
+    // ===========
 
     /**
-     * 预加载播放 - (file-path or http/rtsp URL) http 资源、本地资源
+     * 预加载播放 (file-path or http/rtsp URL) http 资源、本地资源
      * @param playUri 播放地址
      * @return {@code true} 执行成功, {@code false} 执行失败
      */
@@ -250,7 +250,7 @@ public final class DevMediaManager implements OnBufferingUpdateListener,
     }
 
     /**
-     * 预加载播放 - (file-path or http/rtsp URL) http 资源、本地资源
+     * 预加载播放 (file-path or http/rtsp URL) http 资源、本地资源
      * @param playUri   播放地址
      * @param isLooping 是否循环播放
      * @return {@code true} 执行成功, {@code false} 执行失败
@@ -279,12 +279,12 @@ public final class DevMediaManager implements OnBufferingUpdateListener,
         return false;
     }
 
-    // ================
+    // ===============
     // = 最终调用方法 =
-    // ================
+    // ===============
 
     /**
-     * 预加载播放 ( 最终调用方法 ) - 加载成功触发 onPrepared, 该方法内调用 mMediaPlayer.start()
+     * 预加载播放 ( 最终调用方法, 加载成功触发 onPrepared, 该方法内调用 mMediaPlayer.start() )
      * @param mediaSet 播放设置
      * @return {@code true} 执行成功, {@code false} 执行失败
      */
@@ -315,9 +315,9 @@ public final class DevMediaManager implements OnBufferingUpdateListener,
         return false;
     }
 
-    // ====================
+    // ===================
     // = MediaPlayer 操作 =
-    // ====================
+    // ===================
 
     /**
      * 是否播放中
@@ -344,16 +344,16 @@ public final class DevMediaManager implements OnBufferingUpdateListener,
     }
 
     /**
-     * 停止操作 - 销毁 MediaPlayer
+     * 停止操作 ( 销毁 MediaPlayer )
      */
     public void stop() {
         // 销毁 MediaPlayer
         destroyMedia();
     }
 
-    // ============
+    // ===========
     // = 快捷操作 =
-    // ============
+    // ===========
 
     /**
      * 是否忽略错误类型
@@ -376,9 +376,9 @@ public final class DevMediaManager implements OnBufferingUpdateListener,
         return ignore;
     }
 
-    // ============
+    // ===========
     // = 回调事件 =
-    // ============
+    // ===========
 
     /**
      * 播放出错回调
@@ -467,9 +467,9 @@ public final class DevMediaManager implements OnBufferingUpdateListener,
         }
     }
 
-    // ================
+    // ===============
     // = 封装回调事件 =
-    // ================
+    // ===============
 
     // MediaPlayer 回调事件
     private MediaListener mMeidaListener;
@@ -534,7 +534,7 @@ public final class DevMediaManager implements OnBufferingUpdateListener,
     public static abstract class MediaSet {
 
         /**
-         * 是否循环播放 - 默认不循环
+         * 是否循环播放 ( 默认不循环 )
          * @return {@code true} yes, {@code false} no
          */
         public boolean isLooping() {
@@ -542,7 +542,7 @@ public final class DevMediaManager implements OnBufferingUpdateListener,
         }
 
         /**
-         * 获取播放音量 ( 设置 ) - 默认使用全局统一音量
+         * 获取播放音量 ( 设置, 默认使用全局统一音量 )
          * @return 播放音量
          */
         public float getVolume() {
@@ -623,9 +623,9 @@ public final class DevMediaManager implements OnBufferingUpdateListener,
         return this;
     }
 
-    // ============
+    // ===========
     // = 内部变量 =
-    // ============
+    // ===========
 
     // 流类型
     private int    mStreamType  = AudioManager.STREAM_MUSIC;

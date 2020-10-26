@@ -473,9 +473,9 @@ public final class EditTextUtils {
         return editText;
     }
 
-    // =========================
+    // ========================
     // = Key Listener 快捷处理 =
-    // =========================
+    // ========================
 
     // 0123456789
     private static final char[] NUMBERS = new char[]{48, 49, 50, 51, 52, 53, 54, 55, 56, 57};
@@ -540,7 +540,7 @@ public final class EditTextUtils {
     // =
 
     /**
-     * 获取 DigitsKeyListener ( 限制只能输入字母, 默认弹出英文输入法 )
+     * 获取 DigitsKeyListener ( 限制只能输入字母, 默认弹出英文软键盘 )
      * @return {@link DigitsKeyListener}
      */
     public static DigitsKeyListener getLettersKeyListener() {
@@ -548,7 +548,7 @@ public final class EditTextUtils {
     }
 
     /**
-     * 获取 DigitsKeyListener ( 限制只能输入字母和数字, 默认弹出英文输入法 )
+     * 获取 DigitsKeyListener ( 限制只能输入字母和数字, 默认弹出英文软键盘 )
      * @return {@link DigitsKeyListener}
      */
     public static DigitsKeyListener getNumberAndLettersKeyListener() {
@@ -636,7 +636,7 @@ public final class EditTextUtils {
      */
     public static abstract class DevTextWatcher implements TextWatcher {
 
-        // 标记 id - 一定程度上唯一
+        // 标记 id ( 一定程度上唯一 )
         private final int     markId       = UUID.randomUUID().hashCode();
         // 判断是否操作中
         private       boolean operate      = false;
@@ -721,9 +721,9 @@ public final class EditTextUtils {
             return this;
         }
 
-        // ============
+        // ===========
         // = 回调接口 =
-        // ============
+        // ===========
 
         /**
          * 在文本变化前调用

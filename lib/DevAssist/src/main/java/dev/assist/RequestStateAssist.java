@@ -28,12 +28,12 @@ public class RequestStateAssist<T> {
     private T    mRequestType;
     // 请求 HashCode
     private long mRequestHashCode = UUID.randomUUID().hashCode();
-    // 请求状态 - 默认状态 ( 暂未进行操作 )
+    // 请求状态 ( 默认为暂未进行操作 )
     private int  mRequestState    = REQUEST_NORMAL;
 
-    // ================
+    // ===============
     // = 对外公开方法 =
-    // ================
+    // ===============
 
     /**
      * 获取请求类型
@@ -82,7 +82,7 @@ public class RequestStateAssist<T> {
     }
 
     /**
-     * 获取请求 HashCode - 随机生成并赋值
+     * 获取请求 HashCode ( 随机生成并赋值 )
      * @return 请求 HashCode
      */
     public long getRequestHashCodeRandom() {
@@ -127,9 +127,9 @@ public class RequestStateAssist<T> {
         return this;
     }
 
-    // ============
+    // ===========
     // = 快捷方法 =
-    // ============
+    // ===========
 
     /**
      * 判断是否默认状态 ( 暂未进行操作 )

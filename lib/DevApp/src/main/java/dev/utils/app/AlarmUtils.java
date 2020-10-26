@@ -11,7 +11,7 @@ import androidx.annotation.RequiresApi;
 import dev.utils.LogPrintUtils;
 
 /**
- * detail: AlarmManager( 全局定时器、闹钟 ) 工具类
+ * detail: AlarmManager ( 全局定时器、闹钟 ) 工具类
  * @author Ttt
  * <pre>
  *     指定时长或以周期形式执行某项操作
@@ -28,9 +28,9 @@ public final class AlarmUtils {
     // 日志 TAG
     private static final String TAG = AlarmUtils.class.getSimpleName();
 
-    // ============
+    // ===========
     // = 开启闹钟 =
-    // ============
+    // ===========
 
     /**
      * 开启一次性闹钟
@@ -73,9 +73,9 @@ public final class AlarmUtils {
         return false;
     }
 
-    // ============
+    // ===========
     // = 关闭闹钟 =
-    // ============
+    // ===========
 
     /**
      * 关闭闹钟
@@ -93,9 +93,9 @@ public final class AlarmUtils {
         return false;
     }
 
-    // ================
+    // ===============
     // = Service 闹钟 =
-    // ================
+    // ===============
 
     /**
      * 开启 Service 闹钟
@@ -294,9 +294,9 @@ public final class AlarmUtils {
         return false;
     }
 
-    // =================
+    // ================
     // = Activity 闹钟 =
-    // =================
+    // ================
 
     /**
      * 开启 Activity 闹钟

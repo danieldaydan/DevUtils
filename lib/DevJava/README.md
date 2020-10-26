@@ -2,7 +2,7 @@
 ## Gradle
 
 ```java
-implementation 'com.afkt:DevJava:1.1.3'
+implementation 'com.afkt:DevJava:1.2.0'
 ```
 
 ## 目录结构
@@ -14,6 +14,7 @@ implementation 'com.afkt:DevJava:1.1.3'
          - search                                     | 搜索相关 ( 文件搜索等 )
       - cipher                                        | 编 / 解码工具类
       - encrypt                                       | 加密工具类
+      - file                                          | 文件分片相关
       - random                                        | 随机概率算法工具类
       - thread                                        | 线程相关
       - validator                                     | 数据校验工具类
@@ -26,7 +27,7 @@ implementation 'com.afkt:DevJava:1.1.3'
 
 - 开启日志
 ```java
-// 打开 lib 内部日志 - 线上 (release) 环境，不调用方法就行
+// 打开 lib 内部日志 - 线上 (release) 环境，不调用方法
 JCLogUtils.setPrintLog(true);
 // 控制台打印日志
 JCLogUtils.setControlPrintLog(true);
@@ -47,6 +48,7 @@ JCLogUtils.setPrint(new JCLogUtils.Print() {});
          - [search](#devutilscommonassistsearch)      | 搜索相关 ( 文件搜索等 )
       - [cipher](#devutilscommoncipher)               | 编 / 解码工具类
       - [encrypt](#devutilscommonencrypt)             | 加密工具类
+      - [file](#devutilscommonfile)                   | 文件分片相关
       - [random](#devutilscommonrandom)               | 随机概率算法工具类
       - [thread](#devutilscommonthread)               | 线程相关
       - [validator](#devutilscommonvalidator)         | 数据校验工具类
@@ -116,6 +118,32 @@ JCLogUtils.setPrint(new JCLogUtils.Print() {});
 | adjustDouble | 获取自己想要的数据格式 |
 
 
+* **日历工具类 ->** [CalendarUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevJava/src/main/java/dev/utils/common/CalendarUtils.java)
+
+| 方法 | 注释 |
+| :- | :- |
+| isSupportLunar | 是否支持农历年份计算 |
+| isSupportSolar | 是否支持公历年份计算 |
+| solarToLunar | 公历转农历 |
+| lunarToSolar | 农历转公历 |
+| getLunarYearDays | 获取农历年份总天数 |
+| getLunarLeapDays | 获取农历年份闰月天数 |
+| getLunarLeapMonth | 获取农历年份哪个月是闰月 |
+| getLunarMonthDays | 获取农历年份与月份总天数 |
+| getLunarGanZhi | 获取干支历 |
+| getLunarMonthChinese | 获取农历中文月份 |
+| getLunarDayChinese | 获取农历中文天数 |
+| getSolarTermsIndex | 获取二十四节气 ( 公历 ) 索引 |
+| getSolarTerms | 获取二十四节气 ( 公历 ) |
+| getSolarTermsDate | 获取二十四节气 ( 公历 ) 时间 |
+| isFestival | 校验是否相同节日 |
+| getFestival | 获取符合条件的节日信息 |
+| getSolarFestival | 获取公历符合条件的节日信息 |
+| getLunarFestival | 获取农历符合条件的节日信息 |
+| getFestivalHook | 获取节日 Hook 接口 |
+| setFestivalHook | 设置节日 Hook 接口 |
+
+
 * **中文工具类 ->** [ChineseUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevJava/src/main/java/dev/utils/common/ChineseUtils.java)
 
 | 方法 | 注释 |
@@ -125,7 +153,7 @@ JCLogUtils.setPrint(new JCLogUtils.Print() {});
 | numberToCHN | 数字转中文数值 |
 
 
-* **类 (Class) 工具类 ->** [ClassUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevJava/src/main/java/dev/utils/common/ClassUtils.java)
+* **类 ( Class ) 工具类 ->** [ClassUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevJava/src/main/java/dev/utils/common/ClassUtils.java)
 
 | 方法 | 注释 |
 | :- | :- |
@@ -150,15 +178,19 @@ JCLogUtils.setPrint(new JCLogUtils.Print() {});
 | serializableToBytes | 通过序列化实体类, 获取对应的 byte[] 数据 |
 
 
-* **关闭 (IO 流 ) 工具类 ->** [CloseUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevJava/src/main/java/dev/utils/common/CloseUtils.java)
+* **关闭 ( IO 流 ) 工具类 ->** [CloseUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevJava/src/main/java/dev/utils/common/CloseUtils.java)
 
 | 方法 | 注释 |
 | :- | :- |
 | closeIO | 关闭 IO |
 | closeIOQuietly | 安静关闭 IO |
+| flush | 将缓冲区数据输出 |
+| flushQuietly | 安静将缓冲区数据输出 |
+| flushCloseIO | 将缓冲区数据输出并关闭流 |
+| flushCloseIOQuietly | 安静将缓冲区数据输出并关闭流 |
 
 
-* **集合工具类 (Collection - List、Set、Queue) 等 ->** [CollectionUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevJava/src/main/java/dev/utils/common/CollectionUtils.java)
+* **集合工具类 ( Collection - List、Set、Queue ) 等 ->** [CollectionUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevJava/src/main/java/dev/utils/common/CollectionUtils.java)
 
 | 方法 | 注释 |
 | :- | :- |
@@ -181,9 +213,9 @@ JCLogUtils.setPrint(new JCLogUtils.Print() {});
 | getPrevious | 根据指定 value 获取 value 所在位置的上一个值 |
 | getPreviousNotNull | 根据指定 value 获取 value 所在位置的上一个值, 不允许值为 null |
 | add | 添加一条数据 |
-| addNotNull | 添加一条数据 - value 不允许为 null |
+| addNotNull | 添加一条数据 ( value 不允许为 null ) |
 | addAll | 添加集合数据 |
-| addAllNotNull | 添加集合数据 - values 内的值不允许为 null |
+| addAllNotNull | 添加集合数据 ( values 内的值不允许为 null ) |
 | remove | 移除一条数据 |
 | removeAll | 移除集合数据 |
 | clear | 清空集合中符合指定 value 的全部数据 |
@@ -227,7 +259,7 @@ JCLogUtils.setPrint(new JCLogUtils.Print() {});
 
 | 方法 | 注释 |
 | :- | :- |
-| toHexAlpha | 获取十六进制透明度字符串 |
+| hexAlpha | 获取十六进制透明度字符串 |
 | getARGB | 返回一个颜色 ARGB 色值数组 ( 返回十进制 ) |
 | alpha | 返回一个颜色中的透明度值 ( 返回十进制 ) |
 | alphaPercent | 返回一个颜色中的透明度百分比值 |
@@ -270,11 +302,10 @@ JCLogUtils.setPrint(new JCLogUtils.Print() {});
 | getHue | 获取颜色色调 |
 | getSaturation | 获取颜色饱和度 |
 | getBrightness | 获取颜色亮度 |
-| toString | toString |
 | handleColor | 处理 color |
 
 
-* **转换工具类 (Byte、Hex 等 ) ->** [ConvertUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevJava/src/main/java/dev/utils/common/ConvertUtils.java)
+* **转换工具类 ( Byte、Hex 等 ) ->** [ConvertUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevJava/src/main/java/dev/utils/common/ConvertUtils.java)
 
 | 方法 | 注释 |
 | :- | :- |
@@ -346,25 +377,25 @@ JCLogUtils.setPrint(new JCLogUtils.Print() {});
 
 | 方法 | 注释 |
 | :- | :- |
-| getDateNow | 获取当前日期的字符串 - yyyy-MM-dd HH:mm:ss |
+| getDateNow | 获取当前日期的字符串 ( yyyy-MM-dd HH:mm:ss ) |
 | formatTime | 将时间戳转换日期字符串 |
 | formatDate | 将 Date 转换日期字符串 |
 | parseDate | 将时间戳转换成 Date |
-| parseLong | 解析时间字符串转换为 long 毫秒 - 默认表示 time 属于 yyyy-MM-dd HH:mm:ss 格式 |
+| parseLong | 解析时间字符串转换为 long 毫秒 ( 默认表示 time 属于 yyyy-MM-dd HH:mm:ss 格式 ) |
 | parseToString | 转换时间为指定字符串 |
-| getTimeDiffMinute | 获取时间差 - 分钟 |
-| getTimeDiffHour | 获取时间差 - 小时 |
-| getTimeDiffDay | 获取时间差 - 天 |
-| getTimeDiff | 获取时间差 - ( 传入时间 - 当前时间 ) |
+| getTimeDiffMinute | 获取时间差 ( 分钟 ) |
+| getTimeDiffHour | 获取时间差 ( 小时 ) |
+| getTimeDiffDay | 获取时间差 ( 天 ) |
+| getTimeDiff | 获取时间差 ( 传入时间 - 当前时间 ) |
 | getYear | 获取年 |
-| getMonth | 获取月 (0 - 11) + 1 |
+| getMonth | 获取月 ( 0 - 11 ) + 1 |
 | getDay | 获取日 |
 | getWeek | 获取日期是星期几 |
-| get24Hour | 获取时 - 24 |
-| get12Hour | 获取时 - 12 |
+| get24Hour | 获取时 ( 24 ) |
+| get12Hour | 获取时 ( 12 ) |
 | getMinute | 获取分 |
 | getSecond | 获取秒 |
-| convertTime | 转换时间处理, 小于 10, 则自动补充 0x |
+| timeAddZero | 时间补 0 处理 ( 小于 10, 则自动补充 0x ) |
 | isLeapYear | 判断是否闰年 |
 | getMonthDayNumberAll | 根据年份、月份, 获取对应的天数 ( 完整天数, 无判断是否属于未来日期 ) |
 | getYearMonthNumber | 根据年份, 获取对应的月份 |
@@ -376,7 +407,7 @@ JCLogUtils.setPrint(new JCLogUtils.Print() {});
 | getArrayToHHMM | 生成 HH:mm 按间隔时间排序数组 |
 | getListToHHMM | 生成 HH:mm 按间隔时间排序集合 |
 | getListToHHMMPosition | 获取 HH:mm 按间隔时间排序的集合中, 指定时间所在索引 |
-| secToTimeRetain | 传入时间, 获取时间 (00:00:00 格式 ) - 不处理大于一天 |
+| secToTimeRetain | 传入时间, 获取时间 ( 00:00:00 格式, 不处理大于一天 ) |
 | convertTimeArys | 传入时间, 时间参数 ( 小时、分钟、秒 ) |
 | millisToFitTimeSpan | 转换时间 |
 | millisToTimeArys | 转换时间为数组 |
@@ -386,6 +417,9 @@ JCLogUtils.setPrint(new JCLogUtils.Print() {});
 | isInDate | 判断时间是否在 [startTime, endTime] 区间, 注意时间格式要一致 |
 | getEndTimeDiffHHmm | 获取指定时间距离该时间第二天的指定时段的时间 ( 判断凌晨情况 ) |
 | getEndTimeDiff | 获取指定时间距离该时间第二天的指定时段的时间差 ( 判断凌晨情况 ) |
+| getZodiac | 获取生肖 |
+| getConstellation | 获取星座 |
+| getConstellationDate | 获取星座日期 |
 
 
 * **开发常用方法工具类 ->** [DevCommonUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevJava/src/main/java/dev/utils/common/DevCommonUtils.java)
@@ -401,46 +435,6 @@ JCLogUtils.setPrint(new JCLogUtils.Print() {});
 | randomUUIDToHashCode | 获取随机唯一数 HashCode |
 | getRandomUUID | 获取随机规则生成 UUID |
 | getRandomUUIDToString | 获取随机规则生成 UUID 字符串 |
-| isEmpty | 判断对象是否为空 |
-| isNotEmpty | 判断对象是否非空 |
-| length | 获取数组长度 |
-| isLength | 判断数组长度是否等于期望长度 |
-| equals | 判断两个值是否一样 |
-| isEquals | 判断多个字符串是否相等, 只有全相等才返回 true - 对比大小写 |
-| isOrEquals | 判断多个字符串, 只要有一个符合条件则通过 |
-| isContains | 判断一堆值中, 是否存在符合该条件的 ( 包含 ) |
-| isStartsWith | 判断内容, 是否属于特定字符串开头 - 对比大小写 |
-| isEndsWith | 判断内容, 是否属于特定字符串结尾 - 对比大小写 |
-| isSpace | 判断字符串是否为 null 或全为空白字符 |
-| toClearSpace | 清空字符串全部空格 |
-| toClearSpaceTrim | 清空字符串前后所有空格 |
-| appendSpace | 追加空格 |
-| appendTab | 追加 Tab |
-| appendLine | 追加换行 |
-| toCheckValue | 检查字符串 |
-| toCheckValues | 检查字符串 - 多个值 |
-| toCheckValuesSpace | 检查字符串 - 多个值 ( 删除前后空格对比判断 ) |
-| getFormatString | 获取格式化后的字符串 |
-| getAutoFormatString | 获取自动数量格式化后的字符串 ( 可变参数 ) |
-| getAutoFormatString2 | 获取自动数量格式化后的字符串 ( 可变参数 ) |
-| appends | StringBuilder 拼接处理 |
-| appendsIgnoreLast | StringBuilder 拼接处理 ( 最后一个不追加间隔 ) |
-| converHideMobile | 转换手机号 |
-| converSymbolHide | 转换符号处理 |
-| subEllipsize | 裁剪超出的内容, 并且追加符号 ( 如 ...) |
-| subSymbolHide | 裁剪符号处理 |
-| subSetSymbol | 裁剪内容, 设置符号处理 |
-| substring | 裁剪字符串 |
-| toReplaceSEWith | 替换 ( 删除 - 替换成 "") 字符串中符合 特定标记字符的 startsWith - endsWith |
-| toReplaceStartsWith | 替换开头字符串 |
-| toReplaceEndsWith | 替换结尾字符串 |
-| toClearSEWiths | 这个方法功能主要把字符符合标记的 头部和尾部都替换成 "" |
-| toClearStartsWith | 清空属于特定字符串开头的字段 |
-| toClearEndsWith | 清空属于特定字符串结尾的字段 |
-| replaceAll | 替换字符串 |
-| replaceAllToNull | 替换字符串 |
-| replaceAlls | 替换字符串 |
-| split | 拆分字符串 |
 
 
 * **编码工具类 ->** [EncodeUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevJava/src/main/java/dev/utils/common/EncodeUtils.java)
@@ -484,7 +478,7 @@ JCLogUtils.setPrint(new JCLogUtils.Print() {});
 | getAllDeclaredFields | 获取全部 Field, 包括父类 |
 
 
-* **文件 (IO 流 ) 工具类 ->** [FileIOUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevJava/src/main/java/dev/utils/common/FileIOUtils.java)
+* **文件 ( IO 流 ) 工具类 ->** [FileIOUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevJava/src/main/java/dev/utils/common/FileIOUtils.java)
 
 | 方法 | 注释 |
 | :- | :- |
@@ -522,12 +516,14 @@ JCLogUtils.setPrint(new JCLogUtils.Print() {});
 | getFileByPath | 获取文件 |
 | getFileCreateFolder | 获取路径, 并且进行创建目录 |
 | getFilePathCreateFolder | 获取路径, 并且进行创建目录 |
-| createFolder | 判断某个文件夹是否创建, 未创建则创建 ( 纯路径 - 无文件名 ) |
-| createFolderByPath | 创建文件夹目录 - 可以传入文件名 |
+| createFolder | 判断某个文件夹是否创建, 未创建则创建 ( 纯路径无文件名 ) |
+| createFolderByPath | 创建文件夹目录 ( 可以传入文件名 ) |
 | createFolderByPaths | 创建多个文件夹, 如果不存在则创建 |
 | createOrExistsDir | 判断目录是否存在, 不存在则判断是否创建成功 |
 | createOrExistsFile | 判断文件是否存在, 不存在则判断是否创建成功 |
 | createFileByDeleteOldFile | 判断文件是否存在, 存在则在创建之前删除 |
+| convertFiles | Path List 转 File List |
+| convertPaths | File List 转 Path List |
 | getPath | 获取文件路径 |
 | getAbsolutePath | 获取文件绝对路径 |
 | getName | 获取文件名 |
@@ -540,6 +536,9 @@ JCLogUtils.setPrint(new JCLogUtils.Print() {});
 | isFile | 判断是否文件 |
 | isDirectory | 判断是否文件夹 |
 | isHidden | 判断是否隐藏文件 |
+| canRead | 文件是否可读 |
+| canWrite | 文件是否可写 |
+| canReadWrite | 文件是否可读写 |
 | getFileLastModified | 获取文件最后修改的毫秒时间戳 |
 | getFileCharsetSimple | 获取文件编码格式 |
 | getFileLines | 获取文件行数 |
@@ -547,12 +546,12 @@ JCLogUtils.setPrint(new JCLogUtils.Print() {});
 | getDirSize | 获取目录大小 |
 | getFileLength | 获取文件大小 |
 | getDirLength | 获取目录全部文件大小 |
-| getFileLengthNetwork | 获取文件大小 - 网络资源 |
+| getFileLengthNetwork | 获取文件大小 ( 网络资源 ) |
 | getFileName | 获取路径中的文件名 |
 | getDirName | 获取路径中的最长目录地址 |
-| rename | 重命名文件 - 同个目录下, 修改文件名 |
+| rename | 重命名文件 ( 同个目录下, 修改文件名 ) |
 | formatFileSize | 传入文件路径, 返回对应的文件大小 |
-| formatByteMemorySize | 字节数转合适内存大小 保留 3 位小数 (%.位数f) |
+| formatByteMemorySize | 字节数转合适内存大小 保留 3 位小数 |
 | deleteFile | 删除文件 |
 | deleteFiles | 删除多个文件 |
 | deleteFolder | 删除文件夹 |
@@ -569,13 +568,13 @@ JCLogUtils.setPrint(new JCLogUtils.Print() {});
 | copyDir | 复制目录 |
 | moveDir | 移动目录 |
 | deleteDir | 删除目录 |
-| deleteAllInDir | 删除目录下所有东西 |
+| deleteAllInDir | 删除目录下所有文件 |
 | deleteFilesInDir | 删除目录下所有文件 |
 | deleteFilesInDirWithFilter | 删除目录下所有过滤的文件 |
-| listFilesInDir | 获取目录下所有文件 - 不递归进子目录 |
-| listFilesInDirWithFilter | 获取目录下所有过滤的文件 - 不递归进子目录 |
-| listFilesInDirBean | 获取目录下所有文件 - 不递归进子目录 |
-| listFilesInDirWithFilterBean | 获取目录下所有过滤的文件 - 不递归进子目录 |
+| listFilesInDir | 获取目录下所有文件 ( 不递归进子目录 ) |
+| listFilesInDirWithFilter | 获取目录下所有过滤的文件 ( 不递归进子目录 ) |
+| listFilesInDirBean | 获取目录下所有文件 ( 不递归进子目录 ) |
+| listFilesInDirWithFilterBean | 获取目录下所有过滤的文件 ( 不递归进子目录 ) |
 | isImageFormats | 根据文件名判断文件是否为图片 |
 | isAudioFormats | 根据文件名判断文件是否为音频 |
 | isVideoFormats | 根据文件名判断文件是否为视频 |
@@ -612,11 +611,11 @@ JCLogUtils.setPrint(new JCLogUtils.Print() {});
 | 方法 | 注释 |
 | :- | :- |
 | splitParams | 拆分参数 |
-| joinParams | 拼接请求参数 - value(String) |
-| joinParamsObj | 拼接请求参数 - value(Object) |
-| toConvertObjToMS | 进行转换对象处理 ( 请求发送对象 ) |
-| toConvertObjToMO | 进行转换对象处理 ( 请求发送对象 ) |
-| toUrlEncode | 进行 URL 编码, 默认 UTF-8 |
+| joinParams | 拼接请求参数 |
+| joinParamsObj | 拼接请求参数 |
+| convertObjToMS | 进行转换对象处理 ( 请求发送对象 ) |
+| convertObjToMO | 进行转换对象处理 ( 请求发送对象 ) |
+| urlEncode | 进行 URL 编码, 默认 UTF-8 |
 
 
 * **HttpURLConnection 网络工具类 ->** [HttpURLConnectionUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevJava/src/main/java/dev/utils/common/HttpURLConnectionUtils.java)
@@ -626,7 +625,7 @@ JCLogUtils.setPrint(new JCLogUtils.Print() {});
 | doGetAsyn | 异步的 Get 请求 |
 | doPostAsyn | 异步的 Post 请求 |
 | request | 发送请求 |
-| getNetTime | 获取网络时间 - 默认使用百度链接 |
+| getNetTime | 获取网络时间 ( 默认使用百度链接 ) |
 
 
 * **Map 工具类 ->** [MapUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevJava/src/main/java/dev/utils/common/MapUtils.java)
@@ -654,7 +653,7 @@ JCLogUtils.setPrint(new JCLogUtils.Print() {});
 | getNext | 根据指定 key 获取 key 所在位置的下一条数据 |
 | getPrevious | 根据指定 key 获取 key 所在位置的上一条数据 |
 | put | 添加一条数据 |
-| putNotNull | 添加一条数据, 不允许 key 为 null |
+| putNotNull | 添加一条数据 ( 不允许 key 为 null ) |
 | putAll | 添加多条数据 |
 | putAllNotNull | 添加多条数据, 不允许 key 为 null |
 | remove | 移除一条数据 |
@@ -664,18 +663,19 @@ JCLogUtils.setPrint(new JCLogUtils.Print() {});
 | equals | 判断两个值是否一样 |
 | toggle | 切换保存状态 |
 | isNullToValue | 判断指定 key 的 value 是否为 null |
-| containsKey | 判断 Map 是否存储了 key |
-| containsValue | 判断 Map 是否存储了 value |
-| putToList | 添加一条数据 - (Value) List<T> |
-| removeToList | 移除一条数据 - (Value) List<T> |
-| removeToLists | 移除多条数据 - (Value) List<T> |
-| removeToMap | 移除多条数据 - 通过 Map 进行移除 |
+| containsKey | 判断 Map 是否存储 key |
+| containsValue | 判断 Map 是否存储 value |
+| putToList | 添加一条数据 |
+| removeToList | 移除一条数据 |
+| removeToLists | 移除多条数据 |
+| removeToMap | 移除多条数据 ( 通过 Map 进行移除 ) |
 
 
 * **数字 ( 计算 ) 工具类 ->** [NumberUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevJava/src/main/java/dev/utils/common/NumberUtils.java)
 
 | 方法 | 注释 |
 | :- | :- |
+| addZero | 补 0 处理 ( 小于 10, 则自动补充 0x ) |
 | percentI | 计算百分比值 ( 最大 100%) |
 | percentD | 计算百分比值 ( 最大 100%) |
 | percentL | 计算百分比值 ( 最大 100%) |
@@ -774,11 +774,14 @@ JCLogUtils.setPrint(new JCLogUtils.Print() {});
 
 | 方法 | 注释 |
 | :- | :- |
-| calcScaleToWidth | 计算缩放比例 - 根据宽度比例转换高度 |
-| calcScaleToHeight | 计算缩放比例 - 根据高度比例转换宽度 |
-| calcWidthHeightToScale | 通过宽度、高度根据对应的比例, 转换成对应的比例宽度高度 - 智能转换 |
+| calcScale | 计算比例 ( 商 ) |
+| calcScaleToMath | 计算比例 ( 被除数 ( 最大值 ) / 除数 ( 最小值 ) ) |
+| calcScaleToWidth | 计算缩放比例 ( 根据宽度比例转换高度 ) |
+| calcScaleToHeight | 计算缩放比例 ( 根据高度比例转换宽度 ) |
+| calcWidthHeightToScale | 通过宽度、高度根据对应的比例, 转换成对应的比例宽度高度 ( 智能转换 ) |
 | calcWidthToScale | 以宽度为基准, 转换对应比例的高度 |
 | calcHeightToScale | 以高度为基准, 转换对应比例的宽度 |
+| calcXY | 计算 XY 比 |
 
 
 * **流操作工具类 ->** [StreamUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevJava/src/main/java/dev/utils/common/StreamUtils.java)
@@ -806,41 +809,48 @@ JCLogUtils.setPrint(new JCLogUtils.Print() {});
 | length | 获取字符串长度 |
 | isLength | 获取字符串长度 是否等于期望长度 |
 | equals | 判断两个值是否一样 |
-| isEquals | 判断多个字符串是否相等, 只有全相等才返回 true - 对比大小写 |
+| isEquals | 判断多个字符串是否相等, 只有全相等才返回 true ( 对比大小写 ) |
 | isOrEquals | 判断多个字符串, 只要有一个符合条件则通过 |
 | isContains | 判断一堆值中, 是否存在符合该条件的 ( 包含 ) |
-| isStartsWith | 判断内容, 是否属于特定字符串开头 - 对比大小写 |
-| isEndsWith | 判断内容, 是否属于特定字符串结尾 - 对比大小写 |
+| isStartsWith | 判断内容, 是否属于特定字符串开头 ( 对比大小写 ) |
+| isEndsWith | 判断内容, 是否属于特定字符串结尾 ( 对比大小写 ) |
 | countMatches | 统计字符串匹配个数 |
 | countMatches2 | 统计字符串匹配个数 |
 | isSpace | 判断字符串是否为 null 或全为空白字符 |
 | getBytes | 字符串 转 byte[] |
-| toClearSpace | 清空字符串全部空格 |
-| toClearSpaceTrim | 清空字符串前后所有空格 |
+| clearSpace | 清空字符串全部空格 |
+| clearTab | 清空字符串全部 Tab |
+| clearLine | 清空字符串全部换行符 |
+| clearSpaceTrim | 清空字符串前后全部空格 |
+| clearTabTrim | 清空字符串前后全部 Tab |
+| clearLineTrim | 清空字符串前后全部换行符 |
+| clearSpaceTabLine | 清空字符串全部空格、Tab、换行符 |
+| clearSpaceTabLineTrim | 清空字符串前后全部空格、Tab、换行符 |
 | appendSpace | 追加空格 |
 | appendTab | 追加 Tab |
 | appendLine | 追加换行 |
-| forString | 循环追加字符串 |
+| forString | 循环指定数量字符串 |
+| forJoint | 循环追加 |
 | colonSplit | 冒号分割处理 |
-| toCheckValue | 检查字符串 |
-| toCheckValues | 检查字符串 - 多个值 |
-| toCheckValuesSpace | 检查字符串 - 多个值 ( 删除前后空格对比判断 ) |
+| checkValue | 检查字符串 |
+| checkValues | 检查字符串 ( 多个值 ) |
+| checkValuesSpace | 检查字符串 ( 多个值, 删除前后空格对比判断 ) |
 | getFormatString | 获取格式化后的字符串 |
 | getAutoFormatString | 获取自动数量格式化后的字符串 ( 可变参数 ) |
 | getAutoFormatString2 | 获取自动数量格式化后的字符串 ( 可变参数 ) |
 | appends | StringBuilder 拼接处理 |
 | appendsIgnoreLast | StringBuilder 拼接处理 ( 最后一个不追加间隔 ) |
-| toGBKEncode | 字符串进行 GBK 编码 |
-| toGBK2312Encode | 字符串进行 GBK2312 编码 |
-| toUTF8Encode | 字符串进行 UTF-8 编码 |
-| toStrEncode | 进行字符串编码 |
-| toUrlEncode | 进行 URL 编码, 默认 UTF-8 |
-| toUrlDecode | 进行 URL 解码, 默认 UTF-8 |
-| toASCII | 将字符串转移为 ASCII 码 |
-| toUnicode | 将字符串转移为 Unicode 码 |
-| toUnicodeString | 将字符数组转移为 Unicode 码 |
-| toDBC | 转化为半角字符 |
-| toSBC | 转化为全角字符 如: a = ａ, A = Ａ |
+| gbkEncode | 字符串进行 GBK 编码 |
+| gbk2312Encode | 字符串进行 GBK2312 编码 |
+| utf8Encode | 字符串进行 UTF-8 编码 |
+| strEncode | 进行字符串编码 |
+| urlEncode | 进行 URL 编码, 默认 UTF-8 |
+| urlDecode | 进行 URL 解码, 默认 UTF-8 |
+| ascii | 将字符串转移为 ASCII 码 |
+| unicode | 将字符串转移为 Unicode 码 |
+| unicodeString | 将字符数组转移为 Unicode 码 |
+| dbc | 转化为半角字符 |
+| sbc | 转化为全角字符 如: a = ａ, A = Ａ |
 | checkChineseToString | 检测字符串是否全是中文 |
 | isChinese | 判定输入汉字 |
 | upperFirstLetter | 首字母大写 |
@@ -851,18 +861,18 @@ JCLogUtils.setPrint(new JCLogUtils.Print() {});
 | underScoreCaseToCamelCase | 下划线命名转为驼峰命名 |
 | camelCaseToUnderScoreCase | 驼峰命名法转为下划线命名 |
 | sqliteEscape | 字符串数据库字符转义 |
-| converHideMobile | 转换手机号 |
-| converSymbolHide | 转换符号处理 |
+| convertHideMobile | 转换手机号 |
+| convertSymbolHide | 转换符号处理 |
 | subEllipsize | 裁剪超出的内容, 并且追加符号 ( 如 ...) |
 | subSymbolHide | 裁剪符号处理 |
-| subSetSymbol | 裁剪内容, 设置符号处理 |
+| subSetSymbol | 裁剪内容 ( 设置符号处理 ) |
 | substring | 裁剪字符串 |
-| toReplaceSEWith | 替换 ( 删除 - 替换成 "") 字符串中符合 特定标记字符的 startsWith - endsWith |
-| toReplaceStartsWith | 替换开头字符串 |
-| toReplaceEndsWith | 替换结尾字符串 |
-| toClearSEWiths | 这个方法功能主要把字符符合标记的 头部和尾部都替换成 "" |
-| toClearStartsWith | 清空属于特定字符串开头的字段 |
-| toClearEndsWith | 清空属于特定字符串结尾的字段 |
+| replaceSEWith | 替换特定字符串开头、结尾的字符串 |
+| replaceStartsWith | 替换开头字符串 |
+| replaceEndsWith | 替换结尾字符串 |
+| clearSEWiths | 清空特定字符串开头、结尾的字符串 |
+| clearStartsWith | 清空特定字符串开头的字符串 |
+| clearEndsWith | 清空特定字符串结尾的字符串 |
 | replaceAll | 替换字符串 |
 | replaceAllToNull | 替换字符串 |
 | replaceAlls | 替换字符串 |
@@ -1102,7 +1112,7 @@ JCLogUtils.setPrint(new JCLogUtils.Print() {});
 | 方法 | 注释 |
 | :- | :- |
 | escape | 编码 |
-| unescape | 解码 - 本方法不论参数 data 是否经过 escape() 编码, 均能获取正确的 ( 解码 ) 结果 |
+| unescape | 解码 |
 
 
 * **MD5 加密工具类 ->** [MD5Utils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevJava/src/main/java/dev/utils/common/encrypt/MD5Utils.java)
@@ -1148,6 +1158,51 @@ JCLogUtils.setPrint(new JCLogUtils.Print() {});
 | decrypt | 解密 ( 非固定 Key 方式 ) |
 
 
+## <span id="devutilscommonfile">**`dev.utils.common.file`**</span>
+
+
+* **文件分片辅助类 ->** [FilePartAssist.java](https://github.com/afkT/DevUtils/blob/master/lib/DevJava/src/main/java/dev/utils/common/file/FilePartAssist.java)
+
+| 方法 | 注释 |
+| :- | :- |
+| getFile | 获取文件 |
+| getFileName | 获取文件名 |
+| getFilePartItems | 获取文件分片信息集合 |
+| getFilePartItem | 获取指定索引文件分片信息 |
+| getPartCount | 获取分片总数 |
+| existsPart | 是否存在分片 |
+| isOnlyOne | 是否只有一个分片 |
+| getPartName | 获取分片文件名 ( 后缀索引拼接 ) |
+
+
+* **文件分片信息 Item ->** [FilePartItem.java](https://github.com/afkT/DevUtils/blob/master/lib/DevJava/src/main/java/dev/utils/common/file/FilePartItem.java)
+
+| 方法 | 注释 |
+| :- | :- |
+| isFirstItem | 判断是否 First Item |
+| isLastItem | 判断是否 Last Item |
+| existsPart | 是否存在分片 |
+| isOnlyOne | 是否只有一个分片 |
+| getPartName | 获取分片文件名 ( 后缀索引拼接 ) |
+
+
+* **文件分片工具类 ->** [FilePartUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevJava/src/main/java/dev/utils/common/file/FilePartUtils.java)
+
+| 方法 | 注释 |
+| :- | :- |
+| getPartName | 获取分片文件名 ( 后缀索引拼接 ) |
+| getFilePartAssist | 获取文件分片辅助类 |
+| isFilePart | 是否符合文件分片条件 |
+| fileSplit | 文件拆分 |
+| fileSplitSave | 文件拆分并存储 |
+| fileSplitSaves | 文件拆分并存储 |
+| fileSplitDelete | 删除拆分文件 |
+| fileSplitDeletes | 删除拆分文件 |
+| fileSplitMergePaths | 分片合并 |
+| fileSplitMergeFiles | 分片合并 |
+| fileSplitMerge | 分片合并 |
+
+
 ## <span id="devutilscommonrandom">**`dev.utils.common.random`**</span>
 
 
@@ -1180,7 +1235,7 @@ JCLogUtils.setPrint(new JCLogUtils.Print() {});
 | execute | 加入到线程池任务队列 |
 | shutdown | shutdown 会等待所有提交的任务执行完成, 不管是正在执行还是保存在任务队列中的已提交任务 |
 | shutdownNow | shutdownNow 会尝试中断正在执行的任务 ( 其主要是中断一些指定方法如 sleep 方法 ), 并且停止执行等待队列中提交的任务 |
-| isShutdown | 判断线程池是否已关闭 - isShutDown 当调用 shutdown() 方法后返回为 true |
+| isShutdown | 判断线程池是否已关闭 ( isShutDown 当调用 shutdown() 方法后返回为 true ) |
 | isTerminated | 若关闭后所有任务都已完成, 则返回 true |
 | awaitTermination | 请求关闭、发生超时或者当前线程中断 |
 | submit | 提交一个 Callable 任务用于执行 |
@@ -1250,7 +1305,7 @@ JCLogUtils.setPrint(new JCLogUtils.Print() {});
 | isContainChinese | 判断字符串中包含中文、包括中文字符标点等 |
 
 
-* **检验联系 ( 手机号, 座机 ) 工具类 ->** [ValiToPhoneUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevJava/src/main/java/dev/utils/common/validator/ValiToPhoneUtils.java)
+* **检验联系 ( 手机号、座机 ) 工具类 ->** [ValiToPhoneUtils.java](https://github.com/afkT/DevUtils/blob/master/lib/DevJava/src/main/java/dev/utils/common/validator/ValiToPhoneUtils.java)
 
 | 方法 | 注释 |
 | :- | :- |

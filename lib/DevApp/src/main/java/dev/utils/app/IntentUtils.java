@@ -19,6 +19,7 @@ import androidx.core.content.FileProvider;
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import dev.DevUtils;
 import dev.utils.LogPrintUtils;
@@ -69,6 +70,57 @@ public final class IntentUtils {
             }
         }
         return false;
+    }
+
+    /**
+     * 获取 CATEGORY_LAUNCHER Intent
+     * @param className class.getCanonicalName()
+     * @return {@link Intent}
+     */
+    public static Intent getCategoryLauncherIntent(final String className) {
+        return getCategoryLauncherIntent(AppUtils.getPackageName(), className, true);
+    }
+
+    /**
+     * 获取 CATEGORY_LAUNCHER Intent
+     * @param className class.getCanonicalName()
+     * @param isNewTask 是否开启新的任务栈
+     * @return {@link Intent}
+     */
+    public static Intent getCategoryLauncherIntent(final String className, final boolean isNewTask) {
+        return getCategoryLauncherIntent(AppUtils.getPackageName(), className, isNewTask);
+    }
+
+    /**
+     * 获取 CATEGORY_LAUNCHER Intent
+     * @param packageName 应用包名
+     * @param className   class.getCanonicalName()
+     * @return {@link Intent}
+     */
+    public static Intent getCategoryLauncherIntent(final String packageName, final String className) {
+        return getCategoryLauncherIntent(packageName, className, true);
+    }
+
+    /**
+     * 获取 CATEGORY_LAUNCHER Intent
+     * @param packageName 应用包名
+     * @param className   class.getCanonicalName()
+     * @param isNewTask   是否开启新的任务栈
+     * @return {@link Intent}
+     */
+    public static Intent getCategoryLauncherIntent(final String packageName, final String className, final boolean isNewTask) {
+        try {
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_LAUNCHER);
+            intent.setComponent(new ComponentName(packageName, className));
+            if (isNewTask) {
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+            }
+            return intent;
+        } catch (Exception e) {
+            LogPrintUtils.eTag(TAG, e, "getCategoryLauncherIntent");
+        }
+        return null;
     }
 
     /**
@@ -758,7 +810,7 @@ public final class IntentUtils {
             if (!TextUtils.isEmpty(packageName)) {
 //                intent.setClassName(packageName, className);
                 List<ResolveInfo> lists = AppUtils.getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
-                HashMap<String, String> browsers = new HashMap<>();
+                Map<String, String> browsers = new HashMap<>();
                 for (ResolveInfo resolveInfo : lists) {
                     ActivityInfo activityInfo = resolveInfo.activityInfo;
                     if (activityInfo != null) { // 包名, Activity Name

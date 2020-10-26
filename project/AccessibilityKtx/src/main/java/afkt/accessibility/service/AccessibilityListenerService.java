@@ -72,9 +72,9 @@ public final class AccessibilityListenerService extends AccessibilityService {
         LogPrintUtils.dTag(TAG, "onServiceConnected");
     }
 
-    // ============
+    // ===========
     // = 生命周期 =
-    // ============
+    // ===========
 
     @Override
     public void onCreate() {
@@ -99,9 +99,9 @@ public final class AccessibilityListenerService extends AccessibilityService {
         sSelf = null;
     }
 
-    // ================
+    // ===============
     // = 对外公开方法 =
-    // ================
+    // ===============
 
     /**
      * 获取当前服务所持对象

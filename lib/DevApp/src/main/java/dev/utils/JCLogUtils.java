@@ -11,8 +11,11 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 /**
- * detail: Java Common 日志打印工具类 ( 简化版 ) - 项目内部使用 ( 主要打印 Java 日志 )
+ * detail: Java Common 日志打印工具类 ( 简化版 )
  * @author Ttt
+ * <pre>
+ *     项目内部使用 ( 主要打印 Java 日志 )
+ * </pre>
  */
 public final class JCLogUtils {
 
@@ -26,9 +29,9 @@ public final class JCLogUtils {
     // 默认 DEFAULT_TAG
     private static final String  DEFAULT_TAG             = JCLogUtils.class.getSimpleName();
 
-    // ============
+    // ===========
     // = 日志类型 =
-    // ============
+    // ===========
 
     // INFO 模式
     public static final int INFO  = 0;
@@ -123,7 +126,7 @@ public final class JCLogUtils {
 
     /**
      * 拼接错误信息
-     * @param throwable 错误异常
+     * @param throwable 异常
      * @param message   需要打印的消息
      * @param args      动态参数
      * @return 处理 ( 格式化 ) 后准备打印的日志信息
@@ -147,7 +150,7 @@ public final class JCLogUtils {
     }
 
     // ===============================
-    // = 对外公开方法 - 使用默认 TAG =
+    // = 对外公开方法 ( 使用默认 TAG ) =
     // ===============================
 
     public static void d(final String message, final Object... args) {
@@ -175,7 +178,7 @@ public final class JCLogUtils {
     }
 
     // ===============================
-    // = 对外公开方法 - 日志打印方法 =
+    // = 对外公开方法 ( 日志打印方法 ) =
     // ===============================
 
     public static void dTag(final String tag, final String message, final Object... args) {
@@ -245,9 +248,9 @@ public final class JCLogUtils {
         }
     }
 
-    // ============
+    // ===========
     // = 通知输出 =
-    // ============
+    // ===========
 
     private static Print sPrint;
 
